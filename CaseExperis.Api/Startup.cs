@@ -24,6 +24,13 @@ namespace CaseExperis.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+    
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Environment.CurrentDirectory + "/bin/Debug/netcoreapp2.2")
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }

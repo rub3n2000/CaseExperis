@@ -1,5 +1,3 @@
-C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.Development.json
-C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.json
 C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
 C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.deps.json
 C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.runtimeconfig.json

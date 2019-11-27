@@ -62,3 +62,6 @@ typings/
 
 appsettings.json
 appsettings.Development.json
+
+/bin/Debug/netcoreapp2.2/appsettings.json
+/bin/Debug/netcoreapp2.2/appsettings.Development.json
