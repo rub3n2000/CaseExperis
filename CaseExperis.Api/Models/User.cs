@@ -12,5 +12,6 @@ namespace CaseExperis.Api.Models
         public string SpråkKode { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public Ferie[] feirer { get; set; }
     }
 }

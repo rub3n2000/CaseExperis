@@ -27,9 +27,13 @@ namespace CaseExperis.Api.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int>("UserId");
+
                     b.Property<bool>("isGodkjent");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Ferier");
                 });
@@ -60,6 +64,14 @@ namespace CaseExperis.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CaseExperis.Api.Models.Ferie", b =>
+                {
+                    b.HasOne("CaseExperis.Api.Models.User", "User")
+                        .WithMany("feirer")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

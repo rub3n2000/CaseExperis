@@ -13,8 +13,9 @@ namespace CaseExperis.Api.Models
 
         public string AdminNotat { get; set; }
 
-        public Ferie() {
-            
-        }
+        public User User { get; set; }
+
+        public int UserId { get; set; }
+
     }
 }

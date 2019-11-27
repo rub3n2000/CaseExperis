@@ -9,5 +9,6 @@ namespace CaseExperis.Api.Data
 
      public DbSet<User> Users { get; set; }
      public DbSet<Ferie> Ferier { get; set; }
+     
     }
 }

@@ -9,14 +9,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseExperis.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191127114712_Initial")]
-    partial class Initial
+    [Migration("20191127160513_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+
+            modelBuilder.Entity("CaseExperis.Api.Models.Ferie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AdminNotat");
+
+                    b.Property<string>("AnsattNotat");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<bool>("isGodkjent");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ferier");
+                });
 
             modelBuilder.Entity("CaseExperis.Api.Models.User", b =>
                 {
@@ -44,6 +66,14 @@ namespace CaseExperis.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CaseExperis.Api.Models.Ferie", b =>
+                {
+                    b.HasOne("CaseExperis.Api.Models.User", "User")
+                        .WithMany("feirer")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
