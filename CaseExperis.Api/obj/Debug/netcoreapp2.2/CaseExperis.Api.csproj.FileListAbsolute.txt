@@ -1,0 +1,16 @@
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.deps.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.runtimeconfig.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.runtimeconfig.dev.json
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.dll
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\bin\Debug\netcoreapp2.2\CaseExperis.Api.pdb
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.csprojAssemblyReference.cache
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.RazorAssemblyInfo.cache
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.RazorAssemblyInfo.cs
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.AssemblyInfoInputs.cache
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.AssemblyInfo.cs
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.RazorTargetAssemblyInfo.cache
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.dll
+C:\Users\Ruben\Desktop\CaseExperis\CaseExperis.Api\obj\Debug\netcoreapp2.2\CaseExperis.Api.pdb
