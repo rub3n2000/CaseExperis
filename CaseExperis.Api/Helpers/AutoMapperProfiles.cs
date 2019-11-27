@@ -12,6 +12,8 @@ namespace DatingApp.API.Helpers
             CreateMap<User,UserForProfileDto>();
             CreateMap<UserForUpdateDto,User>();
             CreateMap<UserForRegisterDto, User>();
+            CreateMap<Ferie, FerieForUpdate>();
+            CreateMap<FerieToCreate,Ferie>();
         }
     }
 }

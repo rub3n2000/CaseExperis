@@ -1,10 +1,9 @@
 using System;
 
-namespace CaseExperis.Api.Models
+namespace CaseExperis.Api.Dtos
 {
-    public class Ferie
+    public class FerieForUpdate
     {
-        public int Id { get; set; }
         public DateTime Date { get; set; }
 
         public bool isGodkjent { get; set; }
@@ -12,9 +11,5 @@ namespace CaseExperis.Api.Models
         public string AnsattNotat { get; set; }
 
         public string AdminNotat { get; set; }
-
-        public Ferie() {
-            
-        }
     }
 }
