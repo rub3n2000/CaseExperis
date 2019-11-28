@@ -3,14 +3,16 @@ using System;
 using CaseExperis.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CaseExperis.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191127161326_FixedNorwegianIssue")]
+    partial class FixedNorwegianIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +71,7 @@ namespace CaseExperis.Api.Migrations
             modelBuilder.Entity("CaseExperis.Api.Models.Ferie", b =>
                 {
                     b.HasOne("CaseExperis.Api.Models.User", "User")
-                        .WithMany("Ferier")
+                        .WithMany("feirer")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

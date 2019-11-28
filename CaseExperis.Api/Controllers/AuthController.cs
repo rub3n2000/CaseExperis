@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System;
 
 namespace CaseExperis.Api.Controllers
 {
@@ -53,8 +55,8 @@ public class AuthController : ControllerBase
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Id.ToString())
             };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            Console.WriteLine(_config.GetValue<string>("Token").ToString());
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("Token").ToString()));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

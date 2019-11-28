@@ -15,7 +15,7 @@ namespace CaseExperis.Api.Models
 
         public User User { get; set; }
 
-        public int UserId { get; set; }
+        public int UserId { get; set; } = 1;
 
     }
 }

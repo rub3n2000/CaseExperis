@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Diagnostics;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Text.Encodings;
+using System.Linq;
+using Newtonsoft.Json;
+using CaseExperis.Api.Dtos;
 
 namespace CaseExperis.API.Data
 {
@@ -31,16 +36,14 @@ namespace CaseExperis.API.Data
             return ferie;
         }
 
-        public async Task<Ferie> Edit(int id, Ferie ferieForUpdate)
+        public async Task<Ferie> Edit(int id, FerieForUpdate ferieForUpdate)
         {
             var ferieFraDB = await GetFerie(id);
-            _mapper.Map(ferieForUpdate, ferieFraDB);
-            if(await SaveAll())
-            {
-                return null;
-            }
-            
-            throw new System.Exception($"Updating Ferie With id {id} failed on save");
+            Console.WriteLine(JsonConvert.SerializeObject(ferieFraDB).ToString());
+            var redigertFerie = _mapper.Map(ferieForUpdate, ferieFraDB);
+            Console.WriteLine(JsonConvert.SerializeObject(ferieFraDB).ToString());
+            await _context.SaveChangesAsync();
+            return redigertFerie;
         }
 
         public async Task<Ferie> GetFerie(int id)
@@ -51,6 +54,16 @@ namespace CaseExperis.API.Data
                 return null;
             }
             return ferie;
+        }
+
+        public async Task<IEnumerable<Ferie>> GetFerieByUser(int id)
+        {
+            var ferier =  await _context.Ferier.Where(u => u.UserId == id).ToListAsync();
+            if(ferier.Count <= 0)
+            {
+                return null;
+            }
+            return ferier;
         }
 
         public async Task<IEnumerable<Ferie>> GetFerier()
@@ -76,7 +89,9 @@ namespace CaseExperis.API.Data
         {
             var ferieToMakeGodkjent = await _context.Ferier.FirstAsync(u => u.Id == id);
             ferieToMakeGodkjent.isGodkjent = true;
-            await Edit(id,ferieToMakeGodkjent);
+            
+            var ferieToMakeGodKjentRedigert = _mapper.Map<Ferie,FerieForUpdate>(ferieToMakeGodkjent);
+            await Edit(id,ferieToMakeGodKjentRedigert);
             return ferieToMakeGodkjent;
         }
 

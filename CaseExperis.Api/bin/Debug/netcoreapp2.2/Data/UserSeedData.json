@@ -1,0 +1,102 @@
+[
+    {
+      "Fornavn": "Romero",
+      "Etternavn": "Gibbs",
+      "Password": "password",
+      "TelefonNummer": "(985) 497-2481",
+      "Email": "Marks@test.com",
+      "AntallFerieTatt": 35,
+      "AntallFerieIgjen": 18,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Weiss",
+      "Etternavn": "Kirk",
+      "Password": "password",
+      "TelefonNummer": "(996) 482-2778",
+      "Email": "Estelle@test.com",
+      "AntallFerieTatt": 28,
+      "AntallFerieIgjen": 43,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Hooper",
+      "Etternavn": "Hardy",
+      "Password": "password",
+      "TelefonNummer": "(895) 492-2266",
+      "Email": "Adriana@test.com",
+      "AntallFerieTatt": 12,
+      "AntallFerieIgjen": 17,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Carson",
+      "Etternavn": "Webb",
+      "Password": "password",
+      "TelefonNummer": "(837) 467-3943",
+      "Email": "Lindsay@test.com",
+      "AntallFerieTatt": 41,
+      "AntallFerieIgjen": 2,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Wallace",
+      "Etternavn": "Maxwell",
+      "Password": "password",
+      "TelefonNummer": "(843) 597-3713",
+      "Email": "Priscilla@test.com",
+      "AntallFerieTatt": 15,
+      "AntallFerieIgjen": 18,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Wilcox",
+      "Etternavn": "Buckner",
+      "Password": "password",
+      "TelefonNummer": "(917) 431-3450",
+      "Email": "Allison@test.com",
+      "AntallFerieTatt": 33,
+      "AntallFerieIgjen": 45,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Rodriguez",
+      "Etternavn": "Stanton",
+      "Password": "password",
+      "TelefonNummer": "(847) 582-2473",
+      "Email": "Hewitt@test.com",
+      "AntallFerieTatt": 26,
+      "AntallFerieIgjen": 12,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Atkins",
+      "Etternavn": "Glenn",
+      "Password": "password",
+      "TelefonNummer": "(938) 424-2710",
+      "Email": "Esther@test.com",
+      "AntallFerieTatt": 5,
+      "AntallFerieIgjen": 42,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Holden",
+      "Etternavn": "Vinson",
+      "Password": "password",
+      "TelefonNummer": "(870) 421-3775",
+      "Email": "Lauren@test.com",
+      "AntallFerieTatt": 33,
+      "AntallFerieIgjen": 42,
+      "LanguageCode": "NO"
+    },
+    {
+      "Fornavn": "Barnett",
+      "Etternavn": "Henson",
+      "Password": "password",
+      "TelefonNummer": "(856) 476-3872",
+      "Email": "Mcfadden@test.com",
+      "AntallFerieTatt": 47,
+      "AntallFerieIgjen": 46,
+      "LanguageCode": "NO"
+    }
+  ]

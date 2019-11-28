@@ -60,8 +60,15 @@ typings/
 # next.js build output
 .next
 
+/appsettings.json
+/appsettings.Development.json
+
+
 appsettings.json
 appsettings.Development.json
 
 /bin/Debug/netcoreapp2.2/appsettings.json
 /bin/Debug/netcoreapp2.2/appsettings.Development.json
+
+CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.Development.json
+CaseExperis.Api\bin\Debug\netcoreapp2.2\appsettings.json

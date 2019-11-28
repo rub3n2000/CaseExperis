@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CaseExperis.Api.Models
 {
     public class User
@@ -9,9 +11,9 @@ namespace CaseExperis.Api.Models
         public int Id { get; set; }
         public int AntallFerieTatt { get; set; }
         public int AntallFerieIgjen { get; set; }
-        public string SpråkKode { get; set; }
+        public string LanguageCode { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public Ferie[] feirer { get; set; }
+        public virtual ICollection<Ferie> Ferier { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaseExperis.Api.Controllers
 {
@@ -19,15 +20,21 @@ namespace CaseExperis.Api.Controllers
         private readonly IAuthRepository _repo;
         private readonly IMapper _mapper;
         private readonly IFerieRepository _ferieRepository;
-        public FerieController(IAuthRepository repo, IMapper mapper, IFerieRepository ferieRepository){
+
+        private readonly DataContext _context;
+        public FerieController(IAuthRepository repo, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
             this._repo = repo;
             this._mapper = mapper;
             this._ferieRepository = ferieRepository;
+            this._context = context;
         }
         
-        [HttpPost("new")]  
-        public async Task<IActionResult> NewFerie(FerieToCreate ferieToCreate)
+        [HttpPost("new/{userID}")]  
+        public async Task<IActionResult> NewFerie(int userID, FerieToCreate ferieToCreate)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userID);
+            ferieToCreate.User = user;
+            ferieToCreate.UserId = userID;
             var ferieForUploading =  _mapper.Map<Ferie>(ferieToCreate);
            
             var uploadetFerie = await _ferieRepository.New(ferieForUploading);
@@ -48,6 +55,18 @@ namespace CaseExperis.Api.Controllers
         }
 
         [HttpGet]
+        [Route("user/{id}")]
+        public async Task<IActionResult> GetFerierByUser(int id)
+        {
+           var ferier = await _ferieRepository.GetFerieByUser(id);
+           if(ferier == null)
+           {
+               return NoContent();
+           }
+           return Ok(ferier);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         
         public async Task<IActionResult> GetFerie(int id)
@@ -63,10 +82,9 @@ namespace CaseExperis.Api.Controllers
         [HttpPut]
         [Route("{id}")]
         
-        public async Task<IActionResult> EditFerie(int id)
+        public async Task<IActionResult> EditFerie(int id, FerieForUpdate ferieForUpdate)
         {
-            var ferieToRedigere = await _ferieRepository.GetFerie(id);
-            var redigertFerie = await _ferieRepository.Edit(id,ferieToRedigere);
+            var redigertFerie = await _ferieRepository.Edit(id,ferieForUpdate);
             if(redigertFerie == null)
             {
             return NoContent();
