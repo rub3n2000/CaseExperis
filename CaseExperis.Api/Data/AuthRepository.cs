@@ -36,8 +36,6 @@ namespace CaseExperis.API.Data
             using(var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                Console.WriteLine(computedHash.ToString());
-                Console.WriteLine(passwordHash.ToString());
                 for(int i = 0; i < computedHash.Length; i++) 
                 {
                     if(computedHash[i] != passwordHash[i])
@@ -94,13 +92,13 @@ namespace CaseExperis.API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Ferier).FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Include(p => p.Ferier).ToListAsync();
             return users;
         }
 

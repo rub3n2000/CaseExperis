@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using CaseExperis.Api.Models;
+
 namespace CaseExperis.Api.Dtos
 {
     public class UserForRegisterDto
@@ -10,5 +13,6 @@ namespace CaseExperis.Api.Dtos
         public int AntallFerieIgjen { get; set; }
         public string LanguageCode { get; set; }
         public string Password { get; set; }
+        public virtual ICollection<Ferie> Ferier { get; set; } = new List<Ferie>();
     }
 }

@@ -14,6 +14,6 @@ namespace CaseExperis.Api.Models
         public string LanguageCode { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public virtual ICollection<Ferie> Ferier { get; set; }
+        public virtual ICollection<Ferie> Ferier { get; set; } = new List<Ferie>();
     }
 }

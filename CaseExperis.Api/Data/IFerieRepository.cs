@@ -9,9 +9,9 @@ namespace CaseExperis.Api.Data
     {
         Task<Ferie> New(Ferie ferie);
         Task<Ferie> Edit(int id, FerieForUpdate ferie);
-        Task<Ferie> GetFerie(int id);
-        Task<IEnumerable<Ferie>> GetFerier();
-        Task<IEnumerable<Ferie>> GetFerieByUser(int id);
+        Task<FerieToReturn> GetFerie(int id);
+        Task<IEnumerable<FerieToReturn>> GetFerier();
+        Task<IEnumerable<FerieToReturn>> GetFerieByUser(int id);
         Task<bool> SaveAll();
         Task<Ferie> DeleteFerie(int id);
         Task<Ferie> MakeAccepted(int id);

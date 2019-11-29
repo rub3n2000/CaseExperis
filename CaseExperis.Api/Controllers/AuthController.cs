@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Id.ToString())
             };
-            Console.WriteLine(_config.GetValue<string>("Token").ToString());
+           
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("Token").ToString()));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

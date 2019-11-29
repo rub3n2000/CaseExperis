@@ -38,43 +38,55 @@ namespace CaseExperis.API.Data
 
         public async Task<Ferie> Edit(int id, FerieForUpdate ferieForUpdate)
         {
-            var ferieFraDB = await GetFerie(id);
-            Console.WriteLine(JsonConvert.SerializeObject(ferieFraDB).ToString());
+            var ferieFraDB = await _context.Ferier.FirstAsync(u => u.Id == id);
             var redigertFerie = _mapper.Map(ferieForUpdate, ferieFraDB);
-            Console.WriteLine(JsonConvert.SerializeObject(ferieFraDB).ToString());
             await _context.SaveChangesAsync();
             return redigertFerie;
         }
 
-        public async Task<Ferie> GetFerie(int id)
+        public async Task<FerieToReturn> GetFerie(int id)
         {
-            var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
+            var ferie = await _context.Ferier.Include(p => p.User).FirstAsync(u => u.Id == id);
+            var ferieToReturn = _mapper.Map<Ferie,FerieToReturn>(ferie);
             if(ferie == null)
             {
                 return null;
             }
-            return ferie;
+            return ferieToReturn;
         }
 
-        public async Task<IEnumerable<Ferie>> GetFerieByUser(int id)
+        public async Task<IEnumerable<FerieToReturn>> GetFerieByUser(int id)
         {
-            var ferier =  await _context.Ferier.Where(u => u.UserId == id).ToListAsync();
+            var ferier =  await _context.Ferier.Where(u => u.UserId == id).Include(p => p.User).ToListAsync();
+            var ferierToReturn = new List<FerieToReturn>();
+            
+            foreach(Ferie f in ferier)
+            {
+               ferierToReturn.Add(_mapper.Map<Ferie,FerieToReturn>(f));
+            }
             if(ferier.Count <= 0)
             {
                 return null;
             }
-            return ferier;
+            return ferierToReturn;
         }
 
-        public async Task<IEnumerable<Ferie>> GetFerier()
+        public async Task<IEnumerable<FerieToReturn>> GetFerier()
         {
-            var ferier = await _context.Ferier.ToListAsync();
+            var ferier = await _context.Ferier.Include(p => p.User).ToListAsync();
+            var ferierToReturn = new List<FerieToReturn>();
+            
+            foreach(Ferie f in ferier)
+            {
+               ferierToReturn.Add(_mapper.Map<Ferie,FerieToReturn>(f));
+            }
+       
             
             if(ferier.Count <= 0)
             {
                 return null;
             }
-            return ferier;
+            return ferierToReturn;
         }
 
         

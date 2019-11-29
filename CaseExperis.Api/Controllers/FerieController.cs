@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Newtonsoft.Json;
 
 namespace CaseExperis.Api.Controllers
 {
@@ -22,9 +24,12 @@ namespace CaseExperis.Api.Controllers
         private readonly IFerieRepository _ferieRepository;
 
         private readonly DataContext _context;
-        public FerieController(IAuthRepository repo, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
+
+        private readonly IAuthRepository _iAuthRepos;
+        public FerieController(IAuthRepository repo, IAuthRepository iAuthRepos, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
             this._repo = repo;
             this._mapper = mapper;
+            this._iAuthRepos = iAuthRepos;
             this._ferieRepository = ferieRepository;
             this._context = context;
         }
@@ -35,6 +40,8 @@ namespace CaseExperis.Api.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userID);
             ferieToCreate.User = user;
             ferieToCreate.UserId = userID;
+            user.Ferier.Add(_mapper.Map<FerieToCreate,Ferie>(ferieToCreate));
+            await _iAuthRepos.SaveAll();
             var ferieForUploading =  _mapper.Map<Ferie>(ferieToCreate);
            
             var uploadetFerie = await _ferieRepository.New(ferieForUploading);
@@ -89,7 +96,7 @@ namespace CaseExperis.Api.Controllers
             {
             return NoContent();
             }
-            return Ok(redigertFerie);
+            return Ok();
         }
 
         [HttpDelete]
@@ -111,7 +118,7 @@ namespace CaseExperis.Api.Controllers
         public async Task<IActionResult> MakeFerieAccepted(int id)
         {
             var acceptedFerie = await _ferieRepository.MakeAccepted(id);
-            return Ok(acceptedFerie);
+            return Ok();
         }
     }
 }
