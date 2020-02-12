@@ -4,7 +4,7 @@ import styles from './Navbar.module.scss';
 
 const navbar = ( props : any ) => {
 return (
-    <div>
+    <div className={styles.Navbar}>
         Navbar
     </div>
 )

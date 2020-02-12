@@ -7,7 +7,7 @@ import Kalendar from '../../Components/Kalendar/Kalendar';
 
 const Frontside = ( props : any ) => {
 return (
-    <div className={styles.LayoutDiv}>
+    <div className={[styles.LayoutDiv, styles.Centered].join(' ')}>
         <Navbar/>
         <Kalendar/>
     </div>

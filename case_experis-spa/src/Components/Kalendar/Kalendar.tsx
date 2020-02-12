@@ -4,7 +4,7 @@ import styles from './Kalendar.module.scss';
 
 const kalendar = ( props: any ) => {
 return (
-    <div>
+    <div className={styles.Kalandar}>
         Kalendar
     </div>
 );
