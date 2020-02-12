@@ -1,0 +1,30 @@
+@import '../../Sass/GlobalVariables.module.scss';
+
+.Navbar {
+    display: flex;
+    min-height: 75px;
+    width: 100%;
+    height: 10%;
+    min-width: 100%;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: map-get($colors, secondary);
+}
+
+.DesktopOnly {
+    display: none;
+    
+}
+
+@media(min-width: 500px)
+{
+    .DesktopOnly {
+        display: flex;
+        flex-grow: 100;
+        min-width: auto;
+        justify-content: flex-end;
+        margin-right: 5%;
+    }
+}

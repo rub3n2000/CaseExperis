@@ -1,0 +1,20 @@
+@import '../../../../Sass/GlobalVariables.module.scss';
+
+
+.NavigationItem
+{
+    display: flex;
+    width: auto;
+    min-width: auto;
+    margin: 2%;
+    
+
+    a {
+        width: 100%;
+        background-color: map-get($colors, third);
+        height: max-content;
+        text-decoration: none;
+        color: map-get($colors, fourth);
+        padding: 5%
+    }
+}

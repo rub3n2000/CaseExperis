@@ -1,0 +1,30 @@
+@import '../../../../Sass/GlobalVariables.module.scss';
+
+.DrawerToggle {
+    width: 40px;
+    height: 100%;
+    display: flex;
+    flex-grow: 10;
+    flex-flow: column;
+    justify-content: space-around;
+    align-self: flex-end;
+    align-items: flex-end;
+    padding: 10px 0;
+    margin-right: 5%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.DrawerToggle div {
+    min-width: 20%;
+    max-width: 20%;
+    height: 3px;
+    background-color: map-get($colors, primary);
+}
+
+@media (min-width: 500px)
+{
+    .hidden{
+        display:none;
+    }
+}
