@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Frontside.module.css';
+import styles from './Frontside.module.scss';
 
 import Navbar from '../../Components/Nav/Navbar/Navbar';
 import Kalendar from '../../Components/Kalendar/Kalendar';

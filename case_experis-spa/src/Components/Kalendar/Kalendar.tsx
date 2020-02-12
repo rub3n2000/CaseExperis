@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Kalendar.module.css';
+import styles from './Kalendar.module.scss';
 
 const kalendar = ( props: any ) => {
 return (

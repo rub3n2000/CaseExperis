@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './KalendarKontroll.module.css';
+import styles from './KalendarKontroll.module.scss';
 
 const kalendarKontroll = ( props: any ) => {
 
