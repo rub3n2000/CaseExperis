@@ -34,7 +34,7 @@ namespace CaseExperis.Api.Controllers
             this._context = context;
         }
         
-        [HttpPost("new/{userID}")]  
+        [HttpPost("new/{userID}")]  [AllowAnonymous]
         public async Task<IActionResult> NewFerie(int userID, FerieToCreate ferieToCreate)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userID);
@@ -50,6 +50,7 @@ namespace CaseExperis.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
 
         public async Task<IActionResult> GetFerier()
         {
@@ -61,7 +62,7 @@ namespace CaseExperis.Api.Controllers
             return Ok(ferier);
         }
 
-        [HttpGet]
+        [HttpGet] [AllowAnonymous]
         [Route("user/{id}")]
         public async Task<IActionResult> GetFerierByUser(int id)
         {
@@ -73,7 +74,7 @@ namespace CaseExperis.Api.Controllers
            return Ok(ferier);
         }
 
-        [HttpGet]
+        [HttpGet] [AllowAnonymous]
         [Route("{id}")]
         
         public async Task<IActionResult> GetFerie(int id)

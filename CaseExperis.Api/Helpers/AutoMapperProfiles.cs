@@ -10,6 +10,7 @@ namespace DatingApp.API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User,UserForProfileDto>();
+            CreateMap<UserForProfileDto, User>();
             CreateMap<UserForUpdateDto,User>();
             CreateMap<UserForRegisterDto, User>();
             CreateMap<Ferie, FerieForUpdate>();

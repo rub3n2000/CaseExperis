@@ -1,4 +1,40 @@
+@import '../../../Sass/GlobalFunctions.module.scss';
+
 .KalendarView {
     display: flex;
     flex-grow: 10;
+    width: 100%;
+    margin: 5% 2.5%
 }
+
+.Days {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    margin-left: 2.5%;
+
+    font-weight: bold;
+    
+    padding: 2%;
+    font-size: 0.75em;
+
+
+    div:nth-child(even)
+    {
+        background-color: f_color(fifth);
+    }
+
+    div {
+        flex-basis: 14.28%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        background-color: f_color(secondary);
+        padding: 5px;
+    }
+
+}   

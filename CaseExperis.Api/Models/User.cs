@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CaseExperis.Api.Models
 {
@@ -15,5 +17,10 @@ namespace CaseExperis.Api.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public virtual ICollection<Ferie> Ferier { get; set; } = new List<Ferie>();
+
+        public static implicit operator User(Task<User> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

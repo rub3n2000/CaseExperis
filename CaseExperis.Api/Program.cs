@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CaseExperis.Api.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,11 @@ namespace CaseExperis.Api
 {
     public class Program
     {
+        IMapper _mapper;
+        public Program(IMapper mapper)
+        {
+            this._mapper = mapper;
+        }
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
@@ -25,6 +31,8 @@ namespace CaseExperis.Api
                     var context = services.GetRequiredService<DataContext>();
                     context.Database.Migrate();
                     Seed.SeedUsers(context);
+                    Seed.SeedFerier(services.GetRequiredService<IAuthRepository>(), 
+                    services.GetRequiredService<IFerieRepository>(), services.GetRequiredService<DataContext>(),services.GetRequiredService<IMapper>());
                 } catch(Exception ex) {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occured during migration");
