@@ -1,20 +1,25 @@
-@import '../../../../Sass/GlobalVariables.module.scss';
+@import '../../../../Sass/GlobalFunctions.module.scss';
 
 
 .NavigationItem
 {
     display: flex;
     width: auto;
-    min-width: auto;
+    min-width: 70px;
     margin: 2%;
     
 
     a {
         width: 100%;
-        background-color: map-get($colors, third);
+        background-color: f_color(third);
         height: max-content;
         text-decoration: none;
-        color: map-get($colors, fourth);
-        padding: 5%
+        text-transform: uppercase;
+        font-weight: bold;
+        color: f_color(fourth);
+        padding: 10%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
     }
 }

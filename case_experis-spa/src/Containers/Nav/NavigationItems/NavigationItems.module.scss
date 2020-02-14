@@ -1,3 +1,5 @@
+@import '../../../Sass/GlobalMixins.module.scss';
+
 .NavigationItems {
     display: flex;
     flex-grow: 100;
@@ -23,11 +25,11 @@
     min-width: auto;
     justify-content: center;
     flex-direction: row;
-    margin-bottom: 5%;
+    margin-bottom: 25%;
 }
 
 
-@media(min-width: 500px)
+@include desktop
 {
     .NavigationItems {
         flex-direction: row;

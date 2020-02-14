@@ -1,4 +1,5 @@
-@import '../../../../Sass/GlobalVariables.module.scss';
+@import '../../../../Sass/GlobalMixins.module.scss';
+@import '../../../../Sass/GlobalFunctions.module.scss';
 
 .DrawerToggle {
     width: 40px;
@@ -19,10 +20,10 @@
     min-width: 20%;
     max-width: 20%;
     height: 3px;
-    background-color: map-get($colors, primary);
+    background-color: f_color(primary);
 }
 
-@media (min-width: 500px)
+@include desktop
 {
     .hidden{
         display:none;
