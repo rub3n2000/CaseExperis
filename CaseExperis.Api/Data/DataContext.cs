@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CaseExperis.Api.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CaseExperis.Api.Data
 {
@@ -9,6 +10,10 @@ namespace CaseExperis.Api.Data
 
      public DbSet<User> Users { get; set; }
      public DbSet<Ferie> Ferier { get; set; }
-     
+
+     protected override void OnModelCreating(ModelBuilder builder)
+     {
+         builder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+     }
     }
 }

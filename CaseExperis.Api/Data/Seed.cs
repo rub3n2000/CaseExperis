@@ -51,7 +51,7 @@ namespace CaseExperis.Api.Data
                             UserId = i
                         };
                         var userToReturn = _mapper.Map<UserForProfileDto>(users[i]);
-                        userToReturn.Ferier.Add(_mapper.Map<FerieToCreate,Ferie>(ferietoCreate));
+                        userToReturn.Ferier.Add(_mapper.Map<FerieToCreate,FerieForUserProfileDto>(ferietoCreate));
                         _iAuthRepos.SaveAll();
                         var ferieForUploading =  _mapper.Map<FerieToCreate,Ferie>(ferietoCreate);
                         _ferieRepository.New(ferieForUploading);

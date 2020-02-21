@@ -18,6 +18,8 @@ namespace DatingApp.API.Helpers
             CreateMap<Ferie, Ferie>();
             CreateMap<FerieForUpdate, Ferie>();
             CreateMap<Ferie, FerieToReturn>().ForMember(dest => dest.Navn, opt => opt.MapFrom(src => src.User.Fornavn + " " + src.User.Etternavn));
+            CreateMap<Ferie, FerieForUserProfileDto>();
+            CreateMap<FerieToCreate, FerieForUserProfileDto>();
             CreateMap<FerieToReturn,Ferie>();
         }
     }

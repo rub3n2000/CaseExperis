@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseExperis.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191127160513_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20200221155144_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,15 +55,18 @@ namespace CaseExperis.Api.Migrations
 
                     b.Property<string>("Fornavn");
 
+                    b.Property<string>("LanguageCode");
+
                     b.Property<byte[]>("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("SpråkKode");
-
                     b.Property<string>("TelefonNummer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -71,7 +74,7 @@ namespace CaseExperis.Api.Migrations
             modelBuilder.Entity("CaseExperis.Api.Models.Ferie", b =>
                 {
                     b.HasOne("CaseExperis.Api.Models.User", "User")
-                        .WithMany("feirer")
+                        .WithMany("Ferier")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

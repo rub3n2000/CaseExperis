@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CaseExperis.Api.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace CaseExperis.Api.Migrations
                     Email = table.Column<string>(nullable: true),
                     AntallFerieTatt = table.Column<int>(nullable: false),
                     AntallFerieIgjen = table.Column<int>(nullable: false),
-                    SpråkKode = table.Column<string>(nullable: true),
+                    LanguageCode = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true)
                 },
@@ -55,6 +55,12 @@ namespace CaseExperis.Api.Migrations
                 name: "IX_Ferier_UserId",
                 table: "Ferier",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

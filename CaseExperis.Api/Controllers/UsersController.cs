@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
+using System;
 
 namespace CaseExperis.Api.Controllers
 {
@@ -31,40 +32,39 @@ public class UsersController : ControllerBase
             return Ok(usersToReturn);
         }
 
-        [HttpGet]
+        [HttpGet] [AllowAnonymous]
         [Route("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser([FromRoute] int id)
         {
-            var user = await _repo.GetUser(id);
-
+            var user = await _repo.GetUserById(id);
             var userToReturn = _mapper.Map<UserForProfileDto>(user);
             return Ok(userToReturn);
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
+        [Route("{email}")]
+        public async Task<IActionResult> UpdateUser(string email, UserForUpdateDto userForUpdateDto)
         {
-            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if(email != User.FindFirst(ClaimTypes.NameIdentifier).Value)
             {
                 return Unauthorized();
             }
-            var userFromRepo = await _repo.GetUser(id);
+            var userFromRepo = await _repo.GetUser(email);
             var endretBruker = _mapper.Map(userForUpdateDto, userFromRepo);
             if(await _repo.SaveAll())
             {
                 return NoContent();
             }
             
-            throw new System.Exception($"Updating User With id {id} failed on save");
+            throw new System.Exception($"Updating User With id {email} failed on save");
         
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [Route("{email}")]
+        public async Task<IActionResult> DeleteUser(string email)
         {
-            await _repo.DeleteUser(id);
+            await _repo.DeleteUser(email);
             return Ok();
         }
 

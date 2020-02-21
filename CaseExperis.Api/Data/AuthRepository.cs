@@ -15,9 +15,9 @@ namespace CaseExperis.API.Data
         {
             this._context = context;
         }
-        public async Task<User> Login(int id, string password)
+        public async Task<User> Login(string email, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
 
             if(user == null)
             {
@@ -61,9 +61,9 @@ namespace CaseExperis.API.Data
             return user;
         }
 
-        public async Task<User> DeleteUser(int id)
+        public async Task<User> DeleteUser(string email)
         {
-            var user = await _context.Users.FirstAsync(u => u.Id == id);
+            var user = await _context.Users.FirstAsync(u => u.Email == email);
              _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return user;
@@ -78,9 +78,9 @@ namespace CaseExperis.API.Data
             }
         }
 
-        public async Task<bool> UserExists(int id)
+        public async Task<bool> UserExists(string email)
         {
-            if(await _context.Users.AnyAsync(x=> x.Id == id))
+            if(await _context.Users.AnyAsync(x=> x.Email == email))
             {
                 return true;
             }
@@ -90,7 +90,13 @@ namespace CaseExperis.API.Data
             }
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(string email)
+        {
+            var user = await _context.Users.Include(p => p.Ferier).FirstOrDefaultAsync(u => u.Email == email);
+            return user;
+        }
+
+        public async Task<User> GetUserById(int id)
         {
             var user = await _context.Users.Include(p => p.Ferier).FirstOrDefaultAsync(u => u.Id == id);
             return user;

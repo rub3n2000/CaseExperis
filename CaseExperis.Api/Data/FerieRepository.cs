@@ -47,7 +47,7 @@ namespace CaseExperis.API.Data
 
         public async Task<FerieToReturn> GetFerie(int id)
         {
-            var ferie = await _context.Ferier.Include(p => p.User).FirstAsync(u => u.Id == id);
+            var ferie = await _context.Ferier.Where(p => p.Id == id).Include(p => p.User).ThenInclude(p => p.Ferier).FirstAsync();
             var ferieToReturn = _mapper.Map<Ferie,FerieToReturn>(ferie);
             if(ferie == null)
             {

@@ -19,7 +19,7 @@ namespace CaseExperis.Api.Controllers
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-    public class FerieController : ControllerBase
+    public class FerierController : ControllerBase
     {       
         private readonly IAuthRepository _repo;
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace CaseExperis.Api.Controllers
         private readonly DataContext _context;
 
         private readonly IAuthRepository _iAuthRepos;
-        public FerieController(IAuthRepository repo, IAuthRepository iAuthRepos, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
+        public FerierController(IAuthRepository repo, IAuthRepository iAuthRepos, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
             this._repo = repo;
             this._mapper = mapper;
             this._iAuthRepos = iAuthRepos;
@@ -36,12 +36,12 @@ namespace CaseExperis.Api.Controllers
             this._context = context;
         }
         
-        [HttpPost("new/{userID}")]  [AllowAnonymous]
-        public async Task<IActionResult> NewFerie(int userID, FerieToCreate ferieToCreate)
+        [HttpPost("new/{id}")]  [AllowAnonymous]
+        public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userID);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             ferieToCreate.User = user;
-            ferieToCreate.UserId = userID;
+            ferieToCreate.UserId = id;
             user.Ferier.Add(_mapper.Map<FerieToCreate,Ferie>(ferieToCreate));
             await _iAuthRepos.SaveAll();
             var ferieForUploading =  _mapper.Map<Ferie>(ferieToCreate);
