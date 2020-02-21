@@ -10,6 +10,8 @@ using CaseExperis.Api.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Newtonsoft.Json;
+using CaseExperis.Api.Helpers;
+using DatingApp.API.Helpers;
 
 namespace CaseExperis.Api.Controllers
 {
@@ -52,26 +54,45 @@ namespace CaseExperis.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
 
-        public async Task<IActionResult> GetFerier()
+        public async Task<IActionResult> GetFerier([FromQuery] FerieParams ferieParams)
         {
-            var ferier = await _ferieRepository.GetFerier();
-            if(ferier == null)
+            var ferier = await _ferieRepository.GetFerier(ferieParams);
+            var ferierToReturn = new List<FerieToReturn>();
+           
+            foreach(Ferie f in ferier)
+            {
+                ferierToReturn.Add(_mapper.Map<Ferie, FerieToReturn>(f));
+            }
+
+            Response.AddPagination(ferier.CurrentPage, ferier.PageSize, ferier.TotalCount, ferier.TotalPages);
+
+            if(ferierToReturn.Count == 0)
             {
             return NoContent();
             }
-            return Ok(ferier);
+            return Ok(ferierToReturn);
         }
 
         [HttpGet] [AllowAnonymous]
         [Route("user/{id}")]
-        public async Task<IActionResult> GetFerierByUser(int id)
+        public async Task<IActionResult> GetFerierByUser([FromRoute] int id, [FromQuery] FerieParams ferieParams)
         {
-           var ferier = await _ferieRepository.GetFerieByUser(id);
-           if(ferier == null)
+           var ferier = await _ferieRepository.GetFerieByUser(id, ferieParams);
+           
+           var ferierToReturn = new List<FerieToReturn>();
+           
+           foreach(Ferie f in ferier)
+           {
+                ferierToReturn.Add(_mapper.Map<Ferie, FerieToReturn>(f));
+           }
+
+           Response.AddPagination(ferier.CurrentPage, ferier.PageSize, ferier.TotalCount, ferier.TotalPages);
+
+           if(ferierToReturn.Count == 0)
            {
                return NoContent();
            }
-           return Ok(ferier);
+           return Ok(ferierToReturn);
         }
 
         [HttpGet] [AllowAnonymous]

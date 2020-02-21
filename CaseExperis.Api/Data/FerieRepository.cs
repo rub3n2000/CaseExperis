@@ -11,6 +11,7 @@ using System.Text.Encodings;
 using System.Linq;
 using Newtonsoft.Json;
 using CaseExperis.Api.Dtos;
+using CaseExperis.Api.Helpers;
 
 namespace CaseExperis.API.Data
 {
@@ -55,38 +56,18 @@ namespace CaseExperis.API.Data
             return ferieToReturn;
         }
 
-        public async Task<IEnumerable<FerieToReturn>> GetFerieByUser(int id)
+        public async Task<PagedList<Ferie>> GetFerieByUser(int id, FerieParams ferieParams)
         {
-            var ferier =  await _context.Ferier.Where(u => u.UserId == id).Include(p => p.User).ToListAsync();
-            var ferierToReturn = new List<FerieToReturn>();
-            
-            foreach(Ferie f in ferier)
-            {
-               ferierToReturn.Add(_mapper.Map<Ferie,FerieToReturn>(f));
-            }
-            if(ferier.Count <= 0)
-            {
-                return null;
-            }
-            return ferierToReturn;
+            var ferier =  _context.Ferier.Where(u => u.UserId == id).Include(p => p.User);
+
+            return await PagedList<Ferie>.CreateAsync(ferier, ferieParams.PageNumber, ferieParams.PageSize);
         }
 
-        public async Task<IEnumerable<FerieToReturn>> GetFerier()
+        public async Task<PagedList<Ferie>> GetFerier(FerieParams ferieParams)
         {
-            var ferier = await _context.Ferier.Include(p => p.User).ToListAsync();
-            var ferierToReturn = new List<FerieToReturn>();
-            
-            foreach(Ferie f in ferier)
-            {
-               ferierToReturn.Add(_mapper.Map<Ferie,FerieToReturn>(f));
-            }
-       
-            
-            if(ferier.Count <= 0)
-            {
-                return null;
-            }
-            return ferierToReturn;
+            var ferier = _context.Ferier.Include(p => p.User);
+         
+            return await PagedList<Ferie>.CreateAsync(ferier, ferieParams.PageNumber, ferieParams.PageSize);
         }
 
         
