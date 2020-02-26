@@ -10,6 +10,6 @@ namespace CaseExperis.Api.Helpers
             get { return pageSize; }
             set { pageSize = (value > MaxPageSize)? MaxPageSize : value; }
         }
-        
+        public string Date { get; set; }        
     }
 }

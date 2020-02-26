@@ -12,7 +12,7 @@ namespace CaseExperis.Api.Data
         Task<Ferie> Edit(int id, FerieForUpdate ferie);
         Task<FerieToReturn> GetFerie(int id);
         Task<PagedList<Ferie>> GetFerier(FerieParams ferieParams);
-        Task<PagedList<Ferie>> GetFerieByUser(int id, FerieParams ferieParams);
+        Task<PagedList<Ferie>> GetFerierByUser(int id, FerieParams ferieParams);
         Task<bool> SaveAll();
         Task<Ferie> DeleteFerie(int id);
         Task<Ferie> MakeAccepted(int id);

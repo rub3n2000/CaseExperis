@@ -77,7 +77,7 @@ namespace CaseExperis.Api.Controllers
         [Route("user/{id}")]
         public async Task<IActionResult> GetFerierByUser([FromRoute] int id, [FromQuery] FerieParams ferieParams)
         {
-           var ferier = await _ferieRepository.GetFerieByUser(id, ferieParams);
+           var ferier = await _ferieRepository.GetFerierByUser(id, ferieParams);
            
            var ferierToReturn = new List<FerieToReturn>();
            

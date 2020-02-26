@@ -56,17 +56,28 @@ namespace CaseExperis.API.Data
             return ferieToReturn;
         }
 
-        public async Task<PagedList<Ferie>> GetFerieByUser(int id, FerieParams ferieParams)
+        public async Task<PagedList<Ferie>> GetFerierByUser(int id, FerieParams ferieParams)
         {
-            var ferier =  _context.Ferier.Where(u => u.UserId == id).Include(p => p.User);
-
+            var ferier =  _context.Ferier.Where(u => u.UserId == id).Include(p => p.User).
+            OrderBy(u => u.User.Etternavn).AsQueryable();
+            if(!string.IsNullOrEmpty(ferieParams.Date))
+            {
+               ferier = ferier.Where(u => u.Date.Date == DateTime.Parse(ferieParams.Date).Date);
+            }
+            
             return await PagedList<Ferie>.CreateAsync(ferier, ferieParams.PageNumber, ferieParams.PageSize);
         }
 
         public async Task<PagedList<Ferie>> GetFerier(FerieParams ferieParams)
         {
-            var ferier = _context.Ferier.Include(p => p.User);
-         
+            var ferier = _context.Ferier.Include(p => p.User).
+            OrderBy(u => u.User.Etternavn).AsQueryable();
+            
+            if(!string.IsNullOrEmpty(ferieParams.Date))
+            {
+                ferier = ferier.Where(u => u.Date.Date == DateTime.Parse(ferieParams.Date).Date);
+            }
+            
             return await PagedList<Ferie>.CreateAsync(ferier, ferieParams.PageNumber, ferieParams.PageSize);
         }
 

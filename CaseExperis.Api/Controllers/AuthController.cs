@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
             }
 
             var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Email.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Email.ToString())
             };
            
