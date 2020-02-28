@@ -5,6 +5,7 @@ namespace CaseExperis.Api.Dtos
 {
     public class UserForProfileDto
     {
+        public int Id { get; set; } 
         public string Fornavn { get; set; }
         public string Etternavn { get; set; }
         public string TelefonNummer { get; set; }

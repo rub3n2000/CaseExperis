@@ -2,9 +2,10 @@
 
 .KalendarView {
     display: flex;
-    flex-grow: 10;
     width: 100%;
-    margin: 5% 2.5%
+    margin: 5% 5%;
+    background-color: f_color(primary);
+    height: 100%;
 }
 
 .Days {
@@ -12,29 +13,55 @@
     flex-direction: column;
     justify-content: flex-start;
     align-content: center;
-    margin-left: 2.5%;
+    width: 100%;
 
     font-weight: bold;
     
-    padding: 2%;
     font-size: 0.75em;
-
-
-    div:nth-child(even)
-    {
-        background-color: f_color(fifth);
-    }
+    max-width: 100%;
 
     div {
         flex-basis: 14.28%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         text-align: center;
-
-        background-color: f_color(secondary);
+        background-color: f_color(fifth);
         padding: 5px;
+        max-width: 100%;
+        .Label {
+            background-color: transparent;
+            display: flex;
+            flex-basis:15%;
+            background-color: f_color(third);
+            height: 100%;
+            min-width: 15%;
+        }
+        .VacationItem {
+            overflow-x: scroll;
+            ::-webkit-scrollbar{
+                display: hidden;
+            }
+            
+            
+            div {
+                background-color: f_color(fifth);
+                height: 100%;
+                color: f_color(fourth);
+                display: flex;
+                width: auto;
+            }
+            div:nth-child(odd) {
+                background-color: f_color(primary);
+            }
+            background-color: f_color(fifth);
+            height: 100%;
+            display:flex;
+            flex-basis: 85%;
+            flex-direction: row;
+        }
     }
+}
 
-}   
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Key } from 'react';
 
 import styles from './Kalendar.module.scss';
 import KalendarKontroll from './KalendarKontroll/KalendarKontroll';
@@ -16,40 +16,45 @@ const Kalendar = ( props: any ) => {
         adminNotat: string,
         navn: string,
         user: object
-        };
-
-    type ferier = [ferie]
-    
-    type ferierEtterDag = {
-        Mandag: ferier,
-        Tirsdag: ferier,
-        Onsdag: ferier,
-        Torsdag: ferier,
-        Fredag: ferier,
-        Lørdag: ferier,
-        Søndag: ferier
     };
+
+    type ferier = ferie[];
+
+    type ferierEtterDag = { [k in keyof uke]: ferier };
 
     type uke = {
-        Mandag: string,
-        Tirsdag: string,
-        Onsdag: string,
-        Torsdag: string,
-        Fredag: string,
-        Lørdag: string,
-        Søndag: string
+        Monday: string,
+        Tuesday: string,
+        Wednesday: string,
+        Thursday: string,
+        Friday: string,
+        Saturday: string,
+        Sunday: string
     };
-    type dayofWeekInNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+    type dayofWeekInNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+    type user = {
+        id: number,
+        fornavn: string,
+        etternavn: string,
+        telefonNummer: string,
+        email: string,
+        antallFerieTatt: number,
+        antallFerieIgjen: number,
+        languageCode: string,
+        ferier: object
+    }
+
+    type users = user[];
 
     const FindDayOfWeekBasedOnDate = (date : Date, day: dayofWeekInNumber) => {
         var difference = day - date.getDay();
-        return new Date(date.getFullYear(),
-         date.getMonth(), date.getDate() + difference);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() + difference + 1);
     }
 
     const FormatDateAsMonthDayYearString = (date: Date) => {
-        var removeDayName = date.toDateString().substring(4);
-        removeDayName = ReplaceAllWhiteSpaceWithBackSlashInString(removeDayName);
+        var removeDayName = date.toISOString().substring(0,10);
         return removeDayName;
     }
 
@@ -70,32 +75,59 @@ const Kalendar = ( props: any ) => {
     }
 
     const FetchFerier = async() => {
-        let ferieKeys = Object.keys(valgtUke);
-        let oppdaterteFerier = {};
+        let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
+        let oppdaterteFerier: Partial<ferierEtterDag> = {};
         for(let key in ferieKeys)
         {
-            await axios.get("/ferier?Date="+valgtUke[ferieKeys[key] as keyof uke]).then(response => {
-                oppdaterteFerier[ferieKeys[key] as keyof Object] = response.data;
+            await axios.get<ferier>("/ferier?Date="+valgtUke[ferieKeys[key]]).then(response => {
+                oppdaterteFerier[ferieKeys[key]] = response.data;
             }).catch((error) => { console.log(error); });
         }
         return oppdaterteFerier as ferierEtterDag;
     }
 
-    const dagEndretHandler = (dag: Date) => {
-        setValgtDag(FormatDateAsMonthDayYearString(dag));
+    const FetchAndSetFerierOneUser = async(user: user) => {
+        
+        let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
+        let oppdaterteFerier: Partial<ferierEtterDag> = {};
+        for(let key in ferieKeys)
+        {
+            await axios.get<ferier>("/ferier/"+user.id+"?Date="+valgtUke[ferieKeys[key]]).then(response => {
+                oppdaterteFerier[ferieKeys[key]] = response.data;
+            }).catch((error) => { console.log(error);}); 
+        }
+        setFerier(oppdaterteFerier as ferierEtterDag);
     }
+
+    const dagEndretHandler = (evt : any) => {
+        setValgtDag(evt.target.value);
+    }
+
+    const brukerEndretHandler = (evt: any) => {
+        let user = users?.find(user => user.fornavn + " " + user.etternavn == evt.target.value);
+        FetchAndSetFerierOneUser(user as user);
+    }
+
+    const FetchUsers = async() => {
+        let users: Partial<users> = [];
+        await axios.get<users>("/users").then(response => {
+            users = response.data;
+        }).catch((error) => {console.log(error);});
+        return users;
+    };
     
     const [ferier, setFerier] = useState<ferierEtterDag>();
     const [valgtDag, setValgtDag] = useState<string>(FormatDateAsMonthDayYearString(new Date()));
     const [valgtUke, setValgtUke] = useState<uke>({
-        Mandag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 1)),
-        Tirsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 2)),
-        Onsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 3)),
-        Torsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 4)),
-        Fredag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 5)),
-        Lørdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 6)),
-        Søndag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 7))
+        Sunday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 0)),
+        Monday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 1)),
+        Tuesday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 2)),
+        Wednesday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 3)),
+        Thursday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 4)),
+        Friday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 5)),
+        Saturday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 6))
     });
+    const [users, setUsers] = useState<users>();
 
     useEffect(() => {
         const SetFeriene = async() => {
@@ -103,6 +135,11 @@ const Kalendar = ( props: any ) => {
             setFerier(feriene);
         }
         SetFeriene();
+        const SetTheUsers = async() => {
+            var users = await FetchUsers();
+            setUsers(users as users);
+        };
+        SetTheUsers();
     }, []);
 
     useEffect(() => {
@@ -115,20 +152,21 @@ const Kalendar = ( props: any ) => {
     
     useEffect(() => {
         setValgtUke({
-            Mandag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 1)),
-            Tirsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 2)),
-            Onsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 3)),
-            Torsdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 4)),
-            Fredag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 5)),
-            Lørdag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 6)),
-            Søndag: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 7))
+            Sunday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 0)),
+            Monday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 1)),
+            Tuesday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 2)),
+            Wednesday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 3)),
+            Thursday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 4)),
+            Friday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 5)),
+            Saturday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(valgtDag), 6))
+            
         });
     },[valgtDag]);
 
     return (
         <div className={[styles.Kalandar, styles.CenteredH].join(' ')}>
-            <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler}/>
-            <KalendarView feriene={ferier}/>
+            {users && <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}/>}
+            {ferier && <KalendarView ferierForView={ferier}/>}
         </div>
     );
 }
