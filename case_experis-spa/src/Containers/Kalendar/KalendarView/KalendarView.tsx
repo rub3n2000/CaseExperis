@@ -20,27 +20,27 @@ const kalendarView = ( props: any ) => {
             <div key={"Tuesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
-    let wednesdayDivs = (typeof props.ferierForView.Wednesday) !== 'string'?props.ferierForView.Wednesday.map((ferie: any, index: any) => {
+    let wednesdayDivs = Array.isArray(props.ferierForView.Wednesday)?props.ferierForView.Wednesday.map((ferie: any, index: any) => {
         return(
             <div key={"Wednesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
-    let thursdayDivs = (typeof props.ferierForView.Thursday) !== 'string'?props.ferierForView.Thursday.map((ferie: any, index: any) => {
+    let thursdayDivs = Array.isArray(props.ferierForView.Thursday)?props.ferierForView.Thursday.map((ferie: any, index: any) => {
         return(
             <div key={"Thursday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
-    let fridayDivs = (typeof props.ferierForView.Friday) !== 'string'?props.ferierForView.Friday.map((ferie: any, index: any) => {
+    let fridayDivs = Array.isArray(props.ferierForView.Friday)?props.ferierForView.Friday.map((ferie: any, index: any) => {
         return(
             <div key={"Friday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
-    let saturdayDivs = (typeof props.ferierForView.Saturday) !== 'string'?props.ferierForView.Saturday.map((ferie: any, index: any) => {
+    let saturdayDivs = Array.isArray(props.ferierForView.Saturday)?props.ferierForView.Saturday.map((ferie: any, index: any) => {
         return(
             <div key={"Saturday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
-    let sundayDivs = (typeof props.ferierForView.Sunday) !== 'string'?props.ferierForView.Sunday.map((ferie: any, index: any) => {
+    let sundayDivs = Array.isArray(props.ferierForView.Sunday)?props.ferierForView.Sunday.map((ferie: any, index: any) => {
         return(
             <div key={"Sunday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );

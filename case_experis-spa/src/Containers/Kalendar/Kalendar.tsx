@@ -92,8 +92,9 @@ const Kalendar = ( props: any ) => {
         let oppdaterteFerier: Partial<ferierEtterDag> = {};
         for(let key in ferieKeys)
         {
-            await axios.get<ferier>("/ferier/"+user.id+"?Date="+valgtUke[ferieKeys[key]]).then(response => {
+            await axios.get<ferier>("/ferier/user/"+user.id+"?Date="+valgtUke[ferieKeys[key]]).then(response => {
                 oppdaterteFerier[ferieKeys[key]] = response.data;
+                console.log(response);
             }).catch((error) => { console.log(error);}); 
         }
         setFerier(oppdaterteFerier as ferierEtterDag);
@@ -104,8 +105,20 @@ const Kalendar = ( props: any ) => {
     }
 
     const brukerEndretHandler = (evt: any) => {
-        let user = users?.find(user => user.fornavn + " " + user.etternavn == evt.target.value);
-        FetchAndSetFerierOneUser(user as user);
+        if(evt.target.value !== 'All')
+        {
+            let user = users?.find(user => user.fornavn + " " + user.etternavn == evt.target.value);
+            console.log(evt.target.value);
+            console.log(user?.fornavn + " " + user?.etternavn);
+            FetchAndSetFerierOneUser(user as user);
+        }
+        else {
+            const SetFeriene = async() => {
+                var feriene = await FetchFerier();
+                setFerier(feriene);
+            }
+            SetFeriene(); 
+        }
     }
 
     const FetchUsers = async() => {
