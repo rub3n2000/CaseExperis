@@ -1,6 +1,8 @@
 import React from 'react';
 
 import styles from './NavigationItems.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle, faUserShield, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; 
 
 import NavigationItem from './NavigationItem/NavigationItem';
 
@@ -8,13 +10,13 @@ const navigationItems = ( props: any ) => {
     return (
         <div className={styles.NavigationItems}>
         <div className={styles.NavigationButtons}>
-            <NavigationItem/>
-            <NavigationItem/>
-            <NavigationItem/>
+            <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> Profile</NavigationItem>
+            <NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>
+            <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> Logout</NavigationItem>
         </div>
         <div className={styles.LanguageButtons}>
-        <NavigationItem/>
-        <NavigationItem/>
+        <NavigationItem link="#" NavItemClickHandler={props.englishLangHandler}><img src={window.location.origin + '/united-kingdom-flag-icon-32.png'}/> EN</NavigationItem>
+        <NavigationItem link="#" NavItemClickHandler={props.norskLangHandler}><img src={window.location.origin + '/norway-flag-icon-32.png'}/> NO</NavigationItem>
         </div>
         </div>
     )

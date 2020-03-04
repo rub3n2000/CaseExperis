@@ -5,7 +5,7 @@ import styles from './NavigationItem.module.scss';
 const navigationItem = ( props: any ) => {
     return (
         <div className={styles.NavigationItem}>
-            <a href="#">A Link</a>
+            <a href={props.link} onClick={props.NavItemClickHandler}>{props.children}</a>
         </div>
     )
 }

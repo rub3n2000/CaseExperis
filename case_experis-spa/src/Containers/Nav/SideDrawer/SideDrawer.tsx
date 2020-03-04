@@ -18,10 +18,10 @@ const sideDrawer = (props:any) => {
         <Backdrop show={props.open} clicked={props.closed}/>
             <div className={attachedClasses.join(" ")}>
                 <div className={styles.Logo}>
-                    <Logo/>
+                    <Logo imgsrc="/logo96.png"/>
                 </div>
                 <nav className={styles.NavItems}>
-                    <NavigationItems/>
+                    <NavigationItems logOutHandler={props.logOutHandler} englishLangHandler={props.englishHandler} norskLangHandler={props.norskLangHandler}/>
                 </nav>
             </div>
         </>

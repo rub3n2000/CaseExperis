@@ -1,4 +1,4 @@
-$desktop: 600px;
+$desktop: 900px;
 
 @mixin desktop {
     @media (min-width: #{$desktop}) {

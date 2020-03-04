@@ -96,7 +96,6 @@ const Kalendar = ( props: any ) => {
         {
             await axios.get<ferier>("/ferier/user/"+user.id+"?Date="+valgtUke[ferieKeys[key]]).then(response => {
                 oppdaterteFerier[ferieKeys[key]] = response.data;
-                console.log(response);
             }).catch((error) => { console.log(error);}); 
         }
         setFerier(oppdaterteFerier as ferierEtterDag);

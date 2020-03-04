@@ -1,12 +1,21 @@
 @import '../../../../Sass/GlobalFunctions.module.scss';
+@import '../../../../Sass/GlobalMixins.module.scss';
 
 
 .NavigationItem
 {
     display: flex;
     width: auto;
-    min-width: 70px;
+    min-width: 80px;
     margin: 2%;
+    align-items: center;
+
+    img {
+        object-fit: contain;
+        width: 32px;
+        height: 32px;
+        max-height: 32px;
+    }
     
 
     a {
@@ -22,4 +31,35 @@
         white-space: nowrap;
         text-align: center;
     }
+}
+
+@include desktop
+{
+    .NavigationItem {
+        display: flex;
+        width: fit-content;
+        padding: 2%;
+        min-width: 100px;
+        margin: 2%;
+        max-width: 160px;
+    }
+    
+    a {
+        width: 100%;
+        background-color: f_color(third);
+        height: max-content;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: f_color(fourth);
+        padding: 10%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
+    }
+    
+    img {
+        object-fit: contain;
+    }
+
 }

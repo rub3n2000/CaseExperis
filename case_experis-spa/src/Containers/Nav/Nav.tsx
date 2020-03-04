@@ -19,13 +19,27 @@ const Nav = ( props : any ) => {
         setShowSideDrawer(true);
     }
 
+    const englishLangHandler = ( props: any ) => {
+
+    }
+
+    const norskLangHandler = ( props: any) => {
+
+    }
+
+    const logOutHandler = ( props: any ) => {
+        
+    }
+
     return (
     <header className={styles.Navbar}>
-    <Logo/>
+    <Logo imgsrc="/logo152.png"/>
     <DrawerToggle clicked={openDrawerHandler}/>
-    <SideDrawer open={showSideDrawer} closed={sideDrawerClosedHandler}/>
+    <SideDrawer open={showSideDrawer} closed={sideDrawerClosedHandler} logOutHandler={logOutHandler}
+     englishLangHandler={englishLangHandler} norskLangHandler={norskLangHandler}/>
     <nav className={styles.DesktopOnly}>
-        <NavigationItems/>
+        <NavigationItems logOutHandler={logOutHandler} englishLangHandler={englishLangHandler}
+         norskLangHandler={norskLangHandler}/>
     </nav>
 </header>
 )
