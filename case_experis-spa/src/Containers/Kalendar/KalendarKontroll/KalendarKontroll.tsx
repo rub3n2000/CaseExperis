@@ -10,11 +10,17 @@ const kalendarKontroll = ( props: any ) => {
     })
     return (
         <div className={styles.KalendarKontroll}>
-            <select onChange={props.brukerEndretHandler}>
+            <label>
+            User
+            <select name="userSelect" onChange={props.brukerEndretHandler}>
                 <option value="All">All</option>
                 {userOptions}
             </select>
+            </label>
+            <label>
+            Date
             <input type="date" name="date" defaultValue={props.dag} onChange={props.dagEndretHandler}></input>
+            </label>
         </div>
     )
 }

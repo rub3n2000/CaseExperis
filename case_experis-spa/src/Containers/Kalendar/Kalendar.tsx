@@ -46,6 +46,8 @@ const Kalendar = ( props: any ) => {
         ferier: object
     }
 
+    type userFilter = user | undefined;
+
     type users = user[];
 
     const FindDayOfWeekBasedOnDate = (date : Date, day: dayofWeekInNumber) => {
@@ -101,23 +103,20 @@ const Kalendar = ( props: any ) => {
     }
 
     const dagEndretHandler = (evt : any) => {
-        setValgtDag(evt.target.value);
+        if(evt.target.value != "")
+        {
+            setValgtDag(evt.target.value);
+        }
     }
 
     const brukerEndretHandler = (evt: any) => {
         if(evt.target.value !== 'All')
         {
             let user = users?.find(user => user.fornavn + " " + user.etternavn == evt.target.value);
-            console.log(evt.target.value);
-            console.log(user?.fornavn + " " + user?.etternavn);
-            FetchAndSetFerierOneUser(user as user);
+            setCurrentUserFilter(user);
         }
         else {
-            const SetFeriene = async() => {
-                var feriene = await FetchFerier();
-                setFerier(feriene);
-            }
-            SetFeriene(); 
+            setCurrentUserFilter(undefined);
         }
     }
 
@@ -141,6 +140,7 @@ const Kalendar = ( props: any ) => {
         Saturday: FormatDateAsMonthDayYearString(FindDayOfWeekBasedOnDate(new Date(), 6))
     });
     const [users, setUsers] = useState<users>();
+    const [currentUserFilter, setCurrentUserFilter] = useState<userFilter>();
 
     useEffect(() => {
         const SetFeriene = async() => {
@@ -156,12 +156,17 @@ const Kalendar = ( props: any ) => {
     }, []);
 
     useEffect(() => {
-        const SetFeriene = async() => {
-            var feriene = await FetchFerier();
-            setFerier(feriene);
+        if(currentUserFilter == undefined) {
+            const SetFeriene = async() => {
+                var feriene = await FetchFerier();
+                setFerier(feriene);
+            }
+            SetFeriene();
         }
-        SetFeriene();
-    }, [valgtUke]);
+        else {
+            FetchAndSetFerierOneUser(currentUserFilter as user);
+        }
+    }, [valgtUke, currentUserFilter]);
     
     useEffect(() => {
         setValgtUke({

@@ -8,7 +8,6 @@ const kalendarView = ( props: any ) => {
         let formatedDate = date.substring(0,10);
         return formatedDate;
     }
-    console.log(Array.isArray(props.ferierForView.Wednesday));
     
     let mondayDivs = Array.isArray(props.ferierForView.Monday)?props.ferierForView.Monday.map((ferie: any, index: any) => {
         return(
