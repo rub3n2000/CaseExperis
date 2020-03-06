@@ -12,7 +12,7 @@ const App = () => {
   return (
     <div className={styles.App}>
       <Switch>
-      <Route path="/profil" component={Profil}/>
+      <Route path="/profile" component={Profil}/>
       <Route path="/admin" component={Admin}/>
       <Route path="/login" component={Login}/>
       <Route path="/" component={Frontside}/>

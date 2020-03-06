@@ -7,13 +7,24 @@ import { faUserCircle, faUserShield, faSignOutAlt } from '@fortawesome/free-soli
 import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = ( props: any ) => {
+    let navigationButtons;
+    console.log(props.user);
+    if(props.user !== null)
+    {
+        navigationButtons = <div className={styles.NavigationButtons}>
+        <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> Profile</NavigationItem>
+        <NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>
+        <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> Logout</NavigationItem>
+    </div>
+    }
+    else {
+        navigationButtons = <div className={styles.NavigationButtons}>
+        <NavigationItem link="/login"> <FontAwesomeIcon icon={faSignOutAlt}/> Login</NavigationItem>
+    </div>
+    } 
     return (
         <div className={styles.NavigationItems}>
-        <div className={styles.NavigationButtons}>
-            <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> Profile</NavigationItem>
-            <NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>
-            <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> Logout</NavigationItem>
-        </div>
+        {navigationButtons}
         <div className={styles.LanguageButtons}>
         <NavigationItem link="#" NavItemClickHandler={props.englishLangHandler}><img src={window.location.origin + '/united-kingdom-flag-icon-32.png'}/> EN</NavigationItem>
         <NavigationItem link="#" NavItemClickHandler={props.norskLangHandler}><img src={window.location.origin + '/norway-flag-icon-32.png'}/> NO</NavigationItem>

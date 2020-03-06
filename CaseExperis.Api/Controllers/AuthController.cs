@@ -62,7 +62,7 @@ public class AuthController : ControllerBase
 
             var tokenDescriptor = new SecurityTokenDescriptor{
                 Subject = new ClaimsIdentity(claims),
-                Expires = System.DateTime.Now.AddDays(1),
+                Expires = System.DateTime.Now.AddDays(1).ToUniversalTime(),
                 SigningCredentials = creds
             };
 

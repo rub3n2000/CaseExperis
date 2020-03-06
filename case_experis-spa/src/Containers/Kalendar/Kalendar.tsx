@@ -8,6 +8,8 @@ import { stringify } from 'querystring';
 
 const Kalendar = ( props: any ) => {
 
+    
+
     type ferie = {
         id: number,
         date: Date,
@@ -140,13 +142,21 @@ const Kalendar = ( props: any ) => {
     });
     const [users, setUsers] = useState<users>();
     const [currentUserFilter, setCurrentUserFilter] = useState<userFilter>();
+   
+    
 
     useEffect(() => {
+        if(props.bruker == undefined)
+        {
         const SetFeriene = async() => {
             var feriene = await FetchFerier();
             setFerier(feriene);
         }
         SetFeriene();
+        } else {
+            setCurrentUserFilter(props.bruker);
+            FetchAndSetFerierOneUser(props.bruker);
+        }
         const SetTheUsers = async() => {
             var users = await FetchUsers();
             setUsers(users as users);
@@ -155,16 +165,35 @@ const Kalendar = ( props: any ) => {
     }, []);
 
     useEffect(() => {
-        if(currentUserFilter == undefined) {
-            const SetFeriene = async() => {
-                var feriene = await FetchFerier();
-                setFerier(feriene);
+        if(props.bruker) {
+            if(props.bruker == undefined) {
+                const SetFeriene = async() => {
+                    console.log("duh");
+                    var feriene = await FetchFerier();
+                    setFerier(feriene);
+                }
+                SetFeriene();
             }
-            SetFeriene();
+            else {
+                console.log("hey");
+                FetchAndSetFerierOneUser(props.bruker as user);
+            }
         }
         else {
-            FetchAndSetFerierOneUser(currentUserFilter as user);
+            if(currentUserFilter == undefined) {
+                const SetFeriene = async() => {
+                    console.log("duh");
+                    var feriene = await FetchFerier();
+                    setFerier(feriene);
+                }
+                SetFeriene();
+            }
+            else {
+                console.log("hey");
+                FetchAndSetFerierOneUser(currentUserFilter as user);
+            }
         }
+        
     }, [valgtUke, currentUserFilter]);
     
     useEffect(() => {
@@ -180,10 +209,17 @@ const Kalendar = ( props: any ) => {
         });
     },[valgtDag]);
 
+    let classes = [styles.Kalandar, styles.CenteredH];
+    if(props.vacationKalender || props.wishKalender)
+    {
+        classes = [styles.SmallKalendar, styles.CenteredH];
+    }
+   
     return (
-        <div className={[styles.Kalandar, styles.CenteredH].join(' ')}>
-            {users && <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}/>}
-            {ferier && <KalendarView ferierForView={ferier}/>}
+        <div className={classes.join(' ')}>
+            {users && <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
+             user={props.bruker} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
+            {ferier && <KalendarView ferierForView={ferier} wishKalender={props.wishKalender} vacationKalender={props.vacationKalender}/>}
         </div>
     );
 }
