@@ -25,12 +25,10 @@ const Login = ( props: any ) => {
     }
 
     const emailChangeHandler = (evt: any) => {
-        console.log(evt.target.value);
         setEmail(evt.target.value);
     }
 
     const passwordChangeHandler = (evt: any) => {
-        console.log(evt.target.value);
         setPassword(evt.target.value);
     }
 

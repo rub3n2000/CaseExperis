@@ -16,8 +16,9 @@
     margin: 5% 5%;
     margin-top: 0.5%;
     background-color: f_color(primary);
-    height: 5%;
+    height: 75%;
     box-sizing: border-box;
+    overflow-y: scroll;
 
     .Days {
         display: flex;

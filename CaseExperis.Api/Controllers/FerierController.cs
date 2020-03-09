@@ -36,18 +36,14 @@ namespace CaseExperis.Api.Controllers
             this._context = context;
         }
         
-        [HttpPost("new/{id}")]  [AllowAnonymous]
+        [HttpPost("new/{id}")]
         public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             ferieToCreate.User = user;
             ferieToCreate.UserId = id;
-            user.Ferier.Add(_mapper.Map<FerieToCreate,Ferie>(ferieToCreate));
-            await _iAuthRepos.SaveAll();
             var ferieForUploading =  _mapper.Map<Ferie>(ferieToCreate);
-           
             var uploadetFerie = await _ferieRepository.New(ferieForUploading);
-            
             return StatusCode(201);
         }
 

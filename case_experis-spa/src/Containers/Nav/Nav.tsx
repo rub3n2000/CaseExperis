@@ -51,11 +51,7 @@ const Nav = ( props : any ) => {
     {
         if((jwt_decode(localStorage.getItem("access_token") as string) as any).exp < new Date().getTime().toString().substr(0,10))
         {
-            console.log("expired");
             localStorage.removeItem("access_token");
-        }
-        else {
-            console.log("not expired");
         }
     }
   

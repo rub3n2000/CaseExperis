@@ -91,7 +91,6 @@ const Kalendar = ( props: any ) => {
     }
 
     const FetchAndSetFerierOneUser = async(user: user) => {
-        
         let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
         let oppdaterteFerier: Partial<ferierEtterDag> = {};
         for(let key in ferieKeys)
@@ -154,7 +153,6 @@ const Kalendar = ( props: any ) => {
         }
         SetFeriene();
         } else {
-            setCurrentUserFilter(props.bruker);
             FetchAndSetFerierOneUser(props.bruker);
         }
         const SetTheUsers = async() => {
@@ -168,33 +166,29 @@ const Kalendar = ( props: any ) => {
         if(props.bruker) {
             if(props.bruker == undefined) {
                 const SetFeriene = async() => {
-                    console.log("duh");
                     var feriene = await FetchFerier();
                     setFerier(feriene);
                 }
                 SetFeriene();
             }
             else {
-                console.log("hey");
                 FetchAndSetFerierOneUser(props.bruker as user);
             }
         }
         else {
             if(currentUserFilter == undefined) {
                 const SetFeriene = async() => {
-                    console.log("duh");
                     var feriene = await FetchFerier();
                     setFerier(feriene);
                 }
                 SetFeriene();
             }
             else {
-                console.log("hey");
                 FetchAndSetFerierOneUser(currentUserFilter as user);
             }
         }
         
-    }, [valgtUke, currentUserFilter]);
+    }, [JSON.stringify(valgtUke), JSON.stringify(currentUserFilter)]);
     
     useEffect(() => {
         setValgtUke({

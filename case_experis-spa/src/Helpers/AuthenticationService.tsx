@@ -1,7 +1,24 @@
 import axios from '../axios-api';
 import jwt_decode from 'jwt-decode';
 
+type user = {
+    id: number,
+    fornavn: string,
+    etternavn: string,
+    telefonNummer: string,
+    email: string,
+    antallFerieTatt: number,
+    antallFerieIgjen: number,
+    languageCode: string,
+    ferier: object
+}
+
+type userFilter = user | undefined;
+
+
 const AuthenticationService = {
+
+    
     login: async function(data : any) {
         let theResponse = {status: 401};
         await axios.post("/auth/login", data).then(response => {
@@ -14,7 +31,6 @@ const AuthenticationService = {
         }).catch((error) => {
             console.log(error);
         })
-        console.log(theResponse.status);
         if(theResponse && theResponse.status === 200)
         {
             return true;
@@ -25,7 +41,6 @@ const AuthenticationService = {
     },
     register: async function(data: any) {
         await axios({method: 'post', url: "/auth/register", data: data, responseType: 'json'}).then(response => {
-            console.log(response);
         }).catch((error) => {
             console.log(error);
         });
@@ -35,7 +50,7 @@ const AuthenticationService = {
     },
     fetchCurrentUser: async function()
     {
-        let theResponse;
+        let theResponse: userFilter;
         await axios.get("/users/" + (jwt_decode(localStorage.getItem("access_token") as string) as any).nameid).then(response => {
             theResponse = response.data;
         }).catch((error) => {

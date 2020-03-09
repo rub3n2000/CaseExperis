@@ -8,7 +8,6 @@ import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = ( props: any ) => {
     let navigationButtons;
-    console.log(props.user);
     if(props.user !== null)
     {
         navigationButtons = <div className={styles.NavigationButtons}>

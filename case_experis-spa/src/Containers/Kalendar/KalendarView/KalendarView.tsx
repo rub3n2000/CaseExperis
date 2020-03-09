@@ -20,7 +20,6 @@ const kalendarView = ( props: any ) => {
     }
 
     let ferier = props.ferierForView;
-    console.log(ferier);
 
     if(props.wishKalender == true)
     {
