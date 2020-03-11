@@ -17,7 +17,6 @@ const App = () => {
       <Route path="/profile" component={Profil}/>
       <Route path="/admin" component={Admin}/>
       <Route path="/login" component={Login}/>
-      <Route path="/ferie/new" component={VacationWishEditor}/>
       <Route path="/" component={Frontside}/>
       </Switch>
       </BrowserRouter>

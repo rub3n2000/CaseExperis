@@ -6,10 +6,6 @@ import { faAt, faKey, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router-dom';
 
 const kalendarKontroll = ( props: any ) => {
-   
-    const newVacationWishHandler = () => {
-        props.history.push("/ferie/new");
-    }
 
     let userOptions = props.brukere.map((user: any) => {
         return(
@@ -38,9 +34,15 @@ const kalendarKontroll = ( props: any ) => {
         Label = <div className={styles.Label}>
         <div>Ferie Ønsker</div>
         </div>;
-         newWish = <label onClick={newVacationWishHandler} className={styles.NewVacationWish}>
+        if(!props.adminKalender)
+        {
+         newWish = <label onClick={props.newVacationWishHandler} className={styles.NewVacationWish}>
              <FontAwesomeIcon  icon={faPlus}/> Ny Ferie
          </label>;
+        }
+        else {
+            newWish = <></>;
+        }
     }
 
     if(props.vacationKalender)

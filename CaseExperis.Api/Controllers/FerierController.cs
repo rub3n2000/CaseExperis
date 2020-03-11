@@ -114,7 +114,7 @@ namespace CaseExperis.Api.Controllers
             {
             return NoContent();
             }
-            return Ok();
+            return Ok(redigertFerie);
         }
 
         [HttpDelete]

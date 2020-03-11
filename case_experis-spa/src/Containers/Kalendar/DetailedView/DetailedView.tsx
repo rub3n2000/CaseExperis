@@ -9,16 +9,6 @@ const detailedView = ( props: any ) => {
         return formatedDate;
     }
     
-    /*let ansattNotat = [];
-
-    const len = 20;
-    for (let i = 0; i < props.ferie.ansattNotat.length - len; i += len)
-    {
-        ansattNotat.push(<p key={i}>{props.ferie.ansattNotat.substring(i, i + len)}</p>)
-    }
-
-    console.log(ansattNotat);*/
-
     if (props.visible) {
         return(
             <div className={styles.DetailedView}>

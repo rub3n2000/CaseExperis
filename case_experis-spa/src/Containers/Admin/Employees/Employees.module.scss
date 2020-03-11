@@ -1,0 +1,16 @@
+@import '../../../Sass/GlobalClasses.module.scss';
+@import '../../../Sass/GlobalFunctions.module.scss';
+
+.EmployeesDiv {
+    h4 {
+        color: f_color(third);
+    }
+    display: flex;
+    flex-direction: column;
+    background-color: f_color(fifth);
+    margin-top: 5%;
+    min-width: 98%;
+    align-items: center;
+    max-height: 33%;
+    overflow-y: scroll;
+}

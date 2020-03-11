@@ -40,9 +40,13 @@ namespace CaseExperis.API.Data
         public async Task<Ferie> Edit(int id, FerieForUpdate ferieForUpdate)
         {
             var ferieFraDB = await _context.Ferier.FirstAsync(u => u.Id == id);
-            var redigertFerie = _mapper.Map(ferieForUpdate, ferieFraDB);
+            ferieFraDB.AdminNotat = ferieForUpdate.AdminNotat;
+            ferieFraDB.AnsattNotat = ferieForUpdate.AnsattNotat;
+            ferieFraDB.Date = ferieForUpdate.Date;
+            ferieFraDB.isGodkjent = ferieForUpdate.isGodkjent;
+            _context.Ferier.Update(ferieFraDB);
             await _context.SaveChangesAsync();
-            return redigertFerie;
+            return ferieFraDB;
         }
 
         public async Task<FerieToReturn> GetFerie(int id)

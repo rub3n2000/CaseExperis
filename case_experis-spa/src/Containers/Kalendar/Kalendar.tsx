@@ -7,6 +7,7 @@ import axios from '../../axios-api';
 import { stringify } from 'querystring';
 import DetailedView from './DetailedView/DetailedView';
 import Backdrop from '../../Components/UI/Backdrop/Backdrop';
+import VacationWishEditor from '../VacationWishEditor/VacationWishEditor';
 
 const Kalendar = ( props: any ) => {
 
@@ -85,10 +86,12 @@ const Kalendar = ( props: any ) => {
     const FetchFerier = async() => {
         let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
         let oppdaterteFerier: Partial<ferierEtterDag> = {};
+        console.log("yuup");
         for(let key in ferieKeys)
         {
             await axios.get<ferier>("/ferier?Date="+valgtUke[ferieKeys[key]]).then(response => {
-                oppdaterteFerier[ferieKeys[key]] = response.data;
+                oppdaterteFerier[ferieKeys[key]] = response.data; 
+                console.log(response.data);
             }).catch((error) => { console.log(error); });
         }
         return oppdaterteFerier as ferierEtterDag;
@@ -125,12 +128,38 @@ const Kalendar = ( props: any ) => {
     }
 
     const ferieClickHandler = (dag: string, index:  number) => {
-        setDetailedView(ferier?ferier[dag as keyof ferierEtterDag][index]: undefined);
-        setDetailedVisible(true);
+        if(props.vacationEdit)
+        {
+            console.log("hey");
+            setEditor(ferier?ferier[dag as keyof ferierEtterDag][index]:undefined);
+            console.log(ferier?ferier[dag as keyof ferierEtterDag][index]:undefined);
+            setEditorVisible(true);
+            setNewVacation(false);
+        }
+        else {
+            setDetailedView(ferier?ferier[dag as keyof ferierEtterDag][index]: undefined);
+            setDetailedVisible(true);
+        }
+       
+    }
+
+    const ferieClickHandlerNew = () => {
+        if(props.vacationEdit)
+        {
+            setEditor(undefined);
+            setEditorVisible(true);
+            setNewVacation(true);
+        }
     }
 
     const ferieDetailedClose = () => {
+        if(props.vacationEdit)
+        {
+            setEditorVisible(false);
+        }
+        else {
         setDetailedVisible(false);
+        }
     }
 
     const FetchUsers = async() => {
@@ -156,12 +185,16 @@ const Kalendar = ( props: any ) => {
     const [currentUserFilter, setCurrentUserFilter] = useState<userFilter>();
     const [detailedVisible, setDetailedVisible] = useState<boolean>(false);
     const [detailedView, setDetailedView] = useState<ferieFilter>();
+    const [editor, setEditor] = useState<ferieFilter>();
+    const [editorVisible, setEditorVisible] = useState(false);
+    const [newVacation, setNewVacation] = useState(false);
    
     
 
     useEffect(() => {
         if(props.bruker == undefined)
         {
+            setCurrentUserFilter(undefined);
         const SetFeriene = async() => {
             var feriene = await FetchFerier();
             setFerier(feriene);
@@ -203,7 +236,7 @@ const Kalendar = ( props: any ) => {
             }
         }
         
-    }, [JSON.stringify(valgtUke), JSON.stringify(currentUserFilter)]);
+    }, [JSON.stringify(valgtUke), JSON.stringify(currentUserFilter), JSON.stringify(editorVisible)]);
     
     useEffect(() => {
         setValgtUke({
@@ -226,12 +259,13 @@ const Kalendar = ( props: any ) => {
    
     return (
         <div className={classes.join(' ')}>
-            <Backdrop show={detailedVisible} clicked={ferieDetailedClose}/>
-            {users && <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
+            <Backdrop show={detailedVisible || editorVisible} clicked={ferieDetailedClose}/>
+            {users && <KalendarKontroll newVacationWishHandler={ferieClickHandlerNew} adminKalender={props.adminKalender} dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
              user={props.bruker} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
             {ferier && <KalendarView ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
             vacationKalender={props.vacationKalender} godkjentOnly={props.godkjentOnly}/>}
             {ferier && detailedView &&  <DetailedView ferie={detailedView} visible={detailedVisible}/>}
+            {ferier && (newVacation || editor) && <VacationWishEditor admin={props.adminKalender} wishKalender={props.wishKalender} close={ferieDetailedClose} editMode={!newVacation} ferie={editor} visible={editorVisible}/>}
         </div>
     );
 }

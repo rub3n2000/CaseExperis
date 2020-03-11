@@ -1,0 +1,10 @@
+@import '../../../../Sass/GlobalFunctions.module.scss';
+
+.EmployeeP {
+    background-color: f_color(third);
+    min-width: 90%;
+    padding: 2%;
+    font-weight: bold;
+    font-size: 0.75em;
+    text-align: center;
+}

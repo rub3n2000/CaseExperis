@@ -55,8 +55,8 @@ const Profil = ( props: any ) => {
         <div className={styles.ProfileLayoutDiv}>
             {userInfo}
             <div className={styles.Kalendarer}>
-            {currentUser &&<Kalendar wishKalender={true} bruker={currentUser}/>}
-            {currentUser &&<Kalendar vacationKalender={true} bruker={currentUser}/>}
+            {currentUser &&<Kalendar vacationEdit wishKalender bruker={currentUser}/>}
+            {currentUser &&<Kalendar vacationKalender bruker={currentUser}/>}
             </div>
         </div>
         
