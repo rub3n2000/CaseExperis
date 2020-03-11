@@ -17,8 +17,6 @@ type userFilter = user | undefined;
 
 
 const AuthenticationService = {
-
-    
     login: async function(data : any) {
         let theResponse = {status: 401};
         await axios.post("/auth/login", data).then(response => {

@@ -5,6 +5,8 @@ import KalendarKontroll from './KalendarKontroll/KalendarKontroll';
 import KalendarView from './KalendarView/KalendarView';
 import axios from '../../axios-api';
 import { stringify } from 'querystring';
+import DetailedView from './DetailedView/DetailedView';
+import Backdrop from '../../Components/UI/Backdrop/Backdrop';
 
 const Kalendar = ( props: any ) => {
 
@@ -51,6 +53,8 @@ const Kalendar = ( props: any ) => {
     type userFilter = user | undefined;
 
     type users = user[];
+
+    type ferieFilter = ferie | undefined;
 
     const FindDayOfWeekBasedOnDate = (date : Date, day: dayofWeekInNumber) => {
         var difference = day - date.getDay();
@@ -120,6 +124,15 @@ const Kalendar = ( props: any ) => {
         }
     }
 
+    const ferieClickHandler = (dag: string, index:  number) => {
+        setDetailedView(ferier?ferier[dag as keyof ferierEtterDag][index]: undefined);
+        setDetailedVisible(true);
+    }
+
+    const ferieDetailedClose = () => {
+        setDetailedVisible(false);
+    }
+
     const FetchUsers = async() => {
         let users: Partial<users> = [];
         await axios.get<users>("/users").then(response => {
@@ -141,6 +154,8 @@ const Kalendar = ( props: any ) => {
     });
     const [users, setUsers] = useState<users>();
     const [currentUserFilter, setCurrentUserFilter] = useState<userFilter>();
+    const [detailedVisible, setDetailedVisible] = useState<boolean>(false);
+    const [detailedView, setDetailedView] = useState<ferieFilter>();
    
     
 
@@ -211,9 +226,12 @@ const Kalendar = ( props: any ) => {
    
     return (
         <div className={classes.join(' ')}>
+            <Backdrop show={detailedVisible} clicked={ferieDetailedClose}/>
             {users && <KalendarKontroll dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
              user={props.bruker} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
-            {ferier && <KalendarView ferierForView={ferier} wishKalender={props.wishKalender} vacationKalender={props.vacationKalender}/>}
+            {ferier && <KalendarView ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
+            vacationKalender={props.vacationKalender} godkjentOnly={props.godkjentOnly}/>}
+            {ferier && detailedView &&  <DetailedView ferie={detailedView} visible={detailedVisible}/>}
         </div>
     );
 }

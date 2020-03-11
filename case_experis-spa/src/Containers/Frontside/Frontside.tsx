@@ -10,7 +10,7 @@ const Frontside = ( props : any ) => {
     return (
         <div className={[styles.LayoutDiv, styles.CenteredH].join(' ')}>
             <Nav/>
-            <Kalendar/>
+            <Kalendar godkjentOnly/>
         </div>
     );
 }

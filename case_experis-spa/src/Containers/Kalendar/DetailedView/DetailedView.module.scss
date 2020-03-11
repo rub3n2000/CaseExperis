@@ -1,0 +1,22 @@
+@import '../../../Sass/GlobalFunctions.module.scss';
+
+.DetailedView {
+    position: absolute;
+    z-index: 5;
+    left: 25%;
+    top: 35%;
+    background-color: f_color(secondary);
+    min-width: 50%;
+    min-height: 20%;
+    max-width: 20%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2%;
+
+    div {
+        max-width: 100%;
+        word-wrap: break-word;
+        flex-wrap: wrap;
+    }
+}

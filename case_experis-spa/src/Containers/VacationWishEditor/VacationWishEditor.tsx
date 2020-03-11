@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classes from './VacationWishEditor.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAt, faKey } from '@fortawesome/free-solid-svg-icons'; 
+import { faAt, faKey, faComment, faCalendarMinus, faCalendarPlus, faSave, faStop, faCommentSlash } from '@fortawesome/free-solid-svg-icons'; 
 import Nav from '../Nav/Nav';
 import { withRouter } from 'react-router-dom';
 import axios from '../../axios-api';
@@ -108,7 +108,6 @@ const VacationWishEditor = ( props: any ) => {
         const check = await PostOrPutWish(user);
         if(check)
         {
-            setLanguage("");
             setNote("");
             setFromDag(FormatDateAsMonthDayYearString(new Date()));
             setToDag(FormatDateAsMonthDayYearString(new Date()));
@@ -118,9 +117,7 @@ const VacationWishEditor = ( props: any ) => {
         return false;
     }
 
-    const languageChangeHandler = (evt: any) => {
-        setLanguage(evt.target.value);
-    }
+    
 
     const noteChangeHandler = (evt: any) => {
         setNote(evt.target.value);
@@ -144,7 +141,6 @@ const VacationWishEditor = ( props: any ) => {
         }
     }
 
-    const[language, setLanguage] = useState("");
     const[note, setNote] = useState("");
     const[feedback, setFeedback] = useState(<div></div>);
     const[fromDag, setFromDag] = useState<string>(FormatDateAsMonthDayYearString(new Date()));
@@ -166,33 +162,26 @@ const VacationWishEditor = ( props: any ) => {
             <form onSubmit={NewWish}>
             <div className={classes.WishEditorInfo}>
             <label>
-            <FontAwesomeIcon icon={faAt}/> Language 
-            <select onChange={languageChangeHandler}>
-                <option>Norsk</option>
-                <option>English</option>
-            </select>
-            </label>
-            <label>
-                Note
-                <textarea onChange={noteChangeHandler} required>
+                <FontAwesomeIcon icon={faComment}/>Note
+                <textarea maxLength={160} onChange={noteChangeHandler} required>
 
                 </textarea>
             </label>
             </div>
             <div className={classes.WishEditorDates}>
             <label>
-            From <input type="date" name="fromDate" defaultValue={fromDag} onChange={fromDagEndretHandler}></input>
+            <FontAwesomeIcon icon={faCalendarMinus}/> From <input type="date" name="fromDate" defaultValue={fromDag} onChange={fromDagEndretHandler}></input>
             </label>
             <label>
-            To <input type="date" name="toDate" defaultValue={toDag} onChange={toDagEndretHandler}></input>
+            <FontAwesomeIcon icon={faCalendarPlus}/> To <input type="date" name="toDate" defaultValue={toDag} onChange={toDagEndretHandler}></input>
             </label>
             </div>
             <div className={classes.WishEditorButtons}>
             <div className={classes.SaveVacationWishButton}> 
-                <button type="submit">Save Vacation Wish</button>
+                <button type="submit"> <FontAwesomeIcon icon={faSave}/> Save Vacation Wish</button>
             </div>
             <div className={classes.CancelVacationWishButton}> 
-                <button onClick={CancelHandler}>Cancel</button>
+                <button onClick={CancelHandler}> <FontAwesomeIcon icon={faCommentSlash}/> Cancel</button>
             </div>
             {deleteDiv}
             </div>

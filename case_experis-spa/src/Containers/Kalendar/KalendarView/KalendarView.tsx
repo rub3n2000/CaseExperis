@@ -33,7 +33,7 @@ const kalendarView = ( props: any ) => {
        }
     }
 
-    if(props.vacationKalender == true)
+    if(props.vacationKalender == true || props.godkjentOnly)
     {
         let ferierKeys = Object.keys(ferier) as (keyof uke)[];
         for(let k in ferierKeys)
@@ -47,37 +47,37 @@ const kalendarView = ( props: any ) => {
     
     let mondayDivs = Array.isArray(ferier.Monday)?props.ferierForView.Monday.map((ferie: any, index: any) => {
         return(
-            <div key={"Monday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Monday", index)} key={"Monday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let tuesdayDivs = Array.isArray(ferier.Tuesday)?props.ferierForView.Tuesday.map((ferie: any, index: any) => {
         return(
-            <div key={"Tuesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Tuesday", index)} key={"Tuesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let wednesdayDivs = Array.isArray(ferier.Wednesday)?props.ferierForView.Wednesday.map((ferie: any, index: any) => {
         return(
-            <div key={"Wednesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Wednesday", index)} key={"Wednesday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let thursdayDivs = Array.isArray(ferier.Thursday)?props.ferierForView.Thursday.map((ferie: any, index: any) => {
         return(
-            <div key={"Thursday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Thursday", index)} key={"Thursday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let fridayDivs = Array.isArray(ferier.Friday)?props.ferierForView.Friday.map((ferie: any, index: any) => {
         return(
-            <div key={"Friday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Friday", index)} key={"Friday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let saturdayDivs = Array.isArray(ferier.Saturday)?props.ferierForView.Saturday.map((ferie: any, index: any) => {
         return(
-            <div key={"Saturday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Saturday", index)} key={"Saturday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
     let sundayDivs = Array.isArray(ferier.Sunday)?props.ferierForView.Sunday.map((ferie: any, index: any) => {
         return(
-            <div key={"Sunday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
+            <div onClick={() => props.ferieClickHandler("Sunday", index)} key={"Sunday" + index}>{ferie.navn} {FormatDateString(ferie.date)}</div>
         );
     }): null;
 

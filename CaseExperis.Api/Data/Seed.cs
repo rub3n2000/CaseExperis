@@ -34,7 +34,7 @@ namespace CaseExperis.Api.Data
         {
             if(!_context.Ferier.Any())
             {
-           
+                int vNumber = 1;
                 var users =  _context.Users.Include(p => p.Ferier).ToList();
 
                 for(int i = 0; i < users.Count(); i++)
@@ -55,6 +55,13 @@ namespace CaseExperis.Api.Data
                         _iAuthRepos.SaveAll();
                         var ferieForUploading =  _mapper.Map<FerieToCreate,Ferie>(ferietoCreate);
                         _ferieRepository.New(ferieForUploading);
+                        Random r2 = new Random();
+                        int rInt2 = r.Next(0,2);
+                        if(rInt2 == 0)
+                        {
+                            _ferieRepository.MakeAccepted(vNumber);
+                        }
+                        vNumber++;
                     }
                 }
             }
