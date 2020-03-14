@@ -24,7 +24,28 @@ const VacationWishEditor = ( props: any ) => {
     const FormatDateAsMonthDayYearString = (date: Date) => {
         var removeDayName = date.toLocaleDateString(); // gives format that api cant use, but cant use toISO coz gives wrong dates coz timezone. Find solution?
         removeDayName = ReplaceAllDotsWithBackSlashInString(removeDayName);
+        removeDayName = ReverseDate(removeDayName);
         return removeDayName;
+    }
+
+    const ReverseDate = (theString: string) => {
+        let editedString = theString;
+        let backSlashIndices: number[]= [];
+        let editedStringPieces : string[] = [];
+        backSlashIndices.push(-1);
+        for(let i = 0; i < theString.length; i++) {
+            if(editedString.charAt(i) == "/") {
+                backSlashIndices.push(i);
+            }
+        }
+        for(let i = 0; i < backSlashIndices.length; i++) {
+            editedStringPieces.push(editedString.substring(backSlashIndices[i] + 1, backSlashIndices[i + 1]));
+        }
+
+        editedString = editedStringPieces[2] + "/" + editedStringPieces[0] + "/" + editedStringPieces[1];
+
+
+        return editedString;
     }
 
     const ReplaceAllDotsWithBackSlashInString = (theString: string) => {
@@ -83,28 +104,23 @@ const VacationWishEditor = ( props: any ) => {
     const PostOrPutWish = async(user : any) => {
         if(user && user.id) {
             let dates = Getdates(new Date(fromDag), new Date(toDag));
-            console.log(dates);
-            console.log(FormatDateAsMonthDayYearString(dates[0]));
             const dayDiff = ((new Date(toDag).getTime() - new Date(fromDag).getTime()) / (1000 * 3600 * 24)) + 1;
             for(let i = 0; i < dayDiff; i++)
             {
                 try
                 {
                     const res = await axios.get("/ferier/user/"+user.id+"?Date="+FormatDateAsMonthDayYearString(dates[i]));
-                    console.log(res);
                     if(res.status as number == 200) {
                         const putString = "/ferier/"+String(Array.isArray(res.data)?res.data[0].id:res.data.id);
                         try
                         {
                             const putRes = await axios.put(putString, {
                                 Date: dates[i],
-                                isGodkjent: false,
+                                isGodkjent: String(Array.isArray(res.data)?res.data[0].isGodkjent: res.data.isGodkjent),
                                 AnsattNotat: note,
                                 AdminNotat: ""
                             }, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
                             const getRes = await axios.get(putString);
-                            console.log(getRes);
-                            console.log(putString);
                         }
                         catch(e)
                         {
@@ -150,7 +166,6 @@ const VacationWishEditor = ( props: any ) => {
         let user = await AuthenticationService.fetchCurrentUser();
         if(props.admin && props.ferie) {
             user = props.ferie.user;
-            console.log(user);
         }
         const check = await PostOrPutWish(user);
         if(check)
@@ -186,15 +201,18 @@ const VacationWishEditor = ( props: any ) => {
     const makeAccepted = async () => {
         if(props.editMode && props.admin)
         {
-        const response = await axios.patch("/ferier/"+props.ferie.id, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
-        if(response.status as number == 200)
-        {
-            props.close()
-            return true;
-        }
-        else {
-            return false;
-        }
+            let token = "Bearer " + localStorage.getItem("access_token");
+            axios.defaults.headers.Authorization = token;
+            const response = await axios.patch("/ferier/"+props.ferie.id, );
+            if(response.status as number == 200)
+            {
+                props.close()
+                console.log("WHat?");
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else return false;
     }
@@ -206,7 +224,6 @@ const VacationWishEditor = ( props: any ) => {
 
     useEffect(() => {
         if(props.ferie) {
-        console.log("hey listen");
         setFromDag(props.ferie.date);
         setToDag(props.ferie.date);
         setNote(props.ferie.ansattNotat);

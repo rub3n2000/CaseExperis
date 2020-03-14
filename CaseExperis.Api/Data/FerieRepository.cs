@@ -97,7 +97,6 @@ namespace CaseExperis.API.Data
         {
             var ferieToMakeGodkjent = await _context.Ferier.FirstAsync(u => u.Id == id);
             ferieToMakeGodkjent.isGodkjent = true;
-            
             var ferieToMakeGodKjentRedigert = _mapper.Map<Ferie,FerieForUpdate>(ferieToMakeGodkjent);
             await Edit(id,ferieToMakeGodKjentRedigert);
             return ferieToMakeGodkjent;
