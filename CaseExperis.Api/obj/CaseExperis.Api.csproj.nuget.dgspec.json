@@ -1,25 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ruben\\Desktop\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj": {}
+    "E:\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ruben\\Desktop\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj": {
+    "E:\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ruben\\Desktop\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj",
+        "projectUniqueName": "E:\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj",
         "projectName": "CaseExperis.Api",
-        "projectPath": "C:\\Users\\Ruben\\Desktop\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj",
+        "projectPath": "E:\\CaseExperis\\CaseExperis.Api\\CaseExperis.Api.csproj",
         "packagesPath": "C:\\Users\\Ruben\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ruben\\Desktop\\CaseExperis\\CaseExperis.Api\\obj\\",
+        "outputPath": "E:\\CaseExperis\\CaseExperis.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\Ruben\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"
@@ -77,16 +76,10 @@
             }
           },
           "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
+            "net461"
           ],
           "assetTargetFallback": true,
-          "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "warn": true
         }
       }
     }

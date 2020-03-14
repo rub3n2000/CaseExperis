@@ -86,12 +86,10 @@ const Kalendar = ( props: any ) => {
     const FetchFerier = async() => {
         let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
         let oppdaterteFerier: Partial<ferierEtterDag> = {};
-        console.log("yuup");
         for(let key in ferieKeys)
         {
             await axios.get<ferier>("/ferier?Date="+valgtUke[ferieKeys[key]]).then(response => {
                 oppdaterteFerier[ferieKeys[key]] = response.data; 
-                console.log(response.data);
             }).catch((error) => { console.log(error); });
         }
         return oppdaterteFerier as ferierEtterDag;
@@ -119,7 +117,7 @@ const Kalendar = ( props: any ) => {
     const brukerEndretHandler = (evt: any) => {
         if(evt.target.value !== 'All')
         {
-            let user = users?.find(user => user.fornavn + " " + user.etternavn == evt.target.value);
+            let user = users?users.find((user : any) => user.fornavn + " " + user.etternavn == evt.target.value):undefined;
             setCurrentUserFilter(user);
         }
         else {

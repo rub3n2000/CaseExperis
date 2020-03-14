@@ -5,6 +5,7 @@ import { faAt, faKey, faComment, faCalendarMinus, faCalendarPlus, faSave, faStop
 import Nav from '../Nav/Nav';
 import axios from '../../axios-api';
 import AuthenticationService from '../../Helpers/AuthenticationService';
+import { withRouter } from 'react-router-dom';
 
 const VacationWishEditor = ( props: any ) => {
 
@@ -22,7 +23,7 @@ const VacationWishEditor = ( props: any ) => {
     type responseFilter = any | undefined;
 
     const FormatDateAsMonthDayYearString = (date: Date) => {
-        var removeDayName = date.toLocaleDateString(); // gives format that api cant use, but cant use toISO coz gives wrong dates coz timezone. Find solution?
+        var removeDayName = date.toLocaleDateString();
         removeDayName = ReplaceAllDotsWithBackSlashInString(removeDayName);
         removeDayName = ReverseDate(removeDayName);
         return removeDayName;
@@ -174,6 +175,7 @@ const VacationWishEditor = ( props: any ) => {
             setFromDag(FormatDateAsMonthDayYearString(new Date()));
             setToDag(FormatDateAsMonthDayYearString(new Date()));
             props.close();
+            props.history.go(0);
             return true;
         }
         return false;
@@ -287,4 +289,4 @@ const VacationWishEditor = ( props: any ) => {
     }
 }
 
-export default VacationWishEditor;
+export default withRouter(VacationWishEditor);
