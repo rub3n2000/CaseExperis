@@ -8,7 +8,7 @@ const employees = ( props: any ) => {
         <div className={styles.EmployeesDiv}>
             <h4>Employees</h4>
             {props.users.map((user: any) => {
-                return(<Employee key={user.id} user={user}/>);
+                return(<Employee userEditorOpenHandler={() => {props.userEditorOpenHandler(user)}} key={user.id} user={user}/>);
             })}
         </div>
     )

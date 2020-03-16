@@ -9,19 +9,6 @@ import { withRouter } from 'react-router-dom';
 
 const VacationWishEditor = ( props: any ) => {
 
-    type user = {
-        id: number,
-        fornavn: string,
-        etternavn: string,
-        telefonNummer: string,
-        email: string,
-        antallFerieTatt: number,
-        antallFerieIgjen: number,
-        languageCode: string,
-        ferier: object
-    }
-    type responseFilter = any | undefined;
-
     const FormatDateAsMonthDayYearString = (date: Date) => {
         var removeDayName = date.toLocaleDateString();
         removeDayName = ReplaceAllDotsWithBackSlashInString(removeDayName);
@@ -205,7 +192,7 @@ const VacationWishEditor = ( props: any ) => {
         {
             let token = "Bearer " + localStorage.getItem("access_token");
             axios.defaults.headers.Authorization = token;
-            const response = await axios.patch("/ferier/"+props.ferie.id, );
+            const response = await axios.patch("/ferier/"+props.ferie.id);
             if(response.status as number == 200)
             {
                 props.close()

@@ -45,7 +45,7 @@ public class UsersController : ControllerBase
         [Route("{email}")]
         public async Task<IActionResult> UpdateUser(string email, UserForUpdateDto userForUpdateDto)
         {
-            if(email != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            if(email != User.FindFirst(ClaimTypes.Name).Value)
             {
                 return Unauthorized();
             }
@@ -59,6 +59,7 @@ public class UsersController : ControllerBase
             throw new System.Exception($"Updating User With id {email} failed on save");
         
         }
+
 
         [HttpDelete]
         [Route("{email}")]
