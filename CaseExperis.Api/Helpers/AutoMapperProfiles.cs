@@ -21,6 +21,8 @@ namespace DatingApp.API.Helpers
             CreateMap<Ferie, FerieForUserProfileDto>();
             CreateMap<FerieToCreate, FerieForUserProfileDto>();
             CreateMap<FerieToReturn,Ferie>();
+            CreateMap<Embargo, EmbargoDto>();
+            CreateMap<EmbargoDto, Embargo>();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace CaseExperis.Api.Data
      public DbSet<User> Users { get; set; }
      public DbSet<Ferie> Ferier { get; set; }
 
+     public DbSet<Embargo> Embargoes { get; set; }
+
      protected override void OnModelCreating(ModelBuilder builder)
      {
          builder.Entity<User>().HasIndex(u => u.Email).IsUnique();

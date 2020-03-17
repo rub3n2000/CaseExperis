@@ -47,6 +47,7 @@ namespace CaseExperis.Api
             services.AddCors();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IFerieRepository, FerieRepository>();
+            services.AddScoped<IEmbargoRepository, EmbargoRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 options  =>
                 {
