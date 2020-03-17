@@ -73,14 +73,21 @@ const Admin = ( props: any ) => {
     }
 
     const NewUser = async (e: any) => {
+        console.log(currentEditsOnUser);
         e.preventDefault();
         if(currentEditsOnUser)
         {
-        let response = await axios.get("/users/" + currentEditsOnUser.id);
+            let response : any;
+            if(currentEditsOnUser.id != undefined)
+            {
+             response = await axios.get("/users/" + currentEditsOnUser.id);
+            }
+            else { response = {status: 401};}
         if(response.status !== 200)
         {
             let token = "Bearer " + localStorage.getItem("access_token");
             axios.defaults.headers.Authorization = token;
+            console.log(currentEditsOnUser);
             const res = await axios.post("/auth/register", currentEditsOnUser);
             if(res.status === 201) {
                 userEditorCloseHandler();
@@ -131,13 +138,14 @@ const Admin = ( props: any ) => {
     }
 
     const fornavnChangeHandler = (e: any) => {
+        console.log(e.target.value);
         var user = currentEditsOnUser;
         if(user){
-            user.fornavn = e.value;
+            user.fornavn = e.target.value;
         }
         else {
             user = {};
-            user.fornavn = e.value;
+            user.fornavn = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -145,11 +153,11 @@ const Admin = ( props: any ) => {
     const etternavnChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.etternavn = e.value;
+            user.etternavn = e.target.value;
         }
         else {
             user = {};
-            user.etternavn = e.value;
+            user.etternavn = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -157,11 +165,11 @@ const Admin = ( props: any ) => {
     const passwordChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.password = e.value;
+            user.password = e.target.value;
         }
         else {
             user = {};
-            user.password = e.value;
+            user.password = e.target.value;
         }
         setCurrentEditsOnUser(user as userFilter);
     }
@@ -169,11 +177,11 @@ const Admin = ( props: any ) => {
     const mobilnummerChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.telefonNummer = e.value;
+            user.telefonNummer = e.target.value;
         }
         else {
             user = {};
-            user.telefonNummer = e.value;
+            user.telefonNummer = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -181,11 +189,11 @@ const Admin = ( props: any ) => {
     const emailChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.email = e.value;
+            user.email = e.target.value;
         }
         else {
             user = {};
-            user.email = e.value;
+            user.email = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -193,11 +201,11 @@ const Admin = ( props: any ) => {
     const ferieDagerIgjenChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.antallFerieIgjen = e.value;
+            user.antallFerieIgjen = e.target.value;
         }
         else {
             user = {};
-            user.antallFerieIgjen = e.value;
+            user.antallFerieIgjen = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -205,11 +213,11 @@ const Admin = ( props: any ) => {
     const ferieDagerTattChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.antallFerieTatt = e.value;
+            user.antallFerieTatt = e.target.value;
         }
         else {
             user = {};
-            user.antallFerieTatt = e.value;
+            user.antallFerieTatt = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -217,11 +225,11 @@ const Admin = ( props: any ) => {
     const languageChangeHandler = (e: any) => {
         var user = currentEditsOnUser;
         if(user){
-            user.languageCode = e.value;
+            user.languageCode = e.target.value;
         }
         else {
             user = {};
-            user.languageCode = e.value;
+            user.languageCode = e.target.value;
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
@@ -231,7 +239,7 @@ const Admin = ( props: any ) => {
             <Backdrop show={userEditorVisible} clicked={userEditorCloseHandler}/>
             <Nav/>
             {users && <Employees users={users} userEditorOpenHandler={userEditorOpenHandler}/>}
-            {users && (currentlyEditedUser != undefined) && <UserEditor NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
+            {users && <UserEditor NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
              mobilnummerChangeHandler={mobilnummerChangeHandler} emailChangeHandler={emailChangeHandler} ferieDagerIgjenChangeHandler={ferieDagerIgjenChangeHandler}
              ferieDagerTattChangeHandler={ferieDagerTattChangeHandler} languageChangeHandler={languageChangeHandler} deleteUser={deleteUser} 
              passwordChangeHandler={passwordChangeHandler} makeAdmin={makeAdmin} user={currentlyEditedUser} visible={userEditorVisible}/>}

@@ -6,7 +6,14 @@ import { faCalendarMinus, faCalendarPlus, faSave, faComment } from '@fortawesome
 const userEditor = ( props: any ) => {
     
     let theLabel = props.newMode?<>New User</>:<>New User</>;
+    let idLabel = <label> 
+    Id
+    <input type="mumber" defaultValue={props.user?props.user.id:""} readOnly/>
+    </label>;
 
+    if(!props.user) {
+        idLabel = <></>;
+    }
     if(props.visible)
     {
         return(
@@ -15,41 +22,38 @@ const userEditor = ( props: any ) => {
                 {theLabel}
                 <form onSubmit={props.NewUser}>
                 <div className={classes.UserEditorInfo}>
-                <label> 
-                    Id
-                    <input type="mumber" defaultValue={props.user.id} readOnly/>
-                </label>
+                {idLabel}
                 <label> 
                     Fornavn
-                    <input type="text" defaultValue={props.user.fornavn} onChange={props.fornavnChangeHandler}/>
+                    <input type="text" defaultValue={props.user?props.user.fornavn:""} onChange={props.fornavnChangeHandler}/>
                 </label>
                 <label> 
                     Etternavn
-                    <input type="text" defaultValue={props.user.etternavn} onChange={props.etternavnChangeHandler}/>
+                    <input type="text" defaultValue={props.user?props.user.etternavn:""} onChange={props.etternavnChangeHandler}/>
                 </label>
                 <label>
                     Passord
-                    <input type="password" defaultValue={props.user.password} onChange={props.passwordChangeHandler}/>
+                    <input type="password" defaultValue={props.user?props.user.password:""} onChange={props.passwordChangeHandler}/>
                 </label>
                 <label> 
                     Mobilnummer
-                    <input type="text" defaultValue={props.user.telefonNummer} onChange={props.mobilnummerChangeHandler}/>
+                    <input type="text" defaultValue={props.user?props.user.telefonNummer:""} onChange={props.mobilnummerChangeHandler}/>
                 </label>
                 <label> 
                     Email
-                    <input type="email" defaultValue={props.user.email} onChange={props.emailChangeHandler}/>
+                    <input type="email" defaultValue={props.user?props.user.email:""} onChange={props.emailChangeHandler}/>
                 </label>
                 <label> 
                     Feriedager Igjen
-                    <input type="number" defaultValue={props.user.antallFerieIgjen} onChange={props.ferieDagerIgjenChangeHandler}/>
+                    <input type="number" defaultValue={props.user?props.user.antallFerieIgjen:""} onChange={props.ferieDagerIgjenChangeHandler}/>
                 </label>
                 <label> 
                     Feriedager Tatt
-                    <input type="number" defaultValue={props.user.antallFerieTatt} onChange={props.ferieDagerTattChangeHandler}/>
+                    <input type="number" defaultValue={props.user?props.user.antallFerieTatt:""} onChange={props.ferieDagerTattChangeHandler}/>
                 </label>
                 <label> 
                     Språk
-                    <select defaultValue={props.user.languageCode} onChange={props.languageChangeHandler}>
+                    <select defaultValue={props.user?props.user.languageCode: "NO"} onChange={props.languageChangeHandler}>
                         <option value="NO">NO</option>
                         <option value="EN">EN</option>
                     </select>

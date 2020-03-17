@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CaseExperis.Api.Dtos;
 using CaseExperis.Api.Models;
 
 namespace CaseExperis.Api.Data
@@ -13,7 +14,7 @@ namespace CaseExperis.Api.Data
          Task<User> GetUserById(int id);
          Task<IEnumerable<User>> GetUsers();
          Task<bool> SaveAll();
-
+         Task<User> Edit(string email, UserForUpdateDto user);
          Task<User> DeleteUser(string email);
     }
 }

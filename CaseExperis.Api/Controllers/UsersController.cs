@@ -49,15 +49,13 @@ public class UsersController : ControllerBase
             {
                 return Unauthorized();
             }
-            var userFromRepo = await _repo.GetUser(email);
-            var endretBruker = _mapper.Map(userForUpdateDto, userFromRepo);
-            if(await _repo.SaveAll())
+           
+            var redigertUser = await _repo.Edit(email,userForUpdateDto);
+            if(redigertUser == null)
             {
-                return NoContent();
+            return NoContent();
             }
-            
-            throw new System.Exception($"Updating User With id {email} failed on save");
-        
+            return Ok(redigertUser);
         }
 
 

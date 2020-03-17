@@ -5,6 +5,7 @@ using CaseExperis.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CaseExperis.Api.Dtos;
 
 namespace CaseExperis.API.Data
 {
@@ -111,6 +112,52 @@ namespace CaseExperis.API.Data
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<User> Edit(string email, UserForUpdateDto user)
+        {
+            var userFromDB = await _context.Users.FirstAsync(u => u.Email == email);
+            if(user != null)
+            {
+                if(user.Fornavn != null && user.Fornavn.ToString().Length > 0) {
+                    userFromDB.Fornavn = user.Fornavn;
+                }
+                if(user.Etternavn != null && user.Etternavn.ToString().Length > 0) {
+                    userFromDB.Etternavn = user.Etternavn;
+                }
+
+                if(user.TelefonNummer != null && user.TelefonNummer.ToString().Length > 0) {
+                    userFromDB.TelefonNummer = user.TelefonNummer;
+                }
+
+                if(user.Email != null && user.Email.ToString().Length > 0) {
+                    userFromDB.Email = user.Email;
+                }
+
+                if(user.AntallFerieTatt != userFromDB.AntallFerieTatt) {
+                    userFromDB.AntallFerieTatt = user.AntallFerieTatt;
+                }
+
+                if(user.AntallFerieIgjen != userFromDB.AntallFerieIgjen) {
+                    userFromDB.AntallFerieIgjen = user.AntallFerieIgjen;
+                }
+
+                if(user.LanguageCode != null && user.LanguageCode.ToString().Length > 1) {
+                    userFromDB.LanguageCode = user.LanguageCode;
+                }
+
+                if(user.Password != null && user.Password.ToString().Length > 0) {
+                    byte[] passwordHash;
+                    byte[] passwordSalt;
+                    CreatePasswordHash(user.Password,out passwordHash,out passwordSalt); 
+                    userFromDB.PasswordHash = passwordHash;
+                    userFromDB.PasswordSalt = passwordSalt; 
+                }
+            }
+            _context.Users.Update(userFromDB);
+            await _context.SaveChangesAsync();
+            var theUser = userFromDB;
+            return theUser;
         }
     }
 }
