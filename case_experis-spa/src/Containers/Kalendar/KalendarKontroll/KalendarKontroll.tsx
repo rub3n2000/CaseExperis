@@ -41,7 +41,9 @@ const kalendarKontroll = ( props: any ) => {
          </label>;
         }
         else {
-            newWish = <></>;
+            newWish = <label onClick={props.newEmbargoHandler} className={styles.NewVacationWish}>
+            <FontAwesomeIcon  icon={faPlus}/> Ny Embargo
+        </label>;
         }
     }
 

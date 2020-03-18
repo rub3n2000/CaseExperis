@@ -5,10 +5,10 @@ import { faCalendarMinus, faCalendarPlus, faSave, faComment } from '@fortawesome
 
 const userEditor = ( props: any ) => {
     
-    let theLabel = props.newMode?<>New User</>:<>New User</>;
+    let theLabel = props.newMode?<>New User</>:<>Edit User</>;
     let idLabel = <label> 
     Id
-    <input type="mumber" defaultValue={props.user?props.user.id:""} readOnly/>
+    <input type="number" defaultValue={props.user?props.user.id:""} readOnly/>
     </label>;
 
     if(!props.user) {

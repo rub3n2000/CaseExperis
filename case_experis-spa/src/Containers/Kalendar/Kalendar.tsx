@@ -11,8 +11,6 @@ import VacationWishEditor from '../VacationWishEditor/VacationWishEditor';
 
 const Kalendar = ( props: any ) => {
 
-    
-
     type ferie = {
         id: number,
         date: Date,
@@ -26,6 +24,7 @@ const Kalendar = ( props: any ) => {
     type ferier = ferie[];
 
     type ferierEtterDag = { [k in keyof uke]: ferier };
+    type embargoesEtterDag = { [k in keyof uke]: embargoesFilter };
 
     type uke = {
         Monday: string,
@@ -50,6 +49,16 @@ const Kalendar = ( props: any ) => {
         languageCode: string,
         ferier: object
     }
+
+    type embargo = {
+        id: number,
+        date: Date
+    }
+
+    type embargoes = embargo[];
+
+    type embargoFilter = embargo | undefined;
+    type embargoesFilter = embargoes | undefined;
 
     type userFilter = user | undefined;
 
@@ -95,6 +104,18 @@ const Kalendar = ( props: any ) => {
         return oppdaterteFerier as ferierEtterDag;
     }
 
+    const FetchEmbargoes = async() => {
+        let ukeKeys = Object.keys(valgtUke) as (keyof uke)[];
+        let oppdaterteEmbargoes: Partial<ferierEtterDag> = {};
+        for(let key in ukeKeys)
+        {
+            await axios.get<ferier>("/embargo?Date="+valgtUke[ukeKeys[key]]).then(response => {
+                oppdaterteEmbargoes[ukeKeys[key]] = response.data; 
+            }).catch((error) => { console.log(error); });
+        }
+        return oppdaterteEmbargoes as embargoesEtterDag;
+    }
+
     const FetchAndSetFerierOneUser = async(user: user) => {
         let ferieKeys = Object.keys(valgtUke) as (keyof uke)[];
         let oppdaterteFerier: Partial<ferierEtterDag> = {};
@@ -138,7 +159,21 @@ const Kalendar = ( props: any ) => {
             setDetailedView(ferier?ferier[dag as keyof ferierEtterDag][index]: undefined);
             setDetailedVisible(true);
         }
-       
+    }
+
+    const embargoClickHandler = (dag: string, index:  number) => {
+        if(props.adminKalender)
+        {
+            if(embargoes)
+            {
+                if(embargoes[dag as keyof embargoesEtterDag]) {
+                    props.setEmbargo((embargoes[dag as keyof embargoesEtterDag] as any)[index]);
+                }
+                else {
+                    props.setEmbargo(undefined);
+                }
+            }
+        }
     }
 
     const ferieClickHandlerNew = () => {
@@ -186,10 +221,14 @@ const Kalendar = ( props: any ) => {
     const [editor, setEditor] = useState<ferieFilter>();
     const [editorVisible, setEditorVisible] = useState(false);
     const [newVacation, setNewVacation] = useState(false);
+    const [embargoes, setEmbargoes] = useState<embargoesEtterDag>();
    
-    
-
     useEffect(() => {
+        const SetEmbargoes = async() => {
+            var embargoes = await FetchEmbargoes();
+            setEmbargoes(embargoes);
+        }
+        SetEmbargoes();
         if(props.bruker == undefined)
         {
             setCurrentUserFilter(undefined);
@@ -209,6 +248,11 @@ const Kalendar = ( props: any ) => {
     }, []);
 
     useEffect(() => {
+        const SetEmbargoes = async() => {
+            var embargoes = await FetchEmbargoes();
+            setEmbargoes(embargoes);
+        }
+        SetEmbargoes();
         if(props.bruker) {
             if(props.bruker == undefined) {
                 const SetFeriene = async() => {
@@ -258,9 +302,9 @@ const Kalendar = ( props: any ) => {
     return (
         <div className={classes.join(' ')}>
             <Backdrop show={detailedVisible || editorVisible} clicked={ferieDetailedClose}/>
-            {users && <KalendarKontroll newVacationWishHandler={ferieClickHandlerNew} adminKalender={props.adminKalender} dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
+            {users && <KalendarKontroll newVacationWishHandler={ferieClickHandlerNew} newEmbargoHandler={props.newEmbargoHandler} adminKalender={props.adminKalender} dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
              user={props.bruker} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
-            {ferier && <KalendarView ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
+            {ferier && <KalendarView embargoClickHandler={embargoClickHandler} embargoes={embargoes} ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
             vacationKalender={props.vacationKalender} godkjentOnly={props.godkjentOnly}/>}
             {ferier && detailedView &&  <DetailedView ferie={detailedView} visible={detailedVisible}/>}
             {ferier && (newVacation || editor) && <VacationWishEditor admin={props.adminKalender} wishKalender={props.wishKalender} close={ferieDetailedClose} editMode={!newVacation} ferie={editor} visible={editorVisible}/>}

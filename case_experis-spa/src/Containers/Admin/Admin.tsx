@@ -8,6 +8,8 @@ import axios from '../../axios-api';
 import Backdrop from '../../Components/UI/Backdrop/Backdrop';
 import UserEditor from './Employees/UserEditor/UserEditor';
 import { arrowFunctionExpression } from '@babel/types';
+import EmbargoEditor from './EmbargoEditor/EmbargoEditor';
+import { withRouter } from 'react-router-dom';
 
 const Admin = ( props: any ) => {
 
@@ -36,6 +38,16 @@ const Admin = ( props: any ) => {
         ferier: object
     }
 
+    type embargo = {
+        id?: number,
+        date: string
+    }
+
+    type embargoes = embargo[];
+
+    type embargoFilter = embargo | undefined;
+    type embargoesFilter = embargoes | undefined;
+
     type users = user[] | undefined;
     type userFilter = Partial<userToRegistrer> | undefined;
 
@@ -47,10 +59,18 @@ const Admin = ( props: any ) => {
         return users;
     };
 
+    const FormatDateAsMonthDayYearString = (date: Date) => {
+        var removeDayName = date.toISOString().substring(0,10);
+        return removeDayName;
+    }
+
     const [users, setUsers] = useState<users>();
     const [userEditorVisible, setUserEditorVisible] = useState<boolean>(false);
     const [currentlyEditedUser, setCurrentlyEditedUser] = useState<userFilter>();
     const [currentEditsOnUser, setCurrentEditsOnUser] = useState<userFilter>();
+    const [embargoVisible, setEmbargoVisible] = useState<boolean>(false);
+    const [currentEmbargo, setCurrentEmbargo] = useState<embargoFilter>();
+    const [embargoDate, setEmbargoDate] = useState(FormatDateAsMonthDayYearString(new Date()));
 
     useEffect(() => {
         const SetTheUsers = async() => {
@@ -62,8 +82,12 @@ const Admin = ( props: any ) => {
 
     const userEditorCloseHandler = () => {
         setUserEditorVisible(false);
+        setEmbargoVisible(false);
+        setCurrentEmbargo(undefined);
+        setEmbargoDate(FormatDateAsMonthDayYearString(new Date()));
         setCurrentlyEditedUser(undefined);
         setCurrentEditsOnUser(undefined);
+        props.history.go(0);
     }
 
     const userEditorOpenHandler = (user: user) => {
@@ -113,7 +137,6 @@ const Admin = ( props: any ) => {
         else {
             return false;
         }
-
     }
 
     const deleteUser = async () => {
@@ -233,20 +256,95 @@ const Admin = ( props: any ) => {
         }
         setCurrentEditsOnUser(user as Partial<user>);
     }
+
+    const newEmbargoHandler = () => {
+        setEmbargoVisible(true);
+        setCurrentEmbargo(undefined);
+    }
+
+    const FormatDateAsDateString = (date: string) => {
+        let dateString = date.substring(0,10);
+        return dateString;
+    }
+
+    const NewEmbargo = async ( e: any ) => {
+        e.preventDefault();
+        if(currentEmbargo != undefined)
+        {
+            console.log(typeof currentEmbargo.date);
+            if(FormatDateAsDateString(currentEmbargo.date) !== embargoDate) {
+                let newEmbargo = {
+                    date: new Date(embargoDate)
+                }
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                const res = await axios.put("/embargo/" + currentEmbargo.id, newEmbargo);
+                if(res.status === 200) {
+                    userEditorCloseHandler();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+                console.log("yey");
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                const res = await axios.post("/embargo", {date: new Date(embargoDate)});
+                if(res.status === 201) {
+                    userEditorCloseHandler();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+        }
+    }
+
+    const DeleteEmbargo = async () => {
+        if(currentEmbargo != undefined) {
+            let token = "Bearer " + localStorage.getItem("access_token");
+            axios.defaults.headers.Authorization = token;
+            let res = await axios.delete("/embargo/" + currentEmbargo.id);
+            if(res.status === 200) {
+                userEditorCloseHandler();
+                return res;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    const EmbargoDateChangedHandler = ( e: any ) => {
+        setEmbargoDate(e.target.value);
+    }
+
+    const setTheEmbargo = (embargo : embargoFilter) => {
+        console.log(embargo);
+        setCurrentEmbargo(embargo);
+        setEmbargoVisible(true);
+    }
     
     return (
         <div className={styles.AdminDiv}>
-            <Backdrop show={userEditorVisible} clicked={userEditorCloseHandler}/>
+            <Backdrop show={userEditorVisible || embargoVisible} clicked={userEditorCloseHandler}/>
             <Nav/>
             {users && <Employees users={users} userEditorOpenHandler={userEditorOpenHandler}/>}
             {users && <UserEditor NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
              mobilnummerChangeHandler={mobilnummerChangeHandler} emailChangeHandler={emailChangeHandler} ferieDagerIgjenChangeHandler={ferieDagerIgjenChangeHandler}
              ferieDagerTattChangeHandler={ferieDagerTattChangeHandler} languageChangeHandler={languageChangeHandler} deleteUser={deleteUser} 
              passwordChangeHandler={passwordChangeHandler} makeAdmin={makeAdmin} user={currentlyEditedUser} visible={userEditorVisible}/>}
-            <Kalendar vacationEdit adminKalender wishKalender/>
-            <Kalendar vacationEdit adminKalender vacationKalender/>
+            <Kalendar setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender wishKalender/>
+            <Kalendar setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender vacationKalender/>
+            <EmbargoEditor visible={embargoVisible} NewEmbargo={NewEmbargo} embargo={currentEmbargo} embargoDateChangeHandler={EmbargoDateChangedHandler} deleteEmbargo={DeleteEmbargo}/>
         </div>
     )
 }
 
-export default Admin;
+export default withRouter(Admin);
