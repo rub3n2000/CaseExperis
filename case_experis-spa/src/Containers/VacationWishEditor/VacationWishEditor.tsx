@@ -97,40 +97,46 @@ const VacationWishEditor = ( props: any ) => {
             {
                 try
                 {
-                    const res = await axios.get("/ferier/user/"+user.id+"?Date="+FormatDateAsMonthDayYearString(dates[i]));
-                    if(res.status as number == 200) {
-                        const putString = "/ferier/"+String(Array.isArray(res.data)?res.data[0].id:res.data.id);
-                        try
-                        {
-                            const putRes = await axios.put(putString, {
+                    let token = "Bearer " + localStorage.getItem("access_token");
+                    axios.defaults.headers.Authorization = token;
+                    const res2 = await axios.get("/embargo?Date="+FormatDateAsMonthDayYearString(dates[i]));
+                    console.log(res2);
+                    if(res2.status === 204) {
+                        const res = await axios.get("/ferier/user/"+user.id+"?Date="+FormatDateAsMonthDayYearString(dates[i]));
+                        if(res.status as number == 200) {
+                            const putString = "/ferier/"+String(Array.isArray(res.data)?res.data[0].id:res.data.id);
+                            try
+                            {
+                                const putRes = await axios.put(putString, {
+                                    Date: dates[i],
+                                    isGodkjent: String(Array.isArray(res.data)?res.data[0].isGodkjent: res.data.isGodkjent),
+                                    AnsattNotat: note,
+                                    AdminNotat: ""
+                                }, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
+                                const getRes = await axios.get(putString);
+                            }
+                            catch(e)
+                            {
+                                setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
+                                console.log(e);
+                            }
+                        } else {
+                            try
+                            {
+                                await axios.post("/ferier/new/"+String(user?user.id: 1), {
                                 Date: dates[i],
-                                isGodkjent: String(Array.isArray(res.data)?res.data[0].isGodkjent: res.data.isGodkjent),
                                 AnsattNotat: note,
-                                AdminNotat: ""
-                            }, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
-                            const getRes = await axios.get(putString);
-                        }
-                        catch(e)
-                        {
-                            setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
-                            console.log(e);
-                        }
-                    } else {
-                        try
-                        {
-                            await axios.post("/ferier/new/"+String(user?user.id: 1), {
-                               Date: dates[i],
-                               AnsattNotat: note,
-                               AdminNotat: "",
-                               User: user,
-                               UserId: user?user.id:1
-                           },{headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
-                        }
-                        catch(e)
-                        {
-                            setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
-                            console.log(e);
-                            return false;
+                                AdminNotat: "",
+                                User: user,
+                                UserId: user?user.id:1
+                            },{headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
+                            }
+                            catch(e)
+                            {
+                                setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
+                                console.log(e);
+                                return false;
+                            }
                         }
                     }
                 }
