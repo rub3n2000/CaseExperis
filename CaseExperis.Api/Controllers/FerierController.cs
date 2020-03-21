@@ -12,34 +12,32 @@ using System;
 using Newtonsoft.Json;
 using CaseExperis.Api.Helpers;
 using DatingApp.API.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace CaseExperis.Api.Controllers
 {
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
     public class FerierController : ControllerBase
     {       
-        private readonly IAuthRepository _repo;
         private readonly IMapper _mapper;
         private readonly IFerieRepository _ferieRepository;
 
         private readonly DataContext _context;
+        private readonly UserManager<User> _userManager;
 
-        private readonly IAuthRepository _iAuthRepos;
-        public FerierController(IAuthRepository repo, IAuthRepository iAuthRepos, IMapper mapper, IFerieRepository ferieRepository, DataContext context){
-            this._repo = repo;
+        public FerierController(IMapper mapper, IFerieRepository ferieRepository, DataContext context, UserManager<User> userManager){
             this._mapper = mapper;
-            this._iAuthRepos = iAuthRepos;
             this._ferieRepository = ferieRepository;
             this._context = context;
+            this._userManager = userManager;
         }
         
         [HttpPost("new/{id}")]
         public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
             ferieToCreate.User = user;
             ferieToCreate.UserId = id;
             var ferieForUploading =  _mapper.Map<Ferie>(ferieToCreate);

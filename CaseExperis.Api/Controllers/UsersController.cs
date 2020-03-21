@@ -8,20 +8,22 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace CaseExperis.Api.Controllers
 {
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class UsersController : ControllerBase
 {       
         private readonly IAuthRepository _repo;
         private readonly IMapper _mapper;
-        public UsersController(IAuthRepository repo, IMapper mapper){
+        private readonly SignInManager<User> _signInManager;
+        public UsersController(IAuthRepository repo, IMapper mapper, SignInManager<User> signInManager){
             this._repo = repo;
             this._mapper = mapper;
+            this._signInManager = signInManager;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -45,8 +47,9 @@ public class UsersController : ControllerBase
         [Route("{email}")]
         public async Task<IActionResult> UpdateUser(string email, UserForUpdateDto userForUpdateDto)
         {
-            if(email != User.FindFirst(ClaimTypes.Name).Value)
+            if(email != _signInManager.Context.User.Identity.Name.ToString())
             {
+                Console.WriteLine("yeee");
                 return Unauthorized();
             }
            

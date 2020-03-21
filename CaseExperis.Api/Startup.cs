@@ -20,6 +20,11 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using DatingApp.API.Helpers;
+using Microsoft.AspNetCore.Identity;
+using CaseExperis.Api.Models;
+using DatingApp.API.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace CaseExperis.Api
 {
@@ -35,19 +40,23 @@ namespace CaseExperis.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x =>
+             services.AddDbContext<DataContext>(x =>
             {
                 x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).
-            AddJsonOptions(opt => {
-                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            IdentityBuilder builder = services.AddIdentityCore<User>(opt => {
+                opt.Password.RequireDigit = true;
+                opt.Password.RequiredLength = 8;
+                opt.Password.RequireNonAlphanumeric = true;
+                opt.Password.RequireUppercase = true;
             });
-            services.AddAutoMapper(typeof(AuthRepository).Assembly);
-            services.AddCors();
-            services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IFerieRepository, FerieRepository>();
-            services.AddScoped<IEmbargoRepository, EmbargoRepository>();
+
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder.AddEntityFrameworkStores<DataContext>();
+            builder.AddRoleValidator<RoleValidator<Role>>();
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<User>>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 options  =>
                 {
@@ -61,6 +70,23 @@ namespace CaseExperis.Api
                     };
                 }
             );
+
+            services.AddMvc(options => {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+                options.Filters.Add(new AuthorizeFilter(policy));
+            }).
+            SetCompatibilityVersion(CompatibilityVersion.Version_2_2).
+            AddJsonOptions(opt => {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+            services.AddAutoMapper(typeof(AuthRepository).Assembly);
+            services.AddCors();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IFerieRepository, FerieRepository>();
+            services.AddScoped<IEmbargoRepository, EmbargoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

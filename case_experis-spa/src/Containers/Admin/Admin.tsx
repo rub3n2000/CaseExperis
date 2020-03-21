@@ -114,6 +114,8 @@ const Admin = ( props: any ) => {
             console.log(currentEditsOnUser);
             const res = await axios.post("/auth/register", currentEditsOnUser);
             if(res.status === 201) {
+                console.log("yup");
+                console.log(currentEditsOnUser);
                 userEditorCloseHandler();
                 return true;
             }

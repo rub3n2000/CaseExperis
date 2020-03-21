@@ -18,22 +18,17 @@ namespace CaseExperis.Api.Controllers
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
     public class EmbargoController : ControllerBase
     {       
-        private readonly IAuthRepository _repo;
         private readonly IMapper _mapper;
         private readonly IFerieRepository _ferieRepository;
 
         private readonly DataContext _context;
 
-        private readonly IAuthRepository _iAuthRepos;
 
         private readonly IEmbargoRepository _iEmbargo;
-        public EmbargoController(IAuthRepository repo, IAuthRepository iAuthRepos, IMapper mapper, IFerieRepository ferieRepository, DataContext context, IEmbargoRepository iEmbargo){
-            this._repo = repo;
+        public EmbargoController(IMapper mapper, IFerieRepository ferieRepository, DataContext context, IEmbargoRepository iEmbargo){
             this._mapper = mapper;
-            this._iAuthRepos = iAuthRepos;
             this._ferieRepository = ferieRepository;
             this._context = context;
             this._iEmbargo = iEmbargo;
@@ -42,7 +37,6 @@ namespace CaseExperis.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> NewEmbargo(EmbargoDto embargoToCreate)
         {
-            
             var newEmbargo = await _iEmbargo.New(_mapper.Map<Embargo>(embargoToCreate));
             return StatusCode(201);
         }

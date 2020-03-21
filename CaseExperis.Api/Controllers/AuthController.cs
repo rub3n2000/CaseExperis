@@ -13,47 +13,63 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace CaseExperis.Api.Controllers
 {
 
 [Route("api/[controller]")]
 [ApiController]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {       
-        private readonly IAuthRepository _repo;
-
         private readonly IConfiguration _config;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
-        public AuthController(IAuthRepository repo, IMapper mapper, IConfiguration config){
-            this._repo = repo;
+        public AuthController(IMapper mapper, IConfiguration config, UserManager<User> userManager, SignInManager<User> signInManager){
             this._mapper = mapper;
             this._config = config;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            var userToCreate =  _mapper.Map<User>(userForRegisterDto);
-           
-            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+            Console.WriteLine(userForRegisterDto.Password);
 
-            return StatusCode(201);
+            var userToCreate =  _mapper.Map<User>(userForRegisterDto);
+            userToCreate.UserName = userToCreate.Email;
+
+            var result = await _userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
+           
+            var userToReturn = _mapper.Map<User, UserForProfileDto>(userToCreate);
+
+            if(result.Succeeded)
+            {
+                return StatusCode(201);
+            }
+            return BadRequest(result.Errors);
         }
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userFromRepo = await _repo.Login(userForLoginDto.Email, userForLoginDto.Password);
-            if (userFromRepo == null)
-            {
-                return Unauthorized();
+            var userFromRepo = await _userManager.FindByEmailAsync(userForLoginDto.Email);
+            var result = await _signInManager.CheckPasswordSignInAsync(userFromRepo, userForLoginDto.Password, false);
+            if(result.Succeeded) {
+                var user = _mapper.Map<User, UserForProfileDto>(userFromRepo);
+                return Ok(new {token = GenerateJwtToken(userFromRepo), user});
             }
+            return Unauthorized();
+        }
 
+        private string GenerateJwtToken(User user) {
             var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Email.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Email.ToString())
             };
            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("Token").ToString()));
@@ -69,8 +85,7 @@ public class AuthController : ControllerBase
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return Ok(new {token = tokenHandler.WriteToken(token)});
+            return tokenHandler.WriteToken(token);
         }
     }
 }

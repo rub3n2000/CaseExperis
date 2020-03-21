@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CaseExperis.Api.Data;
+using CaseExperis.Api.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +31,9 @@ namespace CaseExperis.Api
                 var services = scope.ServiceProvider;
                 try{
                     var context = services.GetRequiredService<DataContext>();
+                    var userManager = services.GetRequiredService<UserManager<User>>();
                     context.Database.Migrate();
-                    Seed.SeedUsers(context);
+                    Seed.SeedUsers(userManager);
                     Seed.SeedFerier(services.GetRequiredService<IAuthRepository>(), 
                     services.GetRequiredService<IFerieRepository>(), services.GetRequiredService<DataContext>(),services.GetRequiredService<IMapper>());
                 } catch(Exception ex) {

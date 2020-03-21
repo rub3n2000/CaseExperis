@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
 using CaseExperis.Api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -11,22 +12,18 @@ namespace CaseExperis.Api.Data
 {
     public class Seed
     {
-        public static void SeedUsers(DataContext context)
+        public static void SeedUsers(UserManager<User> userManager)
         {
-          if(!context.Users.Any())
+          if(!userManager.Users.Any())
             {
                 var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
                 var users = JsonConvert.DeserializeObject<List<User>>(userData);
                 foreach(var user in users)
                 {
-                    byte[] passwordHash, passwordSalt;
-                    CreatePasswordHash("password", out passwordHash, out passwordSalt);
-
-                    user.PasswordHash = passwordHash;
-                    user.PasswordSalt = passwordSalt;
-                    context.Users.Add(user);
+                    user.UserName = user.Email;
+                    userManager.CreateAsync(user, "Password1!").Wait();
                 }
-                context.SaveChanges();
+               
             }
         }
 
