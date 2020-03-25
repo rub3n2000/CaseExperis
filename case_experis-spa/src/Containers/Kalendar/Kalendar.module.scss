@@ -1,5 +1,6 @@
 @import '../../Sass/GlobalClasses.module.scss';
 @import '../../Sass/GlobalFunctions.module.scss';
+@import '../../Sass/GlobalMixins.module.scss';
 
 .Kalandar {
     display: flex;
@@ -15,7 +16,7 @@
 
 .SmallKalendar {
     display: flex;
-    min-height: 10%;
+    min-height: 60%;
     width: 100%;
     height: 60%;
     margin-bottom: 5%;
@@ -24,4 +25,20 @@
     align-content: center;
     align-items: center;
     background-color: f_color(primary);
+}
+
+@include desktop
+{
+    .SmallKalendar {
+        display: flex;
+        min-height: 50%;
+        width: 100%;
+        height: 60%;
+        margin-bottom: 0.5%;
+        min-width: auto;
+        text-align: center;
+        align-content: center;
+        align-items: center;
+        background-color: f_color(primary);
+    }
 }

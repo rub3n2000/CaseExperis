@@ -1,4 +1,5 @@
 @import '../../../Sass/GlobalFunctions.module.scss';
+@import '../../../Sass/GlobalMixins.module.scss';
 
 .KalendarView {
     display: flex;
@@ -113,14 +114,18 @@
             ::-webkit-scrollbar{
                 display: hidden;
             }
-            
-            
             div {
                 background-color: f_color(fifth);
                 height: 100%;
                 color: f_color(fourth);
                 display: flex;
                 width: auto;
+                overflow-y: auto;
+                overflow-x: auto;
+                min-width: 30%;
+                ::-webkit-scrollbar{
+                    display: hidden;
+                }
             }
             div:nth-child(odd) {
                 background-color: f_color(primary);
@@ -135,3 +140,163 @@
 }
 
 
+
+@include desktop
+{
+    .KalendarView {
+        display: flex;
+        width: 98%;
+        margin: 5% 5%;
+        margin-top: 0.5%;
+        margin-bottom: 0.5%;
+        background-color: f_color(primary);
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: auto;
+        flex-direction: row;
+    }
+    
+    .SmallKalendarView {
+        display: flex;
+        width: 98%;
+        margin: 5% 5%;
+        margin-top: 0.5%;
+        margin-bottom: 0.5%;
+        background-color: f_color(primary);
+        height: 100%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        flex-direction: row;
+    
+        .Days {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-content: center;
+            width: 100%;
+            
+            font-weight: bold;
+            
+            font-size: 0.8em;
+            max-width: 100%;
+        
+            div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                text-align: center;
+                background-color: f_color(fifth);
+                padding: 5px;
+                max-width: 100%;
+                .Label {
+                    background-color: transparent;
+                    display: flex;
+                    background-color: f_color(third);
+                    height: 100%;
+                    min-width: 95%;
+                    font-size: 1em;
+                }
+                .VacationItem {
+                    overflow-y: auto;
+                    overflow-x: auto;
+                    ::-webkit-scrollbar{
+                        display: hidden;
+                    }
+                    
+                    div {
+                        background-color: f_color(fifth);
+                        height: 100%;
+                        min-height: 20%;
+                        color: f_color(fourth);
+                        display: flex;
+                        font-size: 1em;
+                        width: auto;
+                        overflow-y: auto;
+                        overflow-x: auto;
+                        ::-webkit-scrollbar{
+                            display: hidden;
+                        }
+                    }
+                    div:nth-child(odd) {
+                        background-color: f_color(primary);
+                    }
+                    background-color: f_color(fifth);
+                    height: 100%;
+                    display:flex;
+                    flex-basis: 85%;
+                    font-size: 1em;
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+    
+    .Days {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: center;
+        width: 100%;
+        flex-direction: row;
+        font-weight: bold;
+        font-size: 0.75em;
+        max-width: 100%;
+    
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            background-color: f_color(fifth);
+            padding: 5px;
+            max-width: 100%;
+            .Label {
+                background-color: transparent;
+                display: flex;
+                background-color: f_color(third);
+                height: fit-content;
+                min-width: 90%;
+                max-height: 10%;
+                text-align: center;
+                font-size: 2em;
+                vertical-align: middle;
+                align-content: center;
+                align-items: center;
+                align-self: center;
+                padding-top: 10%;
+            }
+            .VacationItem {
+                overflow-y: auto;
+                overflow-x: hidden;
+                ::-webkit-scrollbar{
+                    display: hidden;
+                }
+                div {
+                    background-color: f_color(fifth);
+                    max-height: 10%;
+                    overflow-x: auto;
+                    font-size: 1.5em;
+                    overflow-y: hidden;
+                    color: f_color(fourth);
+                    display: flex;
+                    width: auto;
+                    overflow-y: auto;
+                        overflow-x: auto;
+                        ::-webkit-scrollbar{
+                            display: hidden;
+                        }
+                }
+                div:nth-child(odd) {
+                    background-color: f_color(primary);
+                }
+                background-color: f_color(fifth);
+                height: 5%;
+                display:flex;
+                flex-basis: 85%;
+                flex-direction: column;
+            }
+        }
+    }
+}

@@ -1,13 +1,15 @@
 @import '../../Sass/GlobalClasses.module.scss';
 @import '../../Sass/GlobalFunctions.module.scss';
+@import '../../Sass/GlobalMixins.module.scss';
+
 
 
 .WishEditorComponent {
     background-color: f_color(primary);
     min-height: 35%;
     max-height: 35%;
-    max-width: 50%;
-    min-width: 50%;
+    max-width: 85%;
+    min-width: 85%;
     position: absolute;
     top: 25%;
     z-index: 3;
@@ -80,5 +82,91 @@
         font-weight: normal;
         margin-top: 10%;
         font-size: 0.75em;
+    }
+}
+
+@include desktop
+{
+    .WishEditorComponent {
+        background-color: f_color(primary);
+        min-height: 10%;
+        max-height: 10%;
+        max-width: 90%;
+        min-width: 90%;
+        position: absolute;
+        top: -35%;
+        left: 5%;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .WishEditorInfo {
+        display: flex;
+        flex-direction: column;
+        padding: 25%;
+        padding-bottom: 0;
+        padding-top: 0;
+    
+        label {
+            margin: 5%;
+        }
+    }
+    
+    .WishEditorDates
+    {
+        display: flex;
+        padding: 2%;
+        justify-content: center;
+    
+        label {
+            margin : 5%;
+        }
+    }
+    
+    .WishEditorButtons {
+        display: flex;
+        padding: 2%;
+        justify-content: space-evenly;
+    
+        .SaveVacationWishButton {
+            button {
+                background-color: f_color(green);
+                color: f_color(third);
+            }
+        }
+    
+        .DeleteVacationWishButton {
+            button {
+                background-color: f_color(fifth);
+                color: f_color(third);
+            }
+        }
+    
+        div {
+            margin : 5%;
+            button {
+                font-size: 0.9em;
+                font-weight: bold;
+                min-width: min-content;
+            }
+        }
+    }
+    
+    .WishEditorForm {
+        margin-top: 25%;
+        text-align: center;
+        padding-top: 5%;
+        font-size: 1.5em;
+        min-width: 60%;
+        color: f_color(secondary);
+        background-color: f_color(fourth);
+        font-weight: bold;
+        form {
+            font-weight: normal;
+            margin-top: 10%;
+            font-size: 1em;
+        }
     }
 }

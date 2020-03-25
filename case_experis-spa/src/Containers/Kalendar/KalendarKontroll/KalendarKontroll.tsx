@@ -46,11 +46,13 @@ const kalendarKontroll = ( props: any ) => {
         </label>;
         }
     }
-
-    if(props.vacationKalender)
+    else if(props.vacationKalender)
     {
         Label = <div className={styles.Label}>Godkjente Ferier</div>
     } 
+    else {
+        Label = <></>;
+    }
 
     return (
         <>
