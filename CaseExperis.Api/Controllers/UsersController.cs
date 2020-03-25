@@ -42,12 +42,13 @@ public class UsersController : ControllerBase
             var userToReturn = _mapper.Map<UserForProfileDto>(user);
             return Ok(userToReturn);
         }
-
+        
+        [Authorize(Roles = "Member")]
         [HttpPut]
         [Route("{email}")]
         public async Task<IActionResult> UpdateUser(string email, UserForUpdateDto userForUpdateDto)
         {
-            if(email != _signInManager.Context.User.Identity.Name.ToString())
+            if(email != _signInManager.Context.User.Identity.Name.ToString() && !_signInManager.Context.User.IsInRole("Admin"))
             {
                 Console.WriteLine("yeee");
                 return Unauthorized();
@@ -61,13 +62,22 @@ public class UsersController : ControllerBase
             return Ok(redigertUser);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{email}")]
         public async Task<IActionResult> DeleteUser(string email)
         {
             await _repo.DeleteUser(email);
             return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch]
+        [Route("{email}")]
+        public async Task<IActionResult> MakeAdmin(string email)
+        {
+            var result = await _repo.MakeAdmin(email);
+            return Ok(result);
         }
 
 }

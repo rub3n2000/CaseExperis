@@ -18,10 +18,5 @@ namespace CaseExperis.Api.Models
         public string LanguageCode { get; set; }
         public virtual ICollection<Ferie> Ferier { get; set; } = new List<Ferie>();
         public virtual ICollection<UserRole> UserRoles { get; set; }
-
-        public static implicit operator User(Task<User> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

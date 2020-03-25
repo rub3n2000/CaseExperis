@@ -27,16 +27,25 @@ namespace CaseExperis.Api.Controllers
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
 
-        public FerierController(IMapper mapper, IFerieRepository ferieRepository, DataContext context, UserManager<User> userManager){
+        private readonly SignInManager<User> _signInManager;
+
+        public FerierController(IMapper mapper, IFerieRepository ferieRepository, DataContext context, UserManager<User> userManager, SignInManager<User> signInManager){
             this._mapper = mapper;
             this._ferieRepository = ferieRepository;
             this._context = context;
             this._userManager = userManager;
+            this._signInManager = signInManager;
         }
         
-        [HttpPost("new/{id}")]
+        [Authorize(Roles = "Member")]
+        [HttpPost("new/{id}")] 
         public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
+            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            {
+                Console.WriteLine("yeee");
+                return Unauthorized();
+            }
             var user = await _userManager.FindByIdAsync(id.ToString());
             ferieToCreate.User = user;
             ferieToCreate.UserId = id;
@@ -102,11 +111,17 @@ namespace CaseExperis.Api.Controllers
             return Ok(ferie);
         }
 
+        [Authorize(Roles = "Member")]
         [HttpPut]
         [Route("{id}")]
         
         public async Task<IActionResult> EditFerie(int id, FerieForUpdate ferieForUpdate)
         {
+            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            {
+                Console.WriteLine("yeee");
+                return Unauthorized();
+            }
             var redigertFerie = await _ferieRepository.Edit(id,ferieForUpdate);
             if(redigertFerie == null)
             {
@@ -115,11 +130,19 @@ namespace CaseExperis.Api.Controllers
             return Ok(redigertFerie);
         }
 
+
+        [Authorize(Roles = "Member")]
         [HttpDelete]
         [Route("{id}")]
         
         public async Task<IActionResult> DeleteFerie(int id)
         {
+            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            {
+                Console.WriteLine("yeee");
+                return Unauthorized();
+            }
+
             var deletedFerie = await _ferieRepository.DeleteFerie(id);
             if(deletedFerie == null)
             {
@@ -128,6 +151,7 @@ namespace CaseExperis.Api.Controllers
             return Ok(deletedFerie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPatch]
         [Route("{id}")]
 

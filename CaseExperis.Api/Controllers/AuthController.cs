@@ -38,8 +38,6 @@ public class AuthController : ControllerBase
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            Console.WriteLine(userForRegisterDto.Password);
-
             var userToCreate =  _mapper.Map<User>(userForRegisterDto);
             userToCreate.UserName = userToCreate.Email;
 
@@ -61,16 +59,22 @@ public class AuthController : ControllerBase
             var result = await _signInManager.CheckPasswordSignInAsync(userFromRepo, userForLoginDto.Password, false);
             if(result.Succeeded) {
                 var user = _mapper.Map<User, UserForProfileDto>(userFromRepo);
-                return Ok(new {token = GenerateJwtToken(userFromRepo), user});
+                return Ok(new {token = await GenerateJwtToken(userFromRepo), user});
             }
             return Unauthorized();
         }
 
-        private string GenerateJwtToken(User user) {
-            var claims = new[]{
+        private async Task<string> GenerateJwtToken(User user) {
+            var claims = new List<Claim>{
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email.ToString())
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles) {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("Token").ToString()));
 

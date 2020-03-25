@@ -11,7 +11,9 @@ namespace CaseExperis.Api.Data
          Task<User> GetUserById(int id);
          Task<IEnumerable<User>> GetUsers();
          Task<bool> SaveAll();
-         Task<User> Edit(string email, UserForUpdateDto user);
+         Task<UserForProfileDto> Edit(string email, UserForUpdateDto user);
          Task<User> DeleteUser(string email);
+
+         Task<UserForProfileDto> MakeAdmin(string email);
     }
 }

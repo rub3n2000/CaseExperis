@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using CaseExperis.Api.Dtos;
 using CaseExperis.Api.Models;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -12,18 +13,40 @@ namespace CaseExperis.Api.Data
 {
     public class Seed
     {
-        public static void SeedUsers(UserManager<User> userManager)
+        public static void SeedUsers(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
           if(!userManager.Users.Any())
             {
                 var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
                 var users = JsonConvert.DeserializeObject<List<User>>(userData);
+
+                var roles = new List<Role> {
+                    new Role{Name="Member"},
+                    new Role{Name="Admin"}
+                };
+
+                foreach (var role in roles) {
+                    roleManager.CreateAsync(role).Wait();
+                }
+
                 foreach(var user in users)
                 {
                     user.UserName = user.Email;
                     userManager.CreateAsync(user, "Password1!").Wait();
+                    userManager.AddToRoleAsync(user, "Member").Wait();
                 }
-               
+                
+                var adminUser = new User {
+                    UserName = "Admin@tidsbanken.no",
+                    Email = "Admin@tidsbanken.no"
+                };
+
+                var result = userManager.CreateAsync(adminUser, "complicatedPassword1_sx12").Result;
+
+                if(result.Succeeded) {
+                    var admin = userManager.FindByEmailAsync("Admin@tidsbanken.no").Result;
+                    userManager.AddToRolesAsync(admin, new[] {"Admin", "Member"});
+                }
             }
         }
 

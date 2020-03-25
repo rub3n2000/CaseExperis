@@ -34,6 +34,7 @@ namespace CaseExperis.Api.Controllers
             this._iEmbargo = iEmbargo;
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> NewEmbargo(EmbargoDto embargoToCreate)
         {
@@ -70,6 +71,7 @@ namespace CaseExperis.Api.Controllers
             return Ok(embargo);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         
@@ -83,6 +85,7 @@ namespace CaseExperis.Api.Controllers
             return Ok(embargoToReturn);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         

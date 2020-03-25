@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CaseExperis.Api.Dtos;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
 
 namespace CaseExperis.API.Data
 {
@@ -15,11 +16,13 @@ namespace CaseExperis.API.Data
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AuthRepository(DataContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IMapper _mapper;
+        public AuthRepository(DataContext context, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
         {
             this._context = context;
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this._mapper = mapper;
         }
         public async Task<User> DeleteUser(string email)
         {
@@ -63,7 +66,17 @@ namespace CaseExperis.API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<User> Edit(string email, UserForUpdateDto user)
+        public async Task<UserForProfileDto> MakeAdmin(string email) {
+            var userToMakeAdmin = await _userManager.FindByEmailAsync(email);
+            if(_userManager.IsInRoleAsync(userToMakeAdmin, "Admin").Result) {
+            return null;
+            }
+            var result = await _userManager.AddToRoleAsync(userToMakeAdmin, "Admin");
+            var userToMakeAdminRedigert = _mapper.Map<User,UserForProfileDto>(userToMakeAdmin);
+            return userToMakeAdminRedigert;
+        }
+
+        public async Task<UserForProfileDto> Edit(string email, UserForUpdateDto user)
         {
             var userFromDB = await _userManager.FindByEmailAsync(email);
             if(user != null)
@@ -102,7 +115,7 @@ namespace CaseExperis.API.Data
                     }
                 }
             await _userManager.UpdateAsync(userFromDB);
-            var theUser = userFromDB;
+            var theUser = _mapper.Map<User,UserForProfileDto>(userFromDB);
             return theUser;
             
         }

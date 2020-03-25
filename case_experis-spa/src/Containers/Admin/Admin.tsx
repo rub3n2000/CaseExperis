@@ -10,6 +10,7 @@ import UserEditor from './Employees/UserEditor/UserEditor';
 import { arrowFunctionExpression } from '@babel/types';
 import EmbargoEditor from './EmbargoEditor/EmbargoEditor';
 import { withRouter } from 'react-router-dom';
+import jwt_decoder from 'jwt-decode';
 
 const Admin = ( props: any ) => {
 
@@ -97,7 +98,6 @@ const Admin = ( props: any ) => {
     }
 
     const NewUser = async (e: any) => {
-        console.log(currentEditsOnUser);
         e.preventDefault();
         if(currentEditsOnUser)
         {
@@ -156,10 +156,21 @@ const Admin = ( props: any ) => {
         }
     }
 
-    const makeAdmin = () => {
-        if(currentEditsOnUser) {
-
+    const makeAdmin = async () => {
+        let token = "Bearer " + localStorage.getItem("access_token");
+        let tokenObject = jwt_decoder(token as string) as any;
+        if(currentEditsOnUser && tokenObject.role.includes("Admin")) {
+            let token = "Bearer " + localStorage.getItem("access_token");
+            axios.defaults.headers.Authorization = token;
+            const res = await axios.patch("/users/" + currentEditsOnUser.email);
+            if(res.status === 200) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
+        return false;
     }
 
     const fornavnChangeHandler = (e: any) => {

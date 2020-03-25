@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CaseExperis.Api.Data;
 using CaseExperis.Api.Models;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,8 +33,9 @@ namespace CaseExperis.Api
                 try{
                     var context = services.GetRequiredService<DataContext>();
                     var userManager = services.GetRequiredService<UserManager<User>>();
+                    var roleManager = services.GetRequiredService<RoleManager<Role>>();
                     context.Database.Migrate();
-                    Seed.SeedUsers(userManager);
+                    Seed.SeedUsers(userManager, roleManager);
                     Seed.SeedFerier(services.GetRequiredService<IAuthRepository>(), 
                     services.GetRequiredService<IFerieRepository>(), services.GetRequiredService<DataContext>(),services.GetRequiredService<IMapper>());
                 } catch(Exception ex) {
