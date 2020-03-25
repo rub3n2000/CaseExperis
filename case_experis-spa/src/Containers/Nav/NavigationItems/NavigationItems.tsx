@@ -5,14 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faUserShield, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; 
 
 import NavigationItem from './NavigationItem/NavigationItem';
+import AuthenticationService from '../../../Helpers/AuthenticationService';
 
 const navigationItems = ( props: any ) => {
+
+    const adminNav = AuthenticationService.isAdmin()?<NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>: <></>;
     let navigationButtons;
     if(props.user !== null)
     {
         navigationButtons = <div className={styles.NavigationButtons}>
         <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> Profile</NavigationItem>
-        <NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>
+        {adminNav}
         <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> Logout</NavigationItem>
     </div>
     }

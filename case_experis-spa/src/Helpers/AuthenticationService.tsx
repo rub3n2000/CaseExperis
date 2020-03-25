@@ -43,7 +43,7 @@ const AuthenticationService = {
             console.log(error);
         });
     },
-    logout: async function() {
+    logout: function() {
         localStorage.removeItem("access_token");
     },
     fetchCurrentUser: async function()
@@ -55,6 +55,14 @@ const AuthenticationService = {
             console.log(error);
         });
         return theResponse;
+    },
+    isLoggedIn: function() 
+    {
+        return  localStorage.getItem("access_token")?true:false;
+    },
+    isAdmin: function() 
+    {
+        return localStorage.getItem("access_token")?(jwt_decode(localStorage.getItem("access_token") as string) as any).role.includes("Admin"):false;
     }
 };
 
