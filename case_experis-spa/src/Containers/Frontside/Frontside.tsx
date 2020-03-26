@@ -9,8 +9,8 @@ const Frontside = ( props : any ) => {
 
     return (
         <div className={[styles.LayoutDiv, styles.CenteredH].join(' ')}>
-            <Nav/>
-            <Kalendar godkjentOnly/>
+            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}/>
+            <Kalendar language={props.language} godkjentOnly/>
         </div>
     );
 }

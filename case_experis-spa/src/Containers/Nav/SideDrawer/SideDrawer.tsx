@@ -21,7 +21,8 @@ const sideDrawer = (props:any) => {
                     <Logo imgsrc="/logo96.png"/>
                 </div>
                 <nav className={styles.NavItems}>
-                    <NavigationItems logOutHandler={props.logOutHandler} englishLangHandler={props.englishHandler} norskLangHandler={props.norskLangHandler} user={props.user}/>
+                    <NavigationItems language={props.language} logOutHandler={props.logOutHandler} englishLangHandler={props.englishLangHandler} 
+                    norskLangHandler={props.norskLangHandler} user={props.user}/>
                 </nav>
             </div>
         </>

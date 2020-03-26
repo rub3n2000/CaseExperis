@@ -51,6 +51,7 @@ const Admin = ( props: any ) => {
 
     type users = user[] | undefined;
     type userFilter = Partial<userToRegistrer> | undefined;
+    type language = "Norwegian" | "English";
 
     const FetchUsers = async() => {
         let users: Partial<users> = [];
@@ -72,6 +73,7 @@ const Admin = ( props: any ) => {
     const [embargoVisible, setEmbargoVisible] = useState<boolean>(false);
     const [currentEmbargo, setCurrentEmbargo] = useState<embargoFilter>();
     const [embargoDate, setEmbargoDate] = useState(FormatDateAsMonthDayYearString(new Date()));
+    const [language, setLanguage] = useState<language>("Norwegian");
 
     useEffect(() => {
         const SetTheUsers = async() => {
@@ -347,15 +349,15 @@ const Admin = ( props: any ) => {
     return (
         <div className={styles.AdminDiv}>
             <Backdrop show={userEditorVisible || embargoVisible} clicked={userEditorCloseHandler}/>
-            <Nav/>
-            {users && <Employees users={users} userEditorOpenHandler={userEditorOpenHandler}/>}
-            {users && <UserEditor NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
+            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}/>
+            {users && <Employees  language={props.language} users={users} userEditorOpenHandler={userEditorOpenHandler}/>}
+            {users && <UserEditor language={props.language} NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
              mobilnummerChangeHandler={mobilnummerChangeHandler} emailChangeHandler={emailChangeHandler} ferieDagerIgjenChangeHandler={ferieDagerIgjenChangeHandler}
              ferieDagerTattChangeHandler={ferieDagerTattChangeHandler} languageChangeHandler={languageChangeHandler} deleteUser={deleteUser} 
              passwordChangeHandler={passwordChangeHandler} makeAdmin={makeAdmin} user={currentlyEditedUser} visible={userEditorVisible}/>}
-            <Kalendar setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender wishKalender/>
-            <Kalendar setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender vacationKalender/>
-            <EmbargoEditor visible={embargoVisible} NewEmbargo={NewEmbargo} embargo={currentEmbargo} embargoDateChangeHandler={EmbargoDateChangedHandler} deleteEmbargo={DeleteEmbargo}/>
+            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender wishKalender/>
+            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender vacationKalender/>
+            <EmbargoEditor language={props.language} visible={embargoVisible} NewEmbargo={NewEmbargo} embargo={currentEmbargo} embargoDateChangeHandler={EmbargoDateChangedHandler} deleteEmbargo={DeleteEmbargo}/>
         </div>
     )
 }

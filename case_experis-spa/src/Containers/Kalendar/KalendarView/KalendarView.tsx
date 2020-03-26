@@ -19,6 +19,27 @@ const kalendarView = ( props: any ) => {
         return formatedDate;
     }
 
+    const languageTable = {
+        Norwegian: {
+        MondayLabel: "Mandag",
+        TuesdayLabel: "Tirsdag",
+        WednesdayLabel: "Onsdag",
+        ThursdayLabel: "Torsdag",
+        FridayLabel: "Fredag",
+        SaturdayLabel: "Lørdag",
+        SundayLabel: "Søndag"
+        },
+        English: {
+        MondayLabel: "Monday",
+        TuesdayLabel: "Tuesday",
+        WednesdayLabel: "Wednesday",
+        ThursdayLabel: "Thursday",
+        FridayLabel: "Friday",
+        SaturdayLabel: "Saturday",
+        SundayLabel: "Sunday"
+        }
+};
+
     let ferier = props.ferierForView;
 
     if(props.wishKalender == true)
@@ -140,7 +161,7 @@ const kalendarView = ( props: any ) => {
             <div className={styles.Days}>
                 <div>
                     <div className={styles.Label}>
-                        Søndag
+                    {props.language === "Norwegian"?languageTable.Norwegian.SundayLabel:languageTable.English.SundayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {sundayDivs}
@@ -148,7 +169,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Mandag
+                    {props.language === "Norwegian"?languageTable.Norwegian.MondayLabel:languageTable.English.MondayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {mondayDivs}
@@ -156,7 +177,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Tirsdag
+                    {props.language === "Norwegian"?languageTable.Norwegian.TuesdayLabel:languageTable.English.TuesdayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {tuesdayDivs}
@@ -164,7 +185,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Onsdag
+                    {props.language === "Norwegian"?languageTable.Norwegian.WednesdayLabel:languageTable.English.WednesdayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {wednesdayDivs}
@@ -172,7 +193,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Torsdag
+                    {props.language === "Norwegian"?languageTable.Norwegian.ThursdayLabel:languageTable.English.ThursdayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {thursdayDivs}
@@ -180,7 +201,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Fredag
+                    {props.language === "Norwegian"?languageTable.Norwegian.FridayLabel:languageTable.English.FridayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {fridayDivs}
@@ -188,7 +209,7 @@ const kalendarView = ( props: any ) => {
                 </div>
                 <div>
                     <div className={styles.Label}>
-                        Lørdag
+                    {props.language === "Norwegian"?languageTable.Norwegian.SaturdayLabel:languageTable.English.SaturdayLabel}
                     </div>
                     <div className={styles.VacationItem}>
                         {saturdayDivs}

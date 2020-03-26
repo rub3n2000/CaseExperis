@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from './Nav.module.scss';
 
@@ -36,12 +36,13 @@ const Nav = ( props : any ) => {
         setShowSideDrawer(true);
     }
 
-    const englishLangHandler = ( props: any ) => {
-
+    const englishLangHandler = async ( e: any ) => {
+        
     }
 
-    const norskLangHandler = ( props: any) => {
-
+    const norskLangHandler = async ( e: any) => {
+        e.preventDefault();
+        
     }
 
     const logOutHandler = ( props: any ) => {
@@ -54,17 +55,20 @@ const Nav = ( props : any ) => {
             localStorage.removeItem("access_token");
         }
     }
-  
+
+    useEffect(() => {
+        console.log(props.setNorwegian);
+    }, []);
 
     return (
     <header className={styles.Navbar}>
     <Logo imgsrc="/logo152.png"/>
     <DrawerToggle clicked={openDrawerHandler}/>
     <SideDrawer open={showSideDrawer} closed={sideDrawerClosedHandler} logOutHandler={logOutHandler}
-     englishLangHandler={englishLangHandler} norskLangHandler={norskLangHandler} user={localStorage.getItem("access_token")}/>
+     englishLangHandler={props.setEnglish} norskLangHandler={props.setNorwegian} user={localStorage.getItem("access_token")} language={props.language}/>
     <nav className={styles.DesktopOnly}>
-        <NavigationItems logOutHandler={logOutHandler} englishLangHandler={englishLangHandler}
-         norskLangHandler={norskLangHandler} user={localStorage.getItem("access_token")}/>
+    <NavigationItems logOutHandler={logOutHandler} englishLangHandler={props.setEnglish}
+        norskLangHandler={props.setNorwegian} user={localStorage.getItem("access_token")} language={props.language}/>
     </nav>
 </header>
 )

@@ -303,10 +303,10 @@ const Kalendar = ( props: any ) => {
         <div className={classes.join(' ')}>
             <Backdrop show={detailedVisible || editorVisible} clicked={ferieDetailedClose}/>
             {users && <KalendarKontroll newVacationWishHandler={ferieClickHandlerNew} newEmbargoHandler={props.newEmbargoHandler} adminKalender={props.adminKalender} dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
-             user={props.bruker} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
+             user={props.bruker}  language={props.language} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
             {ferier && <KalendarView embargoClickHandler={embargoClickHandler} embargoes={embargoes} ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
-            vacationKalender={props.vacationKalender} godkjentOnly={props.godkjentOnly}/>}
-            {ferier && detailedView &&  <DetailedView ferie={detailedView} visible={detailedVisible}/>}
+            vacationKalender={props.vacationKalender} language={props.language} godkjentOnly={props.godkjentOnly}/>}
+            {ferier && detailedView &&  <DetailedView language={props.language} ferie={detailedView} visible={detailedVisible}/>}
             {ferier && (newVacation || editor) && <VacationWishEditor admin={props.adminKalender} wishKalender={props.wishKalender} close={ferieDetailedClose} editMode={!newVacation} ferie={editor} visible={editorVisible}/>}
         </div>
     );

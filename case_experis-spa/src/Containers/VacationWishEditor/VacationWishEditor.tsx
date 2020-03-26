@@ -111,7 +111,7 @@ const VacationWishEditor = ( props: any ) => {
                                     Date: dates[i],
                                     isGodkjent: String(Array.isArray(res.data)?res.data[0].isGodkjent: res.data.isGodkjent),
                                     AnsattNotat: note,
-                                    AdminNotat: ""
+                                    AdminNotat: adminNote
                                 }, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
                                 const getRes = await axios.get(putString);
                             }
@@ -126,7 +126,7 @@ const VacationWishEditor = ( props: any ) => {
                                 await axios.post("/ferier/new/"+String(user?user.id: 1), {
                                 Date: dates[i],
                                 AnsattNotat: note,
-                                AdminNotat: "",
+                                AdminNotat: adminNote,
                                 User: user,
                                 UserId: user?user.id:1
                             },{headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
@@ -178,6 +178,10 @@ const VacationWishEditor = ( props: any ) => {
         setNote(evt.target.value);
     }
 
+    const adminNoteChangeHandler = (evt: any) => {
+        setAdminNote(evt.target.value);
+    }
+
 
     const toDagEndretHandler = (evt : any) => {
         if(evt.target.value != "")
@@ -213,9 +217,37 @@ const VacationWishEditor = ( props: any ) => {
     }
 
     const[note, setNote] = useState("");
+    const[adminNote, setAdminNote] = useState("");
     const[feedback, setFeedback] = useState(<div></div>);
     const[fromDag, setFromDag] = useState<string>(FormatDateAsMonthDayYearString(new Date()));
     const[toDag, setToDag] = useState<string>(FormatDateAsMonthDayYearString(new Date()));
+
+
+    const languageTable = {
+        Norwegian: {
+        DeleteLabel: "Slett Ferie",
+        MakeAcceptedLabel: "Gjør Ferie Godkjent",
+        NoteLabel: "Notat",
+        FromLabel: "Fra",
+        ToLabel: "Til",
+        SaveVacationLabel: "Lagre Ferie",
+        VacationWishLabel: "Rediger Ferie Ønske",
+        VacationLabel: "Rediger Ferie",
+        AdminNoteLabel: "Admin Notat"
+        },
+        English: {
+        DeleteLabel: "Delete Vacation",
+        MakeAcceptedLabel: "Make Vacation Accepted",
+        NoteLabel: "Note",
+        FromLabel: "From",
+        ToLabel: "To",
+        SaveVacationLabel: "Save Vacation",
+        VacationWishLabel: "Vacation Wish Editor",
+        VacationLabel: "Vacation Editor",
+        AdminNoteLabel: "Admin Note"
+        }
+    };
+
 
     useEffect(() => {
         if(props.ferie) {
@@ -228,16 +260,17 @@ const VacationWishEditor = ( props: any ) => {
     let deleteDiv = <></>;
     if(props.editMode) {
          deleteDiv = <div className={classes.DeleteVacationWishButton}> 
-        <button onClick={deleteVacation}>Delete Vacation</button>
+        <button onClick={deleteVacation}>{props.language === "Norwegian"?languageTable.Norwegian.DeleteLabel:languageTable.English.DeleteLabel}</button>
         </div>;
     }
     
     let name = props.admin?<label><FontAwesomeIcon icon={faUserAlt}/> {props.ferie.user.fornavn} {props.ferie.user.etternavn} </label>: <></>;
-    let theLabel = props.wishKalender?<>Vacation Wish Editor</>:<>Vacation Editor</>;
+    let theLabel = props.wishKalender?<>{props.language === "Norwegian"?languageTable.Norwegian.VacationWishLabel:languageTable.English.VacationWishLabel}</>:
+    <>{props.language === "Norwegian"?languageTable.Norwegian.VacationLabel:languageTable.English.VacationLabel}</>;
     let makeAcceptedDiv = <></>;
     if(props.admin) {
         makeAcceptedDiv = <div className={classes.MakeAcceptedButton}> 
-        <button onClick={makeAccepted}>Make Vacation Accepted</button>
+        <button onClick={makeAccepted}>{props.language === "Norwegian"?languageTable.Norwegian.MakeAcceptedLabel:languageTable.English.MakeAcceptedLabel}</button>
         </div>;
     }
     if(props.visible)
@@ -251,23 +284,31 @@ const VacationWishEditor = ( props: any ) => {
                 <div className={classes.WishEditorInfo}>
                 {name}
                 <label>
-                    <FontAwesomeIcon icon={faComment}/>Note
+                    <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.AdminNoteLabel:languageTable.English.AdminNoteLabel}
                     <textarea maxLength={160} defaultValue={props.editMode?props.ferie.ansattNotat:""} onChange={noteChangeHandler} required>
+
+                    </textarea>
+                </label>
+                <label>
+                    <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.AdminNoteLabel:languageTable.English.AdminNoteLabel}
+                    <textarea maxLength={160} defaultValue={props.editMode?props.ferie.adminNotat:""} onChange={adminNoteChangeHandler} required>
 
                     </textarea>
                 </label>
                 </div>
                 <div className={classes.WishEditorDates}>
                 <label>
-                <FontAwesomeIcon icon={faCalendarMinus}/> From <input type="date"  name="fromDate" defaultValue={props.editMode?FormatDateString(props.ferie.date):FormatDateAsMonthDayYearString(new Date())} onChange={fromDagEndretHandler}></input>
+                <FontAwesomeIcon icon={faCalendarMinus}/> {props.language === "Norwegian"?languageTable.Norwegian.ToLabel:languageTable.English.ToLabel} 
+                <input type="date"  name="fromDate" defaultValue={props.editMode?FormatDateString(props.ferie.date):FormatDateAsMonthDayYearString(new Date())} onChange={fromDagEndretHandler}></input>
                 </label>
                 <label>
-                <FontAwesomeIcon icon={faCalendarPlus}/> To <input type="date" name="toDate" defaultValue={props.editMode?FormatDateString(props.ferie.date):FormatDateAsMonthDayYearString(new Date())} onChange={toDagEndretHandler}></input>
+                <FontAwesomeIcon icon={faCalendarPlus}/> {props.language === "Norwegian"?languageTable.Norwegian.FromLabel:languageTable.English.FromLabel} 
+                <input type="date" name="toDate" defaultValue={props.editMode?FormatDateString(props.ferie.date):FormatDateAsMonthDayYearString(new Date())} onChange={toDagEndretHandler}></input>
                 </label>
                 </div>
                 <div className={classes.WishEditorButtons}>
                 <div className={classes.SaveVacationWishButton}> 
-                    <button type="submit"> <FontAwesomeIcon icon={faSave}/> Save Vacation </button>
+                    <button type="submit"> <FontAwesomeIcon icon={faSave}/> {props.language === "Norwegian"?languageTable.Norwegian.SaveVacationLabel:languageTable.English.SaveVacationLabel} </button>
                 </div>
                 {deleteDiv}
                 {makeAcceptedDiv}

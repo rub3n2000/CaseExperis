@@ -9,19 +9,39 @@ import AuthenticationService from '../../../Helpers/AuthenticationService';
 
 const navigationItems = ( props: any ) => {
 
-    const adminNav = AuthenticationService.isAdmin()?<NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/> Admin </NavigationItem>: <></>;
+    const languageTable = {
+        Norwegian: {
+        AdminLabel: "Admin",
+        ProfileLabel: "Profil",
+        LogoutLabel: "Logg Ut",
+        LoginLabel: "Logg Inn"
+        },
+        English: {
+        AdminLabel: "Admin",
+        ProfileLabel: "Profile",
+        LogoutLabel: "Logout",
+        LoginLabel: "Login"
+        }
+    }
+
+    const adminNav = AuthenticationService.isAdmin()?<NavigationItem link={"/admin"}><FontAwesomeIcon icon={faUserShield}/>
+     {props.language === "Norwegian"?languageTable.Norwegian.AdminLabel:languageTable.English.AdminLabel}
+      </NavigationItem>: <></>;
     let navigationButtons;
     if(props.user !== null)
     {
         navigationButtons = <div className={styles.NavigationButtons}>
-        <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> Profile</NavigationItem>
+        <NavigationItem link={"/profile"}><FontAwesomeIcon icon={faUserCircle}/> 
+         {props.language === "Norwegian"?languageTable.Norwegian.ProfileLabel:languageTable.English.ProfileLabel}</NavigationItem>
         {adminNav}
-        <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> Logout</NavigationItem>
+        <NavigationItem link="/" NavItemClickHandler={props.logOutHandler}> <FontAwesomeIcon icon={faSignOutAlt}/> 
+        {props.language === "Norwegian"?languageTable.Norwegian.LogoutLabel:languageTable.English.LogoutLabel}</NavigationItem>
     </div>
     }
     else {
         navigationButtons = <div className={styles.NavigationButtons}>
-        <NavigationItem link="/login"> <FontAwesomeIcon icon={faSignOutAlt}/> Login</NavigationItem>
+        <NavigationItem link="/login"> <FontAwesomeIcon icon={faSignOutAlt}/>  
+        {props.language === "Norwegian"?languageTable.Norwegian.LoginLabel:languageTable.English.LoginLabel}</NavigationItem>
     </div>
     } 
     return (

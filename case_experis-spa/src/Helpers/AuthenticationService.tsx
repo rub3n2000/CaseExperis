@@ -48,13 +48,10 @@ const AuthenticationService = {
     },
     fetchCurrentUser: async function()
     {
-        let theResponse: userFilter;
-        await axios.get("/users/" + (jwt_decode(localStorage.getItem("access_token") as string) as any).nameid).then(response => {
-            theResponse = response.data;
-        }).catch((error) => {
-            console.log(error);
-        });
-        return theResponse;
+        let theResponse: any;
+        theResponse = await axios.get("/users/" + (jwt_decode(localStorage.getItem("access_token") as string) as any).nameid);
+        let user : userFilter = theResponse.data;
+        return user as userFilter;
     },
     isLoggedIn: function() 
     {
