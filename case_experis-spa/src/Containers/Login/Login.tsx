@@ -29,16 +29,23 @@ const Login = ( props: any ) => {
 
     const Login = async (evt: any) => {
         evt.preventDefault();
-        var response = await AuthenticationService.login({Email: email, Password: password});
-        setPassword("");
-        setEmail("");
-        if(response == true)
-        {
-            setFeedback(<div className={classes.Success}>{props.language === "Norwegian"?languageTable.Norwegian.WelcomeLabel:languageTable.English.WelcomeLabel}</div>);
-            props.updateLanguageToUsers();
-            props.history.replace("/");
+        try {
+            var response = await AuthenticationService.login({Email: email, Password: password});
+            setPassword("");
+            setEmail("");
+            if(response == true)
+            {
+                setFeedback(<div className={classes.Success}>{props.language === "Norwegian"?languageTable.Norwegian.WelcomeLabel:languageTable.English.WelcomeLabel}</div>);
+                props.updateLanguageToUsers();
+                props.history.replace("/");
+            }
+            else {
+                props.setErrorMessage(props.language === "Norwegian"?languageTable.Norwegian.BugLabel:languageTable.English.BugLabel);
+                setFeedback(<div className={classes.Failure}>{props.language === "Norwegian"?languageTable.Norwegian.BugLabel:languageTable.English.BugLabel}</div>);
+            }
         }
-        else {
+        catch {
+            props.setErrorMessage(props.language === "Norwegian"?languageTable.Norwegian.BugLabel:languageTable.English.BugLabel);
             setFeedback(<div className={classes.Failure}>{props.language === "Norwegian"?languageTable.Norwegian.BugLabel:languageTable.English.BugLabel}</div>);
         }
     }   
@@ -56,7 +63,8 @@ const Login = ( props: any ) => {
     
     return (
         <div className={classes.LoginDiv}>
-            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}/>
+            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}
+            errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
             {feedback}
             <div className={classes.LoginForm}>
                 <form onSubmit={Login}>

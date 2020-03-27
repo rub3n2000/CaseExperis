@@ -36,18 +36,14 @@ const Nav = ( props : any ) => {
         setShowSideDrawer(true);
     }
 
-    const englishLangHandler = async ( e: any ) => {
-        
-    }
-
-    const norskLangHandler = async ( e: any) => {
-        e.preventDefault();
-        
-    }
-
     const logOutHandler = ( props: any ) => {
         Authenticationservice.logout();
     }
+
+    useEffect(() => {
+        props.clearErrorMessage();
+    }, [])
+
     if(localStorage.getItem("access_token") !== null)
     {
         if((jwt_decode(localStorage.getItem("access_token") as string) as any).exp < new Date().getTime().toString().substr(0,10))
@@ -56,11 +52,16 @@ const Nav = ( props : any ) => {
         }
     }
 
-    useEffect(() => {
-        console.log(props.setNorwegian);
-    }, []);
+    let errorBox = <div className={styles.ErrorBox}>
+    {props.errorMessage}
+    </div>
+
+    if(props.errorMessage === undefined) {
+        errorBox = <></>;
+    }
 
     return (
+    <>
     <header className={styles.Navbar}>
     <Logo imgsrc="/logo152.png"/>
     <DrawerToggle clicked={openDrawerHandler}/>
@@ -70,7 +71,9 @@ const Nav = ( props : any ) => {
     <NavigationItems logOutHandler={logOutHandler} englishLangHandler={props.setEnglish}
         norskLangHandler={props.setNorwegian} user={localStorage.getItem("access_token")} language={props.language}/>
     </nav>
-</header>
+    </header>
+    {errorBox}
+    </>
 )
 }
 

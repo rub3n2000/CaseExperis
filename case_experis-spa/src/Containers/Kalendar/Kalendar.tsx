@@ -99,7 +99,7 @@ const Kalendar = ( props: any ) => {
         {
             await axios.get<ferier>("/ferier?Date="+valgtUke[ferieKeys[key]]).then(response => {
                 oppdaterteFerier[ferieKeys[key]] = response.data; 
-            }).catch((error) => { console.log(error); });
+            }).catch((error) => { console.log(error); props.setErrorMessage("Vacations couldn't be fetched. Try again later, and contact support if problem continues.") });
         }
         return oppdaterteFerier as ferierEtterDag;
     }
@@ -111,7 +111,7 @@ const Kalendar = ( props: any ) => {
         {
             await axios.get<ferier>("/embargo?Date="+valgtUke[ukeKeys[key]]).then(response => {
                 oppdaterteEmbargoes[ukeKeys[key]] = response.data; 
-            }).catch((error) => { console.log(error); });
+            }).catch((error) => { console.log(error); props.setErrorMessage("Embargoes couldn't be fetched. Try again later, and contact support if problem continues.") });
         }
         return oppdaterteEmbargoes as embargoesEtterDag;
     }
@@ -123,7 +123,7 @@ const Kalendar = ( props: any ) => {
         {
             await axios.get<ferier>("/ferier/user/"+user.id+"?Date="+valgtUke[ferieKeys[key]]).then(response => {
                 oppdaterteFerier[ferieKeys[key]] = response.data;
-            }).catch((error) => { console.log(error);}); 
+            }).catch((error) => { console.log(error); props.setErrorMessage("Finding this users vacations failed. Try again later, and contact support if problem continues.")}); 
         }
         setFerier(oppdaterteFerier as ferierEtterDag);
     }
@@ -199,7 +199,7 @@ const Kalendar = ( props: any ) => {
         let users: Partial<users> = [];
         await axios.get<users>("/users").then(response => {
             users = response.data;
-        }).catch((error) => {console.log(error);});
+        }).catch((error) => {console.log(error); props.setErrorMessage("Users couldn't be found. Try again later, and contact support if problem continues.")});
         return users;
     };
     
@@ -303,11 +303,12 @@ const Kalendar = ( props: any ) => {
         <div className={classes.join(' ')}>
             <Backdrop show={detailedVisible || editorVisible} clicked={ferieDetailedClose}/>
             {users && <KalendarKontroll newVacationWishHandler={ferieClickHandlerNew} newEmbargoHandler={props.newEmbargoHandler} adminKalender={props.adminKalender} dag={valgtDag} dagEndretHandler={dagEndretHandler} brukere={users} brukerEndretHandler={brukerEndretHandler}
-             user={props.bruker}  language={props.language} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender}/>}
+             user={props.bruker}  language={props.language} vacationKalender={props.vacationKalender} wishKalender={props.wishKalender} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
             {ferier && <KalendarView embargoClickHandler={embargoClickHandler} embargoes={embargoes} ferieClickHandler={ferieClickHandler} ferierForView={ferier} wishKalender={props.wishKalender} 
-            vacationKalender={props.vacationKalender} language={props.language} godkjentOnly={props.godkjentOnly}/>}
-            {ferier && detailedView &&  <DetailedView language={props.language} ferie={detailedView} visible={detailedVisible}/>}
-            {ferier && (newVacation || editor) && <VacationWishEditor admin={props.adminKalender} wishKalender={props.wishKalender} close={ferieDetailedClose} editMode={!newVacation} ferie={editor} visible={editorVisible}/>}
+            vacationKalender={props.vacationKalender} language={props.language} godkjentOnly={props.godkjentOnly} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
+            {ferier && detailedView &&  <DetailedView language={props.language} ferie={detailedView} visible={detailedVisible} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
+            {ferier && (newVacation || editor) && <VacationWishEditor admin={props.adminKalender} wishKalender={props.wishKalender} close={ferieDetailedClose}
+            editMode={!newVacation} ferie={editor} visible={editorVisible} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
         </div>
     );
 }

@@ -23,7 +23,7 @@ const employees = ( props: any ) => {
             <h4>{props.language === "Norwegian"?languageTable.Norwegian.EmployeesLabel:languageTable.English.EmployeesLabel}</h4>
             {props.users.map((user: any) => {
                 if(user.email === "Admin@tidsbanken.no") {
-                    return <></>;
+                    return <div key={user.email}></div>;
                 }
                 return(<Employee userEditorOpenHandler={() => {props.userEditorOpenHandler(user)}} key={user.id} user={user}/>);
             })}

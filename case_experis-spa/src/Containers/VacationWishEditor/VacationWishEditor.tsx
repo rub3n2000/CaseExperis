@@ -60,15 +60,25 @@ const VacationWishEditor = ( props: any ) => {
     const deleteVacation = async () => {
         if(props.editMode)
         {
-        const response = await axios.delete("/ferier/"+props.ferie.id, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
-        if(response.status as number == 200)
-        {
-            props.close()
-            return true;
-        }
-        else {
-            return false;
-        }
+            try {
+                const response = await axios.delete("/ferier/"+props.ferie.id, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
+                if(response.status as number == 200)
+                {
+                    props.close()
+                    return true;
+                }
+                else {
+                    props.close();
+                    props.setErrorMessage("Failed to delete vacation. Try again later and contact support if the problem continues.");
+                    return false;
+                }
+            }
+            catch {
+                props.close();
+                props.setErrorMessage("Failed to delete vacation. Try again later and contact support if the problem continues.");
+                return false;
+            }
+        
         }
         else return false;
     }
@@ -118,6 +128,8 @@ const VacationWishEditor = ( props: any ) => {
                             catch(e)
                             {
                                 setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
+                                props.close();
+                                props.setErrorMessage("Failed to edit vacation. Try again later and contact support if the problem continues.");
                                 console.log(e);
                             }
                         } else {
@@ -135,6 +147,8 @@ const VacationWishEditor = ( props: any ) => {
                             {
                                 setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
                                 console.log(e);
+                                props.close();
+                                props.setErrorMessage("Failed to make new vacation. Try again later and contact support if the problem continues.");
                                 return false;
                             }
                         }
@@ -144,12 +158,16 @@ const VacationWishEditor = ( props: any ) => {
                 {
                     setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
                     console.log(e);
+                    props.close();
+                    props.setErrorMessage("Failed to check if vacation already exists. Try again later and contact support if the problem continues.");
                     return false;
                 }
             }
         }
         else {
             console.log("failed");
+            props.close();
+            props.setErrorMessage("User not logged in? Or something went wrong, try again later and contact support if the problem continues.");
             return false;
         }
         return true;
@@ -202,14 +220,23 @@ const VacationWishEditor = ( props: any ) => {
         {
             let token = "Bearer " + localStorage.getItem("access_token");
             axios.defaults.headers.Authorization = token;
-            const response = await axios.patch("/ferier/"+props.ferie.id);
-            if(response.status as number == 200)
-            {
-                props.close()
-                console.log("WHat?");
-                return true;
+            try {
+                const response = await axios.patch("/ferier/"+props.ferie.id);
+                if(response.status as number == 200)
+                {
+                    props.close();
+                    console.log("WHat?");
+                    return true;
+                }
+                else {
+                    props.close();
+                    props.setErrorMessage("Failed to make vacation accepted. Try again later and contact support if the problem continues.");
+                    return false;
+                }
             }
-            else {
+            catch {
+                props.close();
+                props.setErrorMessage("Failed to make vacation accepted. Try again later and contact support if the problem continues.");
                 return false;
             }
         }

@@ -19,6 +19,12 @@
     
 }
 
+.ErrorBox {
+    background-color: f_color(secondary);
+    color: rgb(125, 0, 0);
+    font-weight: bold;
+}
+
 @include desktop
 {
     .DesktopOnly {

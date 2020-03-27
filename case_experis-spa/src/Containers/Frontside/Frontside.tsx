@@ -9,8 +9,9 @@ const Frontside = ( props : any ) => {
 
     return (
         <div className={[styles.LayoutDiv, styles.CenteredH].join(' ')}>
-            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}/>
-            <Kalendar language={props.language} godkjentOnly/>
+            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}
+            errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
+            <Kalendar language={props.language} godkjentOnly setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
         </div>
     );
 }

@@ -66,19 +66,21 @@ const Profil = ( props: any ) => {
         {(currentUser as user).antallFerieTatt}</span>
         <span><FontAwesomeIcon icon={faAt}/> {props.language === "Norwegian"?languageTable.Norwegian.EmailLabel:languageTable.English.EmailLabel}| {(currentUser as user).email}</span>
         </div>
-       
     }
 
     
    
     return (
         <div className={styles.ProfileDiv}>
-        <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers} />
+        <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers} 
+        errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage} />
         <div className={styles.ProfileLayoutDiv}>
             {userInfo}
             <div className={styles.Kalendarer}>
-            {currentUser &&<Kalendar language={props.language} vacationEdit wishKalender bruker={currentUser}/>}
-            {currentUser &&<Kalendar language={props.language} vacationKalender bruker={currentUser}/>}
+            {currentUser &&<Kalendar language={props.language} vacationEdit wishKalender bruker={currentUser}
+            setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
+            {currentUser &&<Kalendar language={props.language} vacationKalender bruker={currentUser}
+            setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
             </div>
         </div>
         

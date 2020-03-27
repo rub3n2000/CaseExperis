@@ -57,7 +57,7 @@ const Admin = ( props: any ) => {
         let users: Partial<users> = [];
         await axios.get<users>("/users").then(response => {
             users = response.data;
-        }).catch((error) => {console.log(error);});
+        }).catch((error) => {console.log(error); userEditorCloseHandlerWithoutReload(); props.setErrorMessage("User's couldn't be fetched. Try again later, and contact support if problem continues.")});
         return users;
     };
 
@@ -93,6 +93,15 @@ const Admin = ( props: any ) => {
         props.history.go(0);
     }
 
+    const userEditorCloseHandlerWithoutReload = () => {
+        setUserEditorVisible(false);
+        setEmbargoVisible(false);
+        setCurrentEmbargo(undefined);
+        setEmbargoDate(FormatDateAsMonthDayYearString(new Date()));
+        setCurrentlyEditedUser(undefined);
+        setCurrentEditsOnUser(undefined);
+    }
+
     const userEditorOpenHandler = (user: user) => {
         setUserEditorVisible(true);
         setCurrentlyEditedUser(user);
@@ -106,34 +115,57 @@ const Admin = ( props: any ) => {
             let response : any;
             if(currentEditsOnUser.id != undefined)
             {
-             response = await axios.get("/users/" + currentEditsOnUser.id);
+                try {
+                    response = await axios.get("/users/" + currentEditsOnUser.id);
+                }
+                catch {
+                    response = {status: 401};
+                }
             }
             else { response = {status: 401};}
         if(response.status !== 200)
         {
-            let token = "Bearer " + localStorage.getItem("access_token");
-            axios.defaults.headers.Authorization = token;
-            console.log(currentEditsOnUser);
-            const res = await axios.post("/auth/register", currentEditsOnUser);
-            if(res.status === 201) {
-                console.log("yup");
+            try {
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
                 console.log(currentEditsOnUser);
-                userEditorCloseHandler();
-                return true;
+                const res = await axios.post("/auth/register", currentEditsOnUser);
+                if(res.status === 201) {
+                    console.log("yup");
+                    console.log(currentEditsOnUser);
+                    userEditorCloseHandler();
+                    return true;
+                }
+                else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Making the new user failed. Try again later. If the problem continues contact support. Remember that the password has to include a number and a special character.");
+                    return false;
+                }
             }
-            else {
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Making the new user failed. Try again later. If the problem continues contact support. Remember that the password has to include a number and a special character.");
                 return false;
             }
         }
         else {
-            let token = "Bearer " + localStorage.getItem("access_token");
-            axios.defaults.headers.Authorization = token;
-            const res = await axios.put("/users/"+ currentEditsOnUser.email, currentEditsOnUser);
-            if(res.status === 204) {
-                userEditorCloseHandler();
-                return true;
+            try {
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                const res = await axios.put("/users/"+ currentEditsOnUser.email, currentEditsOnUser);
+                if(res.status === 204) {
+                    userEditorCloseHandler();
+                    return true;
+                }
+                else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Updating the user failed. Try again later. If the problem continues contact support. If you tried changing the password, remember that it has to include a number and special character.");
+                    return false;
+                }
             }
-            else {
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Updating the user failed. Try again later. If the problem continues contact support. If you tried changing the password, remember that it has to include a number and special character.");
                 return false;
             }
         }
@@ -145,11 +177,20 @@ const Admin = ( props: any ) => {
 
     const deleteUser = async () => {
         if(currentEditsOnUser) {
-            const res = await axios.delete("/users/" + currentEditsOnUser.email);
-            if(res.status === 200) {
-                return true;
+            try {
+                const res = await axios.delete("/users/" + currentEditsOnUser.email);
+                if(res.status === 200) {
+                    return true;
+                }
+                else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Deleting the user failed. Try again later. If the problem continues contact support.");
+                    return false;
+                }
             }
-            else {
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Deleting the user failed. Try again later. If the problem continues contact support.");
                 return false;
             }
         }
@@ -162,16 +203,27 @@ const Admin = ( props: any ) => {
         let token = "Bearer " + localStorage.getItem("access_token");
         let tokenObject = jwt_decoder(token as string) as any;
         if(currentEditsOnUser && tokenObject.role.includes("Admin")) {
-            let token = "Bearer " + localStorage.getItem("access_token");
-            axios.defaults.headers.Authorization = token;
-            const res = await axios.patch("/users/" + currentEditsOnUser.email);
-            if(res.status === 200) {
-                return true;
+            try {
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                const res = await axios.patch("/users/" + currentEditsOnUser.email);
+                if(res.status === 200) {
+                    return true;
+                }
+                else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Making the user an admin failed. Try again later. If the problem continues contact support.");
+                    return false;
+                }
             }
-            else {
-                return false;
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Making the user an admin failed. Try again later. If the problem continues contact support.");
+                return false; 
             }
         }
+        userEditorCloseHandlerWithoutReload();
+        props.setErrorMessage("You don't have the authorization to do that.");
         return false;
     }
 
@@ -288,17 +340,26 @@ const Admin = ( props: any ) => {
         {
             console.log(typeof currentEmbargo.date);
             if(FormatDateAsDateString(currentEmbargo.date) !== embargoDate) {
-                let newEmbargo = {
-                    date: new Date(embargoDate)
+                try {
+                    let newEmbargo = {
+                        date: new Date(embargoDate)
+                    }
+                    let token = "Bearer " + localStorage.getItem("access_token");
+                    axios.defaults.headers.Authorization = token;
+                    const res = await axios.put("/embargo/" + currentEmbargo.id, newEmbargo);
+                    if(res.status === 200) {
+                        userEditorCloseHandler();
+                        return true;
+                    }
+                    else {
+                        userEditorCloseHandlerWithoutReload();
+                        props.setErrorMessage("Creating the embargo failed. Try again later. If the problem continues contact support.");
+                        return false;
+                    }
                 }
-                let token = "Bearer " + localStorage.getItem("access_token");
-                axios.defaults.headers.Authorization = token;
-                const res = await axios.put("/embargo/" + currentEmbargo.id, newEmbargo);
-                if(res.status === 200) {
-                    userEditorCloseHandler();
-                    return true;
-                }
-                else {
+                catch {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Creating the embargo failed. Try again later. If the problem continues contact support.");
                     return false;
                 }
             }
@@ -307,6 +368,7 @@ const Admin = ( props: any ) => {
             }
         }
         else {
+            try {
                 console.log("yey");
                 let token = "Bearer " + localStorage.getItem("access_token");
                 axios.defaults.headers.Authorization = token;
@@ -316,20 +378,37 @@ const Admin = ( props: any ) => {
                     return true;
                 }
                 else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Updating the embargo failed. Try again later. If the problem continues contact support.");
                     return false;
                 }
+            }
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Updating the embargo failed. Try again later. If the problem continues contact support.");
+                return false;
+            }
         }
     }
 
     const DeleteEmbargo = async () => {
         if(currentEmbargo != undefined) {
-            let token = "Bearer " + localStorage.getItem("access_token");
-            axios.defaults.headers.Authorization = token;
-            let res = await axios.delete("/embargo/" + currentEmbargo.id);
-            if(res.status === 200) {
-                userEditorCloseHandler();
-                return res;
-            } else {
+            try {
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                let res = await axios.delete("/embargo/" + currentEmbargo.id);
+                if(res.status === 200) {
+                    userEditorCloseHandler();
+                    return res;
+                } else {
+                    userEditorCloseHandlerWithoutReload();
+                    props.setErrorMessage("Deleting the embargo failed. Try again later. If the problem continues contact support.");
+                    return false;
+                }
+            }
+            catch {
+                userEditorCloseHandlerWithoutReload();
+                props.setErrorMessage("Deleting the embargo failed. Try again later. If the problem continues contact support.");
                 return false;
             }
         }
@@ -349,15 +428,21 @@ const Admin = ( props: any ) => {
     return (
         <div className={styles.AdminDiv}>
             <Backdrop show={userEditorVisible || embargoVisible} clicked={userEditorCloseHandler}/>
-            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}/>
-            {users && <Employees  language={props.language} users={users} userEditorOpenHandler={userEditorOpenHandler}/>}
+            <Nav setNorwegian={props.setNorwegian} setEnglish={props.setEnglish} language={props.language} updateLanguageToUsers={props.updateLanguageToUsers}
+            errorMessage={props.errorMessage} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
+            {users && <Employees  language={props.language} users={users} userEditorOpenHandler={userEditorOpenHandler} 
+            setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
             {users && <UserEditor language={props.language} NewUser={NewUser} fornavnChangeHandler={fornavnChangeHandler} etternavnChangeHandler={etternavnChangeHandler}
              mobilnummerChangeHandler={mobilnummerChangeHandler} emailChangeHandler={emailChangeHandler} ferieDagerIgjenChangeHandler={ferieDagerIgjenChangeHandler}
              ferieDagerTattChangeHandler={ferieDagerTattChangeHandler} languageChangeHandler={languageChangeHandler} deleteUser={deleteUser} 
-             passwordChangeHandler={passwordChangeHandler} makeAdmin={makeAdmin} user={currentlyEditedUser} visible={userEditorVisible}/>}
-            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender wishKalender/>
-            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender vacationKalender/>
-            <EmbargoEditor language={props.language} visible={embargoVisible} NewEmbargo={NewEmbargo} embargo={currentEmbargo} embargoDateChangeHandler={EmbargoDateChangedHandler} deleteEmbargo={DeleteEmbargo}/>
+             passwordChangeHandler={passwordChangeHandler} makeAdmin={makeAdmin} user={currentlyEditedUser} visible={userEditorVisible}
+             setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>}
+            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender wishKalender
+            setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
+            <Kalendar language={props.language} setEmbargo={setTheEmbargo} vacationEdit newEmbargoHandler={newEmbargoHandler} adminKalender vacationKalender
+            setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
+            <EmbargoEditor language={props.language} visible={embargoVisible} NewEmbargo={NewEmbargo} embargo={currentEmbargo} embargoDateChangeHandler={EmbargoDateChangedHandler}
+             deleteEmbargo={DeleteEmbargo} setErrorMessage={props.setErrorMessage} clearErrorMessage={props.clearErrorMessage}/>
         </div>
     )
 }
