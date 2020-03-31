@@ -29,6 +29,21 @@ namespace CaseExperis.Api.Data
             });
 
             builder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+
+            // Shorten key length for Identity
+            builder.Entity<User>(entity => entity.Property(m => m.Id).HasMaxLength(127));
+            builder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(127));
+            builder.Entity<IdentityUserLogin<int>>(entity =>
+            {
+                entity.Property(m => m.LoginProvider).HasMaxLength(127);
+                entity.Property(m => m.ProviderKey).HasMaxLength(127);
+            });
+            builder.Entity<IdentityUserToken<int>>(entity =>
+            {
+                entity.Property(m => m.UserId).HasMaxLength(127);
+                entity.Property(m => m.LoginProvider).HasMaxLength(127);
+                entity.Property(m => m.Name).HasMaxLength(127);
+            });
         }
     }
 }

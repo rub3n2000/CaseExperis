@@ -25,6 +25,8 @@ using CaseExperis.Api.Models;
 using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using MySql.Data.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace CaseExperis.Api
 {
@@ -42,7 +44,7 @@ namespace CaseExperis.Api
         {
              services.AddDbContext<DataContext>(x =>
             {
-                x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                x.UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
             });
             IdentityBuilder builder = services.AddIdentityCore<User>(opt => {
                 opt.Password.RequireDigit = true;
