@@ -34,7 +34,7 @@ namespace CaseExperis.Api
                     var context = services.GetRequiredService<DataContext>();
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     var roleManager = services.GetRequiredService<RoleManager<Role>>();
-                    //context.Database.Migrate();
+                    context.Database.Migrate();
                     Seed.SeedUsers(userManager, roleManager);
                     Seed.SeedFerier(services.GetRequiredService<IAuthRepository>(), 
                     services.GetRequiredService<IFerieRepository>(), services.GetRequiredService<DataContext>(),services.GetRequiredService<IMapper>());

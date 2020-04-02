@@ -41,7 +41,8 @@ namespace CaseExperis.Api.Controllers
         [HttpPost("new/{id}")] 
         public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
-            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
+            if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
                 Console.WriteLine("yeee");
                 return Unauthorized();
@@ -117,7 +118,8 @@ namespace CaseExperis.Api.Controllers
         
         public async Task<IActionResult> EditFerie(int id, FerieForUpdate ferieForUpdate)
         {
-            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
+            if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
                 Console.WriteLine("yeee");
                 return Unauthorized();
@@ -131,13 +133,14 @@ namespace CaseExperis.Api.Controllers
         }
 
 
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Admin")]
         [HttpDelete]
         [Route("{id}")]
         
         public async Task<IActionResult> DeleteFerie(int id)
         {
-            if(id.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+            var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
+            if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
                 Console.WriteLine("yeee");
                 return Unauthorized();

@@ -43,9 +43,9 @@ public class UsersController : ControllerBase
             return Ok(userToReturn);
         }
         
-        [Authorize(Roles = "Member")]
+        
         [HttpPut]
-        [Route("{email}")]
+        [Route("{email}")] [Authorize(Roles = "Member")]
         public async Task<IActionResult> UpdateUser(string email, UserForUpdateDto userForUpdateDto)
         {
             if(email != _signInManager.Context.User.Identity.Name.ToString() && !_signInManager.Context.User.IsInRole("Admin"))
@@ -62,11 +62,12 @@ public class UsersController : ControllerBase
             return Ok(redigertUser);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpDelete]
+        
+        [HttpDelete] [Authorize(Roles = "Admin")]
         [Route("{email}")]
         public async Task<IActionResult> DeleteUser(string email)
         {
+            Console.WriteLine("yee");
             await _repo.DeleteUser(email);
             return Ok();
         }

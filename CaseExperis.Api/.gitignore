@@ -63,6 +63,10 @@ typings/
 /appsettings.json
 /appsettings.Development.json
 
+/bin
+
+/obj
+
 
 appsettings.json
 appsettings.Development.json

@@ -11,6 +11,7 @@ import { arrowFunctionExpression } from '@babel/types';
 import EmbargoEditor from './EmbargoEditor/EmbargoEditor';
 import { withRouter } from 'react-router-dom';
 import jwt_decoder from 'jwt-decode';
+import { loadavg } from 'os';
 
 const Admin = ( props: any ) => {
 
@@ -153,7 +154,7 @@ const Admin = ( props: any ) => {
                 let token = "Bearer " + localStorage.getItem("access_token");
                 axios.defaults.headers.Authorization = token;
                 const res = await axios.put("/users/"+ currentEditsOnUser.email, currentEditsOnUser);
-                if(res.status === 204) {
+                if(res.status === 200) {
                     userEditorCloseHandler();
                     return true;
                 }
@@ -175,8 +176,10 @@ const Admin = ( props: any ) => {
         }
     }
 
-    const deleteUser = async () => {
+    const deleteUser = async ( e: any ) => {
+        console.log(localStorage.getItem("access_token"));
         if(currentEditsOnUser) {
+            e.preventDefault();
             try {
                 const res = await axios.delete("/users/" + currentEditsOnUser.email);
                 if(res.status === 200) {

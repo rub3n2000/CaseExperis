@@ -15,7 +15,7 @@ namespace CaseExperis.Api.Data
     {
         public static void SeedUsers(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
-          if(!userManager.Users.Any())
+          if(userManager.Users.Count() == 0)
             {
                 var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
                 var users = JsonConvert.DeserializeObject<List<User>>(userData);
@@ -38,7 +38,9 @@ namespace CaseExperis.Api.Data
                 
                 var adminUser = new User {
                     UserName = "Admin@tidsbanken.no",
-                    Email = "Admin@tidsbanken.no"
+                    Email = "Admin@tidsbanken.no",
+                    Fornavn = "Admin",
+                    Etternavn = "Admin"
                 };
 
                 var result = userManager.CreateAsync(adminUser, "complicatedPassword1_sx12").Result;
@@ -52,7 +54,7 @@ namespace CaseExperis.Api.Data
 
         public static void SeedFerier(IAuthRepository _iAuthRepos, IFerieRepository _ferieRepository, DataContext _context, IMapper  _mapper)
         {
-            if(!_context.Ferier.Any())
+            if(_context.Ferier.Count() == 0)
             {
                 int vNumber = 1;
                 var users =  _context.Users.Include(p => p.Ferier).ToList();
@@ -68,7 +70,7 @@ namespace CaseExperis.Api.Data
                             AnsattNotat = "Test",
                             AdminNotat = "Test",
                             User = users[i],
-                            UserId = i
+                            UserId = users[i].Id
                         };
                         var userToReturn = _mapper.Map<UserForProfileDto>(users[i]);
                         userToReturn.Ferier.Add(_mapper.Map<FerieToCreate,FerieForUserProfileDto>(ferietoCreate));

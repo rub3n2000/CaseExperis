@@ -61,6 +61,7 @@ const VacationWishEditor = ( props: any ) => {
         if(props.editMode)
         {
             try {
+                console.log(props.ferie.id);
                 const response = await axios.delete("/ferier/"+props.ferie.id, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
                 if(response.status as number == 200)
                 {
@@ -290,7 +291,7 @@ const VacationWishEditor = ( props: any ) => {
         <button onClick={deleteVacation}>{props.language === "Norwegian"?languageTable.Norwegian.DeleteLabel:languageTable.English.DeleteLabel}</button>
         </div>;
     }
-    
+    let adminDiv = <></>;
     let name = props.admin?<label><FontAwesomeIcon icon={faUserAlt}/> {props.ferie.user.fornavn} {props.ferie.user.etternavn} </label>: <></>;
     let theLabel = props.wishKalender?<>{props.language === "Norwegian"?languageTable.Norwegian.VacationWishLabel:languageTable.English.VacationWishLabel}</>:
     <>{props.language === "Norwegian"?languageTable.Norwegian.VacationLabel:languageTable.English.VacationLabel}</>;
@@ -299,6 +300,11 @@ const VacationWishEditor = ( props: any ) => {
         makeAcceptedDiv = <div className={classes.MakeAcceptedButton}> 
         <button onClick={makeAccepted}>{props.language === "Norwegian"?languageTable.Norwegian.MakeAcceptedLabel:languageTable.English.MakeAcceptedLabel}</button>
         </div>;
+        adminDiv = <label>
+        <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.AdminNoteLabel:languageTable.English.AdminNoteLabel}
+        <textarea maxLength={160} defaultValue={props.editMode?props.ferie.adminNotat:""} onChange={adminNoteChangeHandler} required>
+        </textarea>
+        </label>;
     }
     if(props.visible)
     {
@@ -311,17 +317,12 @@ const VacationWishEditor = ( props: any ) => {
                 <div className={classes.WishEditorInfo}>
                 {name}
                 <label>
-                    <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.AdminNoteLabel:languageTable.English.AdminNoteLabel}
+                    <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.NoteLabel:languageTable.English.NoteLabel}
                     <textarea maxLength={160} defaultValue={props.editMode?props.ferie.ansattNotat:""} onChange={noteChangeHandler} required>
 
                     </textarea>
                 </label>
-                <label>
-                    <FontAwesomeIcon icon={faComment}/>{props.language === "Norwegian"?languageTable.Norwegian.AdminNoteLabel:languageTable.English.AdminNoteLabel}
-                    <textarea maxLength={160} defaultValue={props.editMode?props.ferie.adminNotat:""} onChange={adminNoteChangeHandler} required>
-
-                    </textarea>
-                </label>
+                {adminDiv}
                 </div>
                 <div className={classes.WishEditorDates}>
                 <label>
