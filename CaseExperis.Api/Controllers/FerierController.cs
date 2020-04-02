@@ -41,8 +41,8 @@ namespace CaseExperis.Api.Controllers
         [HttpPost("new/{id}")] 
         public async Task<IActionResult> NewFerie(int id, FerieToCreate ferieToCreate)
         {
-            var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
-            if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
+          
+            if(id.ToString() !=_signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
                 return Unauthorized();
             }
