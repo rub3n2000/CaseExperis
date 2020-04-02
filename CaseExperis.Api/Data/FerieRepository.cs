@@ -27,9 +27,7 @@ namespace CaseExperis.API.Data
 
         public async Task<Ferie> DeleteFerie(int id)
         {
-            Console.WriteLine(id);
             var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
-            Console.WriteLine(ferie.Id);
             if(ferie == null)
             {
                 return null;

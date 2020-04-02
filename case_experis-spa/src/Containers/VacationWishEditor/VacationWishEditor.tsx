@@ -57,12 +57,15 @@ const VacationWishEditor = ( props: any ) => {
         return formatedDate;
     }
 
-    const deleteVacation = async () => {
+    const deleteVacation = async ( e: any ) => {
+        e.preventDefault();
         if(props.editMode)
         {
             try {
                 console.log(props.ferie.id);
-                const response = await axios.delete("/ferier/"+props.ferie.id, {headers: { Authorization: "Bearer " + localStorage.getItem("access_token")}});
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
+                const response = await axios.delete("/ferier/"+props.ferie.id);
                 if(response.status as number == 200)
                 {
                     props.close()
@@ -128,7 +131,6 @@ const VacationWishEditor = ( props: any ) => {
                             }
                             catch(e)
                             {
-                                setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
                                 props.close();
                                 props.setErrorMessage("Failed to edit vacation. Try again later and contact support if the problem continues.");
                                 console.log(e);
@@ -146,7 +148,6 @@ const VacationWishEditor = ( props: any ) => {
                             }
                             catch(e)
                             {
-                                setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
                                 console.log(e);
                                 props.close();
                                 props.setErrorMessage("Failed to make new vacation. Try again later and contact support if the problem continues.");
@@ -157,7 +158,6 @@ const VacationWishEditor = ( props: any ) => {
                 }
                 catch(e)
                 {
-                    setFeedback(<div className={classes.Failure}>Something Went Wrong</div>);
                     console.log(e);
                     props.close();
                     props.setErrorMessage("Failed to check if vacation already exists. Try again later and contact support if the problem continues.");
@@ -216,7 +216,8 @@ const VacationWishEditor = ( props: any ) => {
         }
     }
 
-    const makeAccepted = async () => {
+    const makeAccepted = async ( e: any ) => {
+        e.preventDefault();
         if(props.editMode && props.admin)
         {
             let token = "Bearer " + localStorage.getItem("access_token");
@@ -225,8 +226,9 @@ const VacationWishEditor = ( props: any ) => {
                 const response = await axios.patch("/ferier/"+props.ferie.id);
                 if(response.status as number == 200)
                 {
+                    await PostOrPutWish(props.ferie.user);
                     props.close();
-                    console.log("WHat?");
+                    props.history.go(0);
                     return true;
                 }
                 else {
@@ -282,6 +284,7 @@ const VacationWishEditor = ( props: any ) => {
         setFromDag(props.ferie.date);
         setToDag(props.ferie.date);
         setNote(props.ferie.ansattNotat);
+        setAdminNote(props.ferie.adminNotat);
         }
     }, [props.ferie])
     

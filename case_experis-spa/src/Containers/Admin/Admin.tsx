@@ -181,8 +181,11 @@ const Admin = ( props: any ) => {
         if(currentEditsOnUser) {
             e.preventDefault();
             try {
+                let token = "Bearer " + localStorage.getItem("access_token");
+                axios.defaults.headers.Authorization = token;
                 const res = await axios.delete("/users/" + currentEditsOnUser.email);
                 if(res.status === 200) {
+                    userEditorCloseHandlerWithoutReload();
                     return true;
                 }
                 else {
@@ -202,7 +205,8 @@ const Admin = ( props: any ) => {
         }
     }
 
-    const makeAdmin = async () => {
+    const makeAdmin = async ( e: any ) => {
+        e.preventDefault();
         let token = "Bearer " + localStorage.getItem("access_token");
         let tokenObject = jwt_decoder(token as string) as any;
         if(currentEditsOnUser && tokenObject.role.includes("Admin")) {
@@ -211,6 +215,7 @@ const Admin = ( props: any ) => {
                 axios.defaults.headers.Authorization = token;
                 const res = await axios.patch("/users/" + currentEditsOnUser.email);
                 if(res.status === 200) {
+                    userEditorCloseHandlerWithoutReload();
                     return true;
                 }
                 else {

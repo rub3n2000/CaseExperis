@@ -149,9 +149,7 @@ const Kalendar = ( props: any ) => {
     const ferieClickHandler = (dag: string, index:  number) => {
         if(props.vacationEdit)
         {
-            console.log("hey");
             setEditor(ferier?ferier[dag as keyof ferierEtterDag][index]:undefined);
-            console.log(ferier?ferier[dag as keyof ferierEtterDag][index]:undefined);
             setEditorVisible(true);
             setNewVacation(false);
         }

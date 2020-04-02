@@ -50,7 +50,6 @@ public class UsersController : ControllerBase
         {
             if(email != _signInManager.Context.User.Identity.Name.ToString() && !_signInManager.Context.User.IsInRole("Admin"))
             {
-                Console.WriteLine("yeee");
                 return Unauthorized();
             }
            
@@ -63,11 +62,10 @@ public class UsersController : ControllerBase
         }
 
         
-        [HttpDelete] [Authorize(Roles = "Admin")]
-        [Route("{email}")]
+        [HttpDelete]
+        [Route("{email}")][Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string email)
         {
-            Console.WriteLine("yee");
             await _repo.DeleteUser(email);
             return Ok();
         }

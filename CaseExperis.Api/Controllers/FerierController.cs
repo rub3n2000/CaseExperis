@@ -44,7 +44,6 @@ namespace CaseExperis.Api.Controllers
             var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
             if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
-                Console.WriteLine("yeee");
                 return Unauthorized();
             }
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -121,7 +120,6 @@ namespace CaseExperis.Api.Controllers
             var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
             if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
-                Console.WriteLine("yeee");
                 return Unauthorized();
             }
             var redigertFerie = await _ferieRepository.Edit(id,ferieForUpdate);
@@ -142,7 +140,6 @@ namespace CaseExperis.Api.Controllers
             var ferie = await _context.Ferier.FirstAsync(u => u.Id == id);
             if(ferie.UserId.ToString() != _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier) && !_signInManager.Context.User.IsInRole("Admin"))
             {
-                Console.WriteLine("yeee");
                 return Unauthorized();
             }
 

@@ -59,7 +59,6 @@ public class AuthController : ControllerBase
             var result = await _signInManager.CheckPasswordSignInAsync(userFromRepo, userForLoginDto.Password, false);
             if(result.Succeeded) {
                 var user = _mapper.Map<User, UserForProfileDto>(userFromRepo);
-                Console.WriteLine(_userManager.IsInRoleAsync(userFromRepo, "Admin").Result.ToString());
                 return Ok(new {token = await GenerateJwtToken(userFromRepo), user});
             }
             return Unauthorized();
