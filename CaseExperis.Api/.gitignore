@@ -67,6 +67,26 @@ typings/
 
 /obj
 
+bin
+
+.bin
+
+.obj
+
+obj
+
+data/Seed.cs
+
+data/seed
+
+.data/Seed.cs
+
+.data/Seed
+
+/data/Seed.cs
+
+/data/seed
+
 
 appsettings.json
 appsettings.Development.json
