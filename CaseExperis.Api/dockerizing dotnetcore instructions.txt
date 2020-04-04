@@ -37,3 +37,7 @@ heroku container:push web
 
 Step 8.
 heroku container:release web
+
+
+For testing:
+docker run -d -p 8080:80 --name {app name} {image name}
