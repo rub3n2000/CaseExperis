@@ -2,6 +2,7 @@
 
 html {
   background-color: f_color(primary);
+  overflow-y: scroll;
 }
 
 body {
@@ -12,6 +13,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: scroll;
 }
 
 code {

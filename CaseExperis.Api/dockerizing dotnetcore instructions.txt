@@ -1,0 +1,39 @@
+Step 1. Make Dockerfile on root directory of dotnet core profile with the contents :  (curlies remove where they are)
+
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+WORKDIR /{nameofapp}
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c {currentbuildname} -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+WORKDIR /{nameofapp}
+COPY --from=build-env /{nameofapp}/out .
+
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet {nameofapp}.dll
+
+Step 2. 
+heroku container:login
+
+Step 3. heroku login
+
+Step 4.
+docker build -t {imagename} .
+
+Step 5.
+docker tag {imagename} registry.heroku.com/{herokuappname, app must be made first}/web
+
+Step 6.
+docker push registry.heroku.com/{herokuappname}/web
+
+Step 7.
+heroku container:push web
+
+Step 8.
+heroku container:release web
