@@ -1,5 +1,19 @@
 This Project Was Completed For Tidsbanken AS
 
+It is a vacation Planner.
+
+User's usually (employees) added by an admin and handed their user info,
+can request to take a vacation on a set of days. 
+
+The admin can accept or deny vacation requests, as well as add notes
+to the vacations, or set up vacation embargoes (periods of time where
+you wont be allowed to request a vacation).
+
+The frontpage shows all accepted vacations.
+If it's empty navigate to 9th of april 2020 to see
+how it would work in practice. It probably hasn't been updated
+with new requests for a while.
+
 Live version: https://caseexperis.herokuapp.com/
 
 Test User Member and User Admin will be given on request.
