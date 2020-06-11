@@ -1,6 +1,6 @@
 This Project Was Completed For Tidsbanken AS
 
-It is a vacation Planner.
+It is a vacation planner.
 
 User's usually (employees) added by an admin and handed their user info,
 can request to take a vacation on a set of days. 
