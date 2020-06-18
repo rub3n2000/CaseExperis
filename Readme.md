@@ -21,7 +21,7 @@ Test User Member and User Admin will be given on request.
 
 Trello with changelog and more documentation : https://trello.com/b/GpM8Lm01/case-experis
 
-API live version: [link] (https://case-experis-api.herokuapp.com/api)
+API live version: https://case-experis-api.herokuapp.com/api
 
 #### API documentation:
 
