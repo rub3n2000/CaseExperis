@@ -1,5 +1,5 @@
 # Case Experis
-#### This Project Was Completed For Tidsbanken AS
+### This Project Was Completed For Tidsbanken AS
 
 Case Experis is a vacation planner.
 
@@ -23,9 +23,9 @@ Trello with changelog and more documentation : https://trello.com/b/GpM8Lm01/cas
 
 API live version: https://case-experis-api.herokuapp.com/api
 
-#### API documentation:
+### API documentation:
 
-###### Auth Controller:
+#### Auth Controller:
 
 **/auth/register POST. To register user.**
 
@@ -47,7 +47,7 @@ API live version: https://case-experis-api.herokuapp.com/api
         
         All these fields should be included in request body.
         
-###### Embargo Controller:
+#### Embargo Controller:
 
 **/embargo POST restricted to admin. To create new embargo. Bearer token required with admin role.**
 
@@ -73,7 +73,7 @@ API live version: https://case-experis-api.herokuapp.com/api
         
 **/embargo/{id} DELETE. To delete a specific embargo. restricted to admin. To create new embargo. Bearer token required with admin role.**
 
-###### Ferie Controller:
+#### Ferie Controller:
 
 **/ferier/new/{id of user} POST. To create a new vacation request. restricted to members. To create new embargo. Bearer token required.**
 
@@ -114,7 +114,7 @@ API live version: https://case-experis-api.herokuapp.com/api
 
 **/ferier/{vacation id} PATCH. To make a specific vacation request an accepted vacation. Restricted to admin. To create new embargo. Bearer token required with admin role.**
 
-###### User Controller:
+#### User Controller:
 
 **/users GET to get all users.**
 
