@@ -17,11 +17,11 @@ with new requests for a while.
 
 Live version: https://caseexperis.herokuapp.com/
 
-####Test user:
-username/email: Marks@test.com
-password: Pass_!1fa!
+#### Test user:
+        username/email: Marks@test.com
+        password: Pass_!1fa!
 
-####Admin test user:
+#### Admin test user:
         brukernavn / email: Admin@tidsbanken.no
         passord: sbef4DagsGsfgaS4_s!
 
