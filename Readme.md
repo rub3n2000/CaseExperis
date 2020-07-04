@@ -17,7 +17,15 @@ with new requests for a while.
 
 Live version: https://caseexperis.herokuapp.com/
 
-Test User Member and User Admin will be given on request.
+####Test user:
+username/email: Marks@test.com
+password: Pass_!1fa!
+
+####Admin test user:
+        brukernavn / email: Admin@tidsbanken.no
+        passord: sbef4DagsGsfgaS4_s!
+
+No real damage you can do as the system isn't in use at all. But try not to fill up the db to fast.
 
 Trello with changelog and more documentation : https://trello.com/b/GpM8Lm01/case-experis
 
